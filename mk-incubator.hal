@@ -1,0 +1,111 @@
+# #######################################
+#
+# HAL file for mk-incubator project
+#
+
+# Launch the setup script to make sure hardware setup looks good
+loadusr -w ./setup.sh
+
+# Thermistor ADC values
+# 100k thermistor on AIN5
+loadusr -Wn Therm hal_temp_bbb -n Therm -c 05:epcos_B57560G1104 -b CRAMPS
+
+# GPIO drivers
+loadrt hal_bb_gpio output_pins=912,914,916,918,920,922
+
+# Incubater userland comp
+loaduser -Wn incubator mk-incubator-comp.py
+
+# Logic for on/off switch and heat/cool selector
+loadrt lut5 names=peltier-pos,peltier-neg
+
+# ################################################
+# THREADS
+# ################################################
+addf bb_gpio.read                   servo-thread
+addf peltier-pos                    servo-thread
+addf peltier-neg                    servo-thread
+addf bb_gpio.write                  servo-thread
+
+# ################
+# Incubator comp
+# ################
+
+# Inputs
+# - Min/max/current temp settings
+net temp-min                        => incubator.temp-min
+net temp-max                        => incubator.temp-max
+net temp-cur                        => incubator.temp-cur
+# - Enable
+net enable                          => incubator.enable
+
+# Outputs
+# - On/off switch
+net switch-on                       <= incubator.switch-on
+# - Heat/cool selector switch (1/0)
+net switch-heat                     <= incubator.switch-heat
+# - Error
+net error                           <= incubator.error
+
+
+# ################
+# Temp in signal
+# ################
+
+net temp-cur                        <= Therm.ch-05.value
+
+
+# ################
+# Peltier out signals
+# ################
+
+# Enable
+net enable                          => bb_gpio.p9.out-12
+
+# Peltier +/-
+#
+# on/1	heat/0	| +	-	| + val	| - val
+# 0	0	| 0	0	|	|
+# 0	1	| 0	0	|	|
+# 1	0	| 0	1	|	|   0x4
+# 0	1	| 1	0	|   0x2	|
+#                                 ----- | -----
+setp peltier-pos.function	    0x2
+setp peltier-neg.function		    0x4
+
+# Peltier pos. LUT
+# - Inputs
+net switch-on                       => peltier-pos.in-1
+net switch-heat                     => peltier-pos.in-0
+# - Output to GPIO
+net peltier-pos                     <= peltier-pos.out
+net peltier-pos                     => bb_gpio.p9.out-14
+
+# Peltier neg. LUT
+# - Inputs
+net switch-on                       => peltier-neg.in-1
+net switch-heat                     => peltier-neg.in-0
+# - Output to GPIO
+net peltier-neg                     <= peltier-neg.out
+net peltier-neg                     => bb_gpio.p9.out-16
+
+
+# ################
+# Fan out signals
+# ################
+
+# Enable
+net enable                          => bb_gpio.p9.out-22
+
+# Output
+# - pos. output to GPIO
+net switch-on                       => bb_gpio.p9.out-18
+# - neg. output always 0
+setp bb_gpio.p9.out-20 0
+
+
+# ################
+# Enable
+# ################
+
+setp enable 1
