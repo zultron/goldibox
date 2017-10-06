@@ -39,6 +39,9 @@ net temp-max                        => incubator.temp-max
 net temp-cur                        => incubator.temp-cur
 # - Enable
 net enable                          => incubator.enable
+# - Exit
+net exit                            => incubator.exit
+sets exit 0
 
 # Outputs
 # - On/off switch

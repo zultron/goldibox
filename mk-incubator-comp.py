@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import hal, time
+import hal, time, sys
 
 # Set up component
 h = hal.component("incubator")
@@ -12,6 +12,8 @@ h.newpin("temp-max", hal.HAL_FLOAT, hal.HAL_IN)
 h.newpin("temp-cur", hal.HAL_FLOAT, hal.HAL_IN)
 # - Enable
 h.newpin("enable", hal.HAL_BIT, hal.HAL_IN)
+# - Exit
+h.newpin("exit", hal.HAL_BIT, hal.HAL_IN)
 
 # Outputs:  
 # - On/off switch
@@ -34,6 +36,10 @@ h.ready()
 while True:
     time.sleep(0.1)
 
+    # Exit
+    if h['exit']:
+        break
+
     # Error condition:  temp-max <= temp-min
     if h['temp-max'] <= h['temp-min']:
         h['switch-on'] = 0
@@ -55,3 +61,9 @@ while True:
     # On/off switch
     h['switch-on'] = (h['temp-cur'] > h['temp-max']) or \
                      (h['temp-cur'] < h['temp-min'])
+
+# Shut things off
+h['switch-on'] = 0
+
+# Exit
+sys.exit(0)
