@@ -14,7 +14,7 @@ loadusr -Wn Therm hal_temp_bbb -n Therm -c 05:epcos_B57560G1104 -b CRAMPS
 loadrt hal_bb_gpio output_pins=912,914,916,918,920,922
 
 # Incubater userland comp
-loaduser -Wn incubator mk-incubator-comp.py
+loaduser -Wn incubator ./mk-incubator-comp.py
 
 # Logic for on/off switch and heat/cool selector
 loadrt lut5 names=peltier-pos,peltier-neg
@@ -22,6 +22,7 @@ loadrt lut5 names=peltier-pos,peltier-neg
 # ################################################
 # THREADS
 # ################################################
+loadrt threads name1=servo-thread period1=10000000
 addf bb_gpio.read                   servo-thread
 addf peltier-pos                    servo-thread
 addf peltier-neg                    servo-thread
@@ -107,5 +108,11 @@ setp bb_gpio.p9.out-20 0
 # ################
 # Enable
 # ################
+ setp enable 1
 
-setp enable 1
+
+# ################
+# Start
+# ################
+
+start
