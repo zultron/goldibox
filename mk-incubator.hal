@@ -29,6 +29,16 @@ addf peltier-neg                    servo-thread
 addf bb_gpio.write                  servo-thread
 
 # ################
+# Pin aliases
+# ################
+alias pin bb_gpio.p9.out-12 peltier-enable-out
+alias pin bb_gpio.p9.out-14 peltier-pos-out
+alias pin bb_gpio.p9.out-16 peltier-neg-out
+alias pin bb_gpio.p9.out-22 fan-enable-out
+alias pin bb_gpio.p9.out-18 fan-pos-out
+alias pin bb_gpio.p9.out-20 fan-neg-out
+
+# ################
 # Incubator comp
 # ################
 
@@ -64,7 +74,7 @@ net temp-cur                        <= Therm.ch-05.value
 # ################
 
 # Enable
-net enable                          => bb_gpio.p9.out-12
+net enable                          => peltier-enable-out
 
 # Peltier +/-
 #
@@ -83,7 +93,7 @@ net switch-on                       => peltier-pos.in-1
 net switch-heat                     => peltier-pos.in-0
 # - Output to GPIO
 net peltier-pos                     <= peltier-pos.out
-net peltier-pos                     => bb_gpio.p9.out-14
+net peltier-pos                     => peltier-pos-out
 
 # Peltier neg. LUT
 # - Inputs
@@ -91,7 +101,7 @@ net switch-on                       => peltier-neg.in-1
 net switch-heat                     => peltier-neg.in-0
 # - Output to GPIO
 net peltier-neg                     <= peltier-neg.out
-net peltier-neg                     => bb_gpio.p9.out-16
+net peltier-neg                     => peltier-neg-out
 
 
 # ################
@@ -99,13 +109,13 @@ net peltier-neg                     => bb_gpio.p9.out-16
 # ################
 
 # Enable
-net enable                          => bb_gpio.p9.out-22
+net enable                          => fan-enable-out
 
 # Output
 # - pos. output to GPIO
-net switch-on                       => bb_gpio.p9.out-18
+net switch-on                       => fan-pos-out
 # - neg. output always 0
-setp bb_gpio.p9.out-20 0
+setp fan-neg-out 0
 
 
 # ################
