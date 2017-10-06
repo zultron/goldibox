@@ -108,7 +108,7 @@ setp bb_gpio.p9.out-20 0
 # ################
 # Enable
 # ################
- setp enable 1
+sets enable 1
 
 
 # ################
