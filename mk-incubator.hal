@@ -75,11 +75,11 @@ net enable                          => bb_gpio.p9.out-12
 # on/1	heat/0	| +	-	| + val	| - val
 # 0	0	| 0	0	|	|
 # 0	1	| 0	0	|	|
-# 1	0	| 0	1	|	|   0x4
-# 0	1	| 1	0	|   0x2	|
+# 1	0	| 1	0	|   0x4	|
+# 1	1	| 0	1	|	|   0x8
 #                                 ----- | -----
-setp peltier-pos.function	    0x2
-setp peltier-neg.function		    0x4
+setp peltier-pos.function	    0x4
+setp peltier-neg.function		    0x8
 
 # Peltier pos. LUT
 # - Inputs
