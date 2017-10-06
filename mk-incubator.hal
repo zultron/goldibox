@@ -3,6 +3,13 @@
 # HAL file for mk-incubator project
 #
 
+# ################################################
+# Setup
+# ################################################
+
+# ################
+# Load comps
+
 # Launch the setup script to make sure hardware setup looks good
 loadusr -w ./setup.sh
 
@@ -19,9 +26,9 @@ loadusr -Wn incubator ./mk-incubator-comp.py
 # Logic for on/off switch and heat/cool selector
 loadrt lut5 names=peltier-pos,peltier-neg
 
-# ################################################
-# THREADS
-# ################################################
+# ################
+# Threads
+
 loadrt threads name1=servo-thread period1=10000000
 addf bb_gpio.read                   servo-thread
 addf peltier-pos                    servo-thread
@@ -30,7 +37,7 @@ addf bb_gpio.write                  servo-thread
 
 # ################
 # Pin aliases
-# ################
+
 alias pin bb_gpio.p9.out-12 peltier-enable-out
 alias pin bb_gpio.p9.out-14 peltier-pos-out
 alias pin bb_gpio.p9.out-16 peltier-neg-out
@@ -40,7 +47,6 @@ alias pin bb_gpio.p9.out-20 fan-neg-out
 
 # ################
 # Incubator comp
-# ################
 
 # Inputs
 # - Min/max/current temp settings
@@ -64,14 +70,12 @@ net error                           <= incubator.error
 
 # ################
 # Temp in signal
-# ################
 
 net temp-cur                        <= Therm.ch-05.value
 
 
 # ################
 # Peltier out signals
-# ################
 
 # Enable
 net enable                          => peltier-enable-out
@@ -106,7 +110,6 @@ net peltier-neg                     => peltier-neg-out
 
 # ################
 # Fan out signals
-# ################
 
 # Enable
 net enable                          => fan-enable-out
@@ -120,13 +123,13 @@ setp fan-neg-out 0
 
 # ################
 # Enable
-# ################
+
 sets enable 1
 
 
-# ################
-# Start
-# ################
+# ################################################
+# Run
+# ################################################
 
 start
 waitusr incubator
