@@ -13,7 +13,7 @@ h.newpin("temp-cur", hal.HAL_FLOAT, hal.HAL_IN)
 # - Enable
 h.newpin("enable", hal.HAL_BIT, hal.HAL_IN)
 # - Exit
-h.newpin("exit", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
 
 # Outputs:  
 # - On/off switch
@@ -38,8 +38,9 @@ while True:
     time.sleep(0.1)
 
     # Exit
-    if h['exit']:
-        sys.stderr.write("Incubator component:  got exit signal\n")
+    if h['shutdown']:
+        sys.stderr.write(
+            "Incubator component:  got shutdown signal = %s\n" % h['shutdown'])
         break
 
     # Error condition:  temp-max <= temp-min
