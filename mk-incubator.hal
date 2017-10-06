@@ -129,3 +129,23 @@ sets enable 1
 # ################
 
 start
+waitusr incubator
+
+
+# ################################################
+# Shut down
+# ################################################
+
+# Stop threads
+stop
+
+# Disable peltier
+unlinkp peltier-enable-out
+setp peltier-enable-out 0
+
+# Disable fan
+unlinkp fan-enable-out
+setp fan-enable-out 0
+
+# Unload comps
+unload all
