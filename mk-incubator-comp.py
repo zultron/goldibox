@@ -59,7 +59,7 @@ while True:
 
     # Heat/cool selector switch
     temp_midpoint = (h['temp-min'] + h['temp-max']) / 2.0
-    h['switch-heat'] = h['temp-cur'] > temp_midpoint
+    h['switch-heat'] = h['temp-cur'] < temp_midpoint
 
     # On/off switch
     h['switch-on'] = (h['temp-cur'] > h['temp-max']) or \
