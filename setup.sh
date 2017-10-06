@@ -88,3 +88,5 @@ sudo $(which config-pin) -f - <<- EOF
 #	P9.36		AIN5	Thermistor input
 EOF
 
+# The above may fail if run twice; don't make halrun fail
+exit 0
