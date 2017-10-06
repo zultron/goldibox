@@ -9,6 +9,13 @@ It is mostly built with common components readily available from eBay,
 although a small amount of soldering and a few custom cables are
 required.
 
+The controller is a BeagleBone running Machinekit.  The current
+functionality could be duplicated with an inexpensive Arduino.
+However, a remote mobile phone interface with controls and logging
+interface will be added in time.
+
+# Construction
+
 Parts list from eBay:
 - "Portable fridge cooler warmer 110V," about $40
   - These can be used on car 12VDC or on 110VAC
@@ -22,6 +29,9 @@ Parts list from eBay:
   - Conducts fridge temperature to thermistor
 - "Barrel to terminal block male adapter," about $5
   - Connects 5V BeagleBone power from L298N module power regulator
+- BeagleBone, about $60
+  - The controller running Machinekit
+  - Wireless network interface is a plus
 
 Parts list from junk box:
 - Hookup wire, min. 20AWG for 12V connections
@@ -32,6 +42,20 @@ Parts list from junk box:
   strippers, etc.
 
 ![Goldilocks Incubator](.readme.images/incubator_bb.png)
+
+# Running
+
+Follow the instructions at [machinekit.io][machinekit.io] to download
+and install a mini-SD card image with Machinekit.
+
+Log into the BeagleBone, clone this repository, and `cd` into the
+repository directory.
+
+Run the HAL configuration:
+
+    ./mk-incubator.hal
+
+[machinekit.io]: http://machinekit.io
 
 
 
