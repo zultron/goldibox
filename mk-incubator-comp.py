@@ -29,6 +29,7 @@ h['switch-on'] = 0
 h['switch-heat'] = 0
 
 # Mark the component as 'ready'
+sys.stderr.write("Incubator component:  initialized\n")
 h.ready()
 
 
@@ -38,6 +39,7 @@ while True:
 
     # Exit
     if h['exit']:
+        sys.stderr.write("Incubator component:  got exit signal\n")
         break
 
     # Error condition:  temp-max <= temp-min
@@ -61,6 +63,8 @@ while True:
     # On/off switch
     h['switch-on'] = (h['temp-cur'] > h['temp-max']) or \
                      (h['temp-cur'] < h['temp-min'])
+
+sys.stderr.write("Incubator component:  exiting\n")
 
 # Shut things off
 h['switch-on'] = 0
