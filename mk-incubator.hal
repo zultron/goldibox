@@ -3,6 +3,7 @@
 #
 # HAL file for mk-incubator project
 #
+# http://linuxcnc.org/docs/devel/html/man/man1/halcmd.1.html
 
 # ################################################
 # Setup
@@ -16,9 +17,14 @@ loadusr -w ./setup.sh
 
 # Thermistor ADC values
 # 100k thermistor on AIN5
+# https://github.com/machinekit/machinekit/blob/master/src/hal/user_comps/hal_temp_bbb.py
 loadusr -Wn Therm hal_temp_bbb -n Therm -c 05:epcos_B57560G1104 -b CRAMPS
 
 # GPIO drivers
+# - hal_bb_gpio docs
+# http://linuxcnc.org/docs/devel/html/man/man9/hal_bb_gpio.9.html
+# - pinouts
+# http://beagleboard.org/support/bone101
 loadrt hal_bb_gpio output_pins=912,914,916,918,920,922
 
 # Incubater userland comp
@@ -71,7 +77,8 @@ net temp-cur                        <= Therm.ch-05.value
 # Enable
 net enable                          => bb_gpio.p9.out-12
 
-# Peltier +/-
+# Peltier +/- LUT
+# http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
 #
 # on/1	heat/0	| +	-	| + val	| - val
 # 0	0	| 0	0	|	|

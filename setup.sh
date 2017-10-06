@@ -73,6 +73,8 @@ fi
 # causing problems.  You may wish to do this for documentation or to make
 # sure the pin starts with a known value as soon as possible.
 #
+# Pinouts:
+# http://beagleboard.org/support/bone101
 
 sudo $(which config-pin) -f - <<- EOF
 
