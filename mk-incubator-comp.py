@@ -79,15 +79,15 @@ while True:
     # On/off and heat/cool switches
     if ((temp_cur - hysteresis) > temp_max):
         if not h['switch-on']:
-            infomsg("Turning on heat; cur temp %.1f (hyst %.1f)" %
-                    (temp_cur, hysteresis))
-        h['switch-heat'] = 1
-        h['switch-on'] = 1
-    elif ((temp_cur + hysteresis) < temp_min):
-        if not h['switch-on']:
             infomsg("Turning on cool; cur temp %.1f (hyst %.1f)" %
                     (temp_cur, hysteresis))
         h['switch-heat'] = 0
+        h['switch-on'] = 1
+    elif ((temp_cur + hysteresis) < temp_min):
+        if not h['switch-on']:
+            infomsg("Turning on heat; cur temp %.1f (hyst %.1f)" %
+                    (temp_cur, hysteresis))
+        h['switch-heat'] = 1
         h['switch-on'] = 1
     elif ((temp_cur > temp_min) and (temp_cur < temp_max)):
         if h['switch-on']:
