@@ -50,6 +50,8 @@ addf bb_gpio.write                  servo-thread
 net temp-min                        => incubator.temp-min
 net temp-max                        => incubator.temp-max
 net temp-cur                        => incubator.temp-cur
+# - Hysteresis
+net hysteresis                      => incubator.hysteresis
 # - Enable
 net enable                          => incubator.enable
 # - Shut down
