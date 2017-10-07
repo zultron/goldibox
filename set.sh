@@ -3,6 +3,12 @@
 if test "$1" = shutdown; then
     set -x
     exec halcmd sets shutdown 1
+elif test "$1" = disable; then
+    set -x
+    exec halcmd sets enable 0
+elif test "$1" = enable; then
+    set -x
+    exec halcmd sets enable 1
 fi
 
 min=$1

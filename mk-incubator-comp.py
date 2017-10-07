@@ -26,7 +26,7 @@ h.newpin("switch-heat", hal.HAL_BIT, hal.HAL_OUT)
 h.newpin("error", hal.HAL_BIT, hal.HAL_OUT)
 
 # Init values
-h['error'] = (h['temp-max'] <= h['temp-min']) or (h['hysteresis'] < 0)
+h['error'] = 0
 h['switch-on'] = 0
 h['switch-heat'] = 0
 
@@ -55,12 +55,14 @@ while True:
         break
 
     # Error condition:  temp-max <= temp-min
-    if (temp_max <= temp_min) or (hysteresis < 0):
+    if (temp_max <= temp_min) or (hysteresis < 0) or (not enable):
         if not h['error']:
             if temp_max <= temp_min:
                 infomsg("ERROR:  temp_max <= temp_min")
             if hysteresis < 0:
                 infomsg("ERROR:  hysteresis < 0")
+            if not enable:
+                infomsg("ERROR:  enable signal cleared")
         h['switch-on'] = 0
         h['error'] = 1
         continue
