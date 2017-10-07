@@ -55,6 +55,16 @@ Run the HAL configuration:
 
     ./mk-incubator.hal
 
+Control the incubator from the command line:
+
+    # Shut down the incubator
+    ./set.sh shutdown
+    # Set incubator min, max and hysteresis params
+    ./set.sh 15 30 2
+    # Disable/enable the incubator without shutting down
+    ./set.sh disable
+    ./set.sh enable
+
 [machinekit.io]: http://machinekit.io
 
 
