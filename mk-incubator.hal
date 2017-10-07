@@ -116,9 +116,9 @@ net enable                          => bb_gpio.p8.out-18
 
 # Output
 # - pos. output to GPIO
-net switch-on                       => bb_gpio.p8.out-14
+net switch-on                       => bb_gpio.p8.out-16
 # - neg. output always 0
-setp bb_gpio.p8.out-16 0
+setp bb_gpio.p8.out-14 0
 
 
 # ################

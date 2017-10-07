@@ -82,8 +82,8 @@ sudo $(which config-pin) -f - <<- EOF
 	P8.08	low	# ENA	Peltier enable
 	P8.10	low	# In1	Peltier +
 	P8.12	low	# In2	Peltier -
-	P8.14	low	# In3	Fan +
-	P8.16	low	# In4	Fan -
+	P8.14	low	# In3	Fan -
+	P8.16	low	# In4	Fan +
 	P8.18	low	# ENB	Fan enable
 
 # Inputs
