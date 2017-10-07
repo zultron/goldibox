@@ -10,6 +10,6 @@ max=$2
 hyst=$3
 
 set -x
-halcmd sets temp-min $min
 halcmd sets temp-max $max
+halcmd sets temp-min $min
 halcmd sets hysteresis $hyst
