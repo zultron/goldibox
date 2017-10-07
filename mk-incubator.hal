@@ -25,7 +25,7 @@ loadusr -Wn Therm hal_temp_bbb -n Therm -c 05:epcos_B57560G1104 -b CRAMPS
 # http://linuxcnc.org/docs/devel/html/man/man9/hal_bb_gpio.9.html
 # - pinouts
 # http://beagleboard.org/support/bone101
-loadrt hal_bb_gpio output_pins=912,914,916,918,920,922
+loadrt hal_bb_gpio output_pins=808,810,812,814,816,818
 
 # Incubater userland comp
 loadusr -Wn incubator ./mk-incubator-comp.py
@@ -77,7 +77,7 @@ net temp-cur                        <= Therm.ch-05.value
 # Peltier out signals
 
 # Enable
-net enable                          => bb_gpio.p9.out-12
+net enable                          => bb_gpio.p8.out-08
 
 # Peltier +/- LUT
 # http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
@@ -97,7 +97,7 @@ net switch-on                       => peltier-pos.in-1
 net switch-heat                     => peltier-pos.in-0
 # - Output to GPIO
 net peltier-pos                     <= peltier-pos.out
-net peltier-pos                     => bb_gpio.p9.out-14
+net peltier-pos                     => bb_gpio.p8.out-10
 
 # Peltier neg. LUT
 # - Inputs
@@ -105,20 +105,20 @@ net switch-on                       => peltier-neg.in-1
 net switch-heat                     => peltier-neg.in-0
 # - Output to GPIO
 net peltier-neg                     <= peltier-neg.out
-net peltier-neg                     => bb_gpio.p9.out-16
+net peltier-neg                     => bb_gpio.p8.out-12
 
 
 # ################
 # Fan out signals
 
 # Enable
-net enable                          => bb_gpio.p9.out-22
+net enable                          => bb_gpio.p8.out-18
 
 # Output
 # - pos. output to GPIO
-net switch-on                       => bb_gpio.p9.out-18
+net switch-on                       => bb_gpio.p8.out-14
 # - neg. output always 0
-setp bb_gpio.p9.out-20 0
+setp bb_gpio.p8.out-16 0
 
 
 # ################
@@ -143,12 +143,12 @@ waitusr incubator
 stop
 
 # Disable peltier
-unlinkp bb_gpio.p9.out-12
-setp bb_gpio.p9.out-12 0
+unlinkp bb_gpio.p8.out-08
+setp bb_gpio.p8.out-08 0
 
 # Disable fan
-unlinkp bb_gpio.p9.out-22
-setp bb_gpio.p9.out-22 0
+unlinkp bb_gpio.p8.out-18
+setp bb_gpio.p8.out-18 0
 
 # Unload comps
 unload all
