@@ -86,3 +86,5 @@ DEBUG=5 MSGD_OPTS=-s docker/qqvcp.sh anddemo
 
 
 [L298_datasheet]: http://www.st.com/content/ccc/resource/technical/document/datasheet/82/cc/3f/39/0a/29/4d/f0/CD00000240.pdf/files/CD00000240.pdf/jcr:content/translations/en.CD00000240.pdf
+
+[config-pin]: https://github.com/beagleboard/bb.org-overlays/tree/master/tools/beaglebone-universal-io
