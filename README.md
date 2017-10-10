@@ -57,13 +57,19 @@ Run the HAL configuration:
 
 Control the incubator from the command line:
 
-    # Shut down the incubator
-    ./set.sh shutdown
     # Set incubator min, max and hysteresis params
     ./set.sh 15 30 2
     # Disable/enable the incubator without shutting down
     ./set.sh disable
     ./set.sh enable
+    # Shut down the incubator
+    ./set.sh shutdown
+
+There is also a simulator configuration:
+
+    ./incubator-sim.hal
+    # Set simulated outdoor temp
+    ./set.sh setsim 35
 
 [machinekit.io]: http://machinekit.io
 

@@ -28,7 +28,7 @@ loadusr -Wn Therm hal_temp_bbb -n Therm -c 05:epcos_B57560G1104 -b CRAMPS
 loadrt hal_bb_gpio output_pins=808,810,812,814,816,818
 
 # Incubater userland comp
-loadusr -Wn incubator ./mk-incubator-comp.py
+loadusr -Wn incubator ./incubator.py
 
 # Logic for on/off switch and heat/cool selector
 loadrt lut5 names=peltier-pos,peltier-neg

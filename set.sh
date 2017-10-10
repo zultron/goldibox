@@ -9,6 +9,16 @@ elif test "$1" = disable; then
 elif test "$1" = enable; then
     set -x
     exec halcmd sets enable 1
+elif test "$1" = siminc; then
+    (
+	set -x
+	halcmd sets outside-temp-incr $2
+	halcmd sets heat-cool-incr $3
+    )
+    exit
+elif test "$1" = simset; then
+    set -x
+    exec halcmd sets outside-temp $2
 fi
 
 min=$1
