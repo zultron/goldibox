@@ -19,6 +19,12 @@ loadusr -Wn incubator ./incubator.py
 # Primitive simulator comp
 loadusr -Wn sim-temp ./incubator-sim-temp.py
 
+# HAL remote component
+loadusr -Wn remote ./rcomp.py
+
+# start haltalk server
+loadusr -W haltalk
+
 # Logic for on/off switch and heat/cool selector
 loadrt lut5 names=peltier-pos,peltier-neg
 
@@ -44,7 +50,6 @@ net hysteresis                      => incubator.hysteresis
 net enable                          => incubator.enable
 # - Shut down
 net shutdown                        => incubator.shutdown
-sets shutdown                       0
 
 # Outputs
 # - On/off switch
@@ -120,38 +125,54 @@ net outside-temp                    => sim-temp.outside-temp
 
 # User-settable effect of outside temp and heat/cool on inside temp
 net outside-temp-incr               => sim-temp.outside-temp-incr
-sets outside-temp-incr              0.01
 net heat-cool-incr                  => sim-temp.heat-cool-incr
-sets heat-cool-incr                 0.02
 
 # ################
-# Enable
+# Remote comp
 
-sets enable                         1
+# Inputs
+net enable                          <= remote.enable
+net shutdown                        <= remote.shutdown
+net temp-max                        <= remote.temp-max
+net temp-min                        <= remote.temp-min
+net hysteresis                      <= remote.hysteresis
+# Outputs
+net error                           => remote.error
+net peltier-neg                     => remote.p-neg
+net peltier-pos                     => remote.p-pos
+net switch-heat                     => remote.switch-heat
+net switch-on                       => remote.switch-on
+net temp-cur                        => remote.temp-cur
+# Inputs-sim
+net outside-temp                    <= remote.outside-temp
+net outside-temp-incr               <= remote.outside-temp-incr
+net heat-cool-incr                  <= remote.heat-cool-incr
+# Outputs-sim
+net sim-error                       => remote.sim-error
 
 
-# ################################################
-# Run
-# ################################################
+# # ################################################
+# # Run
+# # ################################################
 
-start
-waitusr incubator
+# start
+# waitusr incubator
 
 
-# ################################################
-# Shut down
-# ################################################
+# # ################################################
+# # Shut down
+# # ################################################
 
-# Stop threads
-stop
+# # Stop threads
+# stop
 
-# Disable peltier
-unlinkp sim-temp.p-enable
-setp sim-temp.p-enable              0
+# # Disable peltier
+# unlinkp sim-temp.p-enable
+# setp sim-temp.p-enable              0
 
-# Disable fan
-unlinkp sim-temp.f-enable
-setp sim-temp.f-enable              0
+# # Disable fan
+# unlinkp sim-temp.f-enable
+# setp sim-temp.f-enable              0
 
-# Unload comps
-unload all
+# # Unload comps
+# unload all
