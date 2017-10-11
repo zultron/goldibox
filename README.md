@@ -9,7 +9,7 @@ It is mostly built with common components readily available from eBay,
 although a small amount of soldering and a few custom cables are
 required.
 
-The controller is a BeagleBone running Machinekit.  The current
+The controller is a PocketBeagle running Machinekit.  The current
 functionality could be duplicated with an inexpensive Arduino.
 However, a remote mobile phone interface with controls and logging
 interface will be added in time.
@@ -22,14 +22,13 @@ Parts list from eBay:
   - The 12VDC peltier junction can switch to cool or heat
 - "L298N motor driver module," about $5
   - Used to switch peltier junction polarity positive/negative/off
-  - Used to switch fan on/off
 - "100k thermistor," about $5
   - Temperature sensor input
 - "Thermagon 6100" heat-conductive pad, about $5
   - Conducts fridge temperature to thermistor
-- "Barrel to terminal block male adapter," about $5
-  - Connects 5V BeagleBone power from L298N module power regulator
-- BeagleBone, about $60
+- "Mosfet Arduino module", about $8
+  - Switches fan on/off
+- PocketBeagle, about $25
   - The controller running Machinekit
   - Wireless network interface is a plus
 
