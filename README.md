@@ -41,7 +41,7 @@ Parts list from junk box:
 - Tools:  soldering, crimping, multimeter, screwdrivers, cutters,
   strippers, etc.
 
-![Goldilocks Incubator](fritzing/incubator_bb.png)
+![Goldilocks Incubator](fritzing/incubator.png)
 
 # Running
 
