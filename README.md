@@ -1,46 +1,58 @@
-# Machinekit Goldilocks Incubator
+# Goldibox.  Not too hot, not too cold.
 
-Here are plans to build a "Goldilocks incubator":  this incubator may
-be set to be not too hot, and not too cold, but just right.  It was
-designed for incubating organisms that don't need a precise
-temperature to thrive, as long as extremes are avoided.
+The Goldibox maintains temperature using a thermoelectric device and a
+controller.  Originally conceived to incubate biological organisms
+that thrive best within a particular maximum/minimum temperature
+range, it can both heat and cool to avoid extremes, but still allow
+variability within a habitable "Goldilocks zone":  not too hot, not
+too cold, but just right.
 
-It is mostly built with common components readily available from eBay,
-although a small amount of soldering and a few custom cables are
-required.
+The Goldibox's smart controller exposes a remote, network-connected
+graphical interface for setting temperatures, checking current state,
+and viewing history through time series graphs.  Anyone may modify the
+open-source control to add new features.
 
-The controller is a PocketBeagle running Machinekit.  The current
-functionality could be duplicated with an inexpensive Arduino.
-However, a remote mobile phone interface with controls and logging
-interface will be added in time.
+This is currently a **work in progress**, and not all the features
+discussed here are ready.
 
-# Construction
+## Components
 
-Parts list from eBay:
-- "Portable fridge cooler warmer 110V," about $40
-  - These can be used on car 12VDC or on 110VAC
-  - The 12VDC peltier junction can switch to cool or heat
-- "L298N motor driver module," about $5
-  - Used to switch peltier junction polarity positive/negative/off
-- "100k thermistor," about $5
-  - Temperature sensor input
-- "Thermagon 6100" heat-conductive pad, about $5
-  - Conducts fridge temperature to thermistor
-- "Mosfet Arduino module", about $8
-  - Switches fan on/off
-- PocketBeagle, about $25
-  - The controller running Machinekit
-  - Wireless network interface is a plus
+The Goldibox is based on an portable fridge.  These use a [Peltier
+junction][wiki-peltier], which can be switched from a cooling element
+to a heating element merely by reversing the voltage.  They are also
+small, light and inexpensive, and can be found on eBay for about $40;
+search for "portable fridge cooler warmer 110V".
 
-Parts list from junk box:
-- Hookup wire, min. 20AWG for 12V connections
-- Dupont header connectors for signal wires
-- Resistors, 1 ea. 4.7k and 2.0k ohm
-- Capacitors, 1 ea. 100uF and 10mF
-- Tools:  soldering, crimping, multimeter, screwdrivers, cutters,
-  strippers, etc.
+The Goldibox controller, a tiny [PocketBeagle][pocketbeagle] computer,
+fits in the cramped space next to the Peltier junction fan and heat
+sink.  This small computer has the analog and digital interfaces to
+control the hardware, and runs Debian and the control software.  They
+sell for about $25 through official distributors, and also need a $10
+micro SD card, a $5 [USB type A breakout module][usb-breakout] and a
+$10 USB WiFi adapter.
 
-![Goldilocks Incubator](fritzing/incubator.png)
+The control functions come from the [Machinekit][machinekit] software
+and its configuration in this repository.
+
+The fridge is fitted with control electronics:  a thermistor and
+circuitry for sensing temperature; an H-bridge for switching the
+Peltier junction between cool, heat and off; and a MOSFET for
+switching the fan.  These are small enough to easily fit inside the
+fridge.  The H-bridge and MOSFET can be found integrated in
+pre-assembled modules, and all parts are inexpensive and readily
+available.  Search for "L298N motor driver module," "Mosfet Arduino
+module," and "100k thermistor" on eBay, all around $5-$8.  The sensor
+resistors and capacitors are inexpensive if not already in one's junk
+box.  Also, a piece of Thermagon 6100 heat-conductive pad was used to
+efficiently conduct temperature from the fridge to the thermistor.
+The electronics can mostly be assembled with pre-assembled header
+wires and a little soldering.
+
+[wiki-peltier]: https://en.wikipedia.org/wiki/Thermoelectric_cooling
+[pocketbeagle]: https://beagleboard.org/pocket
+[usb-breakout]: https://github.com/zultron/fritzing-parts/tree/master/pocketbeagle-usb-type-a
+[machinekit]: http://www.machinekit.io/
+
 
 # Running
 
@@ -93,3 +105,5 @@ DEBUG=5 MSGD_OPTS=-s docker/qqvcp.sh anddemo
 [L298_datasheet]: http://www.st.com/content/ccc/resource/technical/document/datasheet/82/cc/3f/39/0a/29/4d/f0/CD00000240.pdf/files/CD00000240.pdf/jcr:content/translations/en.CD00000240.pdf
 
 [config-pin]: https://github.com/beagleboard/bb.org-overlays/tree/master/tools/beaglebone-universal-io
+
+[pb-announce]: https://groups.google.com/d/topic/beagleboard/JtOGZb-FH2A/discussion
