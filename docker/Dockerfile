@@ -1,4 +1,4 @@
-FROM zultron/dev-stretch
+FROM zultron/docker-dev:latest
 
 # Install recent nodejs
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
