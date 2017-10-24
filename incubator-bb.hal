@@ -18,7 +18,7 @@ loadusr -w ./setup.sh
 # Thermistor ADC values
 # 100k thermistor on AIN5
 # https://github.com/machinekit/machinekit/blob/master/src/hal/user_comps/hal_temp_bbb.py
-loadusr -Wn Therm hal_temp_bbb -n Therm -c 05:epcos_B57560G1104 -b CRAMPS
+loadusr -Wn Therm hal_temp_bbb -n Therm -c 00:TR91,01:TR91 -b CRAMPS -r 1000
 
 # GPIO drivers
 # - hal_bb_gpio docs
