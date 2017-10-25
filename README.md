@@ -122,6 +122,9 @@ sudo ip route add default via 192.168.6.1 dev usb1
 ```
 
 ```
+# Clear root passwd
+sudo sed -i /etc/shadow -e 's/^root:[^:]*:/root:*:/'
+
 # Time zone
 sudo ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
 
