@@ -1,7 +1,7 @@
 #!/usr/bin/env halrun
 # #######################################
 #
-# HAL file for mk-incubator project
+# HAL file for Goldibox project
 #
 # http://linuxcnc.org/docs/devel/html/man/man1/halcmd.1.html
 
@@ -28,7 +28,7 @@ loadusr -Wn Therm hal_temp_bbb -n Therm -c 00:TR91,01:TR91 -b CRAMPS -r 1000
 loadrt hal_bb_gpio board=PocketBeagle output_pins=102,104,106,120
 
 # Incubater userland comp
-loadusr -Wn incubator ./incubator.py
+loadusr -Wn goldibox ./goldibox.py
 
 # Logic for on/off switch and heat/cool selector
 loadrt lut5 names=peltier-pos,peltier-neg
@@ -43,28 +43,28 @@ addf peltier-neg                    servo-thread
 addf bb_gpio.write                  servo-thread
 
 # ################
-# Incubator comp
+# Goldibox comp
 
 # Inputs
 # - Min/max/current temp settings
-net temp-min                        => incubator.temp-min
-net temp-max                        => incubator.temp-max
-net temp-cur                        => incubator.temp-cur
+net temp-min                        => goldibox.temp-min
+net temp-max                        => goldibox.temp-max
+net temp-cur                        => goldibox.temp-cur
 # - Hysteresis
-net hysteresis                      => incubator.hysteresis
+net hysteresis                      => goldibox.hysteresis
 # - Enable
-net enable                          => incubator.enable
+net enable                          => goldibox.enable
 # - Shut down
-net shutdown                        => incubator.shutdown
+net shutdown                        => goldibox.shutdown
 sets shutdown 0
 
 # Outputs
 # - On/off switch
-net switch-on                       <= incubator.switch-on
+net switch-on                       <= goldibox.switch-on
 # - Heat/cool selector switch (1/0)
-net switch-heat                     <= incubator.switch-heat
+net switch-heat                     <= goldibox.switch-heat
 # - Error
-net error                           <= incubator.error
+net error                           <= goldibox.error
 
 
 # ################
@@ -127,7 +127,7 @@ sets enable 1
 # ################################################
 
 start
-waitusr incubator
+waitusr goldibox
 
 
 # ################################################

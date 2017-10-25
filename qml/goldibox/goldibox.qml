@@ -8,8 +8,8 @@ import Machinekit.HalRemote 1.0
 HalApplicationWindow {
     id: main
 
-    name: "incubator"
-    title: qsTr("Goldilocks Incubator")
+    name: "goldibox"
+    title: qsTr("Goldibox")
 
     ColumnLayout {
         anchors.fill: parent
@@ -30,13 +30,13 @@ HalApplicationWindow {
         HalButton {
             Layout.alignment: Layout.Center
             name: "shutdown"
-            text: "Shut down incubator"
+            text: "Shut down Goldibox"
         }
 
         HalButton {
             Layout.alignment: Layout.Center
             name: "enable"
-            text: "Enable incubator"
+            text: "Enable Goldibox"
             checkable: true
         }
 

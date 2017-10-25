@@ -64,21 +64,21 @@ repository directory.
 
 Run the HAL configuration:
 
-    ./mk-incubator.hal
+    ./goldibox.hal
 
-Control the incubator from the command line:
+Control the goldibox from the command line:
 
-    # Set incubator min, max and hysteresis params
+    # Set goldibox min, max and hysteresis params
     ./set.sh 15 30 2
-    # Disable/enable the incubator without shutting down
+    # Disable/enable the goldibox without shutting down
     ./set.sh disable
     ./set.sh enable
-    # Shut down the incubator
+    # Shut down the goldibox
     ./set.sh shutdown
 
 There is also a simulator configuration:
 
-    ./incubator-sim.hal
+    ./goldibox-sim.hal
     # Set simulated outdoor temp
     ./set.sh setsim 35
 

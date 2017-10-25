@@ -16,13 +16,13 @@ ApplicationWindow {
         id: connectionWindow
 
         anchors.fill: parent
-        defaultTitle: "Incubator"
+        defaultTitle: "Goldibox"
         //autoSelectInstance: true
         autoSelectApplication: true
         /* mode: "local" */
         applications: [
             ApplicationDescription {
-                sourceDir: "qrc:/incubator/"
+                sourceDir: "qrc:/goldibox/"
             }
         ]
         instanceFilter: ServiceDiscoveryFilter{ name: "" }

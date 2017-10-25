@@ -11,7 +11,7 @@ from machinekit import config
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 parser = argparse.ArgumentParser(
-    description='Start the Goldilocks Incubator')
+    description='Start the Goldibox')
 parser.add_argument(
     '-nc', '--no_config',
     help='Disables the config server', action='store_true')
@@ -53,11 +53,11 @@ try:
     launcher.cleanup_session()
     if args.board != 'sim':
         # load a BeagleBone universal overlay file
-        launcher.load_bbio_file('incubator-overlay-%s.bbio' % args.board)
+        launcher.load_bbio_file('goldibox-overlay-%s.bbio' % args.board)
     # start Machinekit realtime environment
     launcher.start_realtime()
     # load the main HAL file
-    launcher.load_hal_file('incubator-%s.hal' % args.board)
+    launcher.load_hal_file('goldibox-%s.hal' % args.board)
     # enable on ctrl-C, needs to executed after HAL files
     launcher.register_exit_handler()
 
@@ -67,7 +67,7 @@ try:
     if not args.no_config:
         # start the configserver with Machineface an Cetus user interfaces
         launcher.start_process(
-            "configserver -n Incubator %s ." % ('-d' if args.debug else ''))
+            "configserver -n Goldibox %s ." % ('-d' if args.debug else ''))
     if args.halscope:
         # load scope only now - because all sigs are now defined:
         launcher.start_process('halscope')

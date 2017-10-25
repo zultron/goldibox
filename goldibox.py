@@ -3,7 +3,7 @@
 import hal, time, sys, datetime
 
 # Set up component
-h = hal.component("incubator")
+h = hal.component("goldibox")
 
 # Inputs:
 # - Min/max/current temp settings
@@ -31,7 +31,7 @@ h['switch-on'] = 0
 h['switch-heat'] = 0
 
 def infomsg(msg):
-    sys.stderr.write("%s Incubator component:  %s\n" %
+    sys.stderr.write("%s Goldibox component:  %s\n" %
                      (str(datetime.datetime.now()), msg))
 
 # Mark the component as 'ready'

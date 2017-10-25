@@ -1,7 +1,7 @@
 #!/usr/bin/env halrun
 # #######################################
 #
-# HAL file for mk-incubator project
+# HAL file for Goldibox project
 #
 # http://linuxcnc.org/docs/devel/html/man/man1/halcmd.1.html
 
@@ -14,10 +14,10 @@
 
 
 # Incubater userland comp
-loadusr -Wn incubator ./incubator.py
+loadusr -Wn goldibox ./goldibox.py
 
 # Primitive simulator comp
-loadusr -Wn sim-temp ./incubator-sim-temp.py
+loadusr -Wn sim-temp ./goldibox-sim-temp.py
 
 # HAL remote component
 loadusr -Wn remote ./rcomp.py
@@ -37,27 +37,27 @@ addf peltier-neg                    servo-thread
 
 
 # ################
-# Incubator comp
+# Goldibox comp
 
 # Inputs
 # - Min/max/current temp settings
-net temp-min                        => incubator.temp-min
-net temp-max                        => incubator.temp-max
-net temp-cur                        => incubator.temp-cur
+net temp-min                        => goldibox.temp-min
+net temp-max                        => goldibox.temp-max
+net temp-cur                        => goldibox.temp-cur
 # - Hysteresis
-net hysteresis                      => incubator.hysteresis
+net hysteresis                      => goldibox.hysteresis
 # - Enable
-net enable                          => incubator.enable
+net enable                          => goldibox.enable
 # - Shut down
-net shutdown                        => incubator.shutdown
+net shutdown                        => goldibox.shutdown
 
 # Outputs
 # - On/off switch
-net switch-on                       <= incubator.switch-on
+net switch-on                       <= goldibox.switch-on
 # - Heat/cool selector switch (1/0)
-net switch-heat                     <= incubator.switch-heat
+net switch-heat                     <= goldibox.switch-heat
 # - Error
-net error                           <= incubator.error
+net error                           <= goldibox.error
 
 
 # ################
@@ -156,7 +156,7 @@ net sim-error                       => remote.sim-error
 # # ################################################
 
 # start
-# waitusr incubator
+# waitusr goldibox
 
 
 # # ################################################

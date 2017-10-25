@@ -47,7 +47,7 @@ try:
         i += 1
 
         # Take one sample for consistency
-        # - Incubator comp inputs
+        # - Goldibox comp inputs
         p_enable = h['p-enable']
         p_pos = h['p-pos']
         p_neg = h['p-neg']
