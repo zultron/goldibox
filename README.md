@@ -100,13 +100,20 @@ ssh debian@192.168.6.2
 pass:  temppwd
 ```
 
-sudoers:  Put `ALL=(ALL:ALL) NOPASSWD: ALL` for sudo and admin groups
+sudoers:  Don't require passwd for sudo and admin groups **UNSAFE**
 
-# Resize fs:
-# - https://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD
-# - Use fdisk to delete & recreate part with same start sector
-# - Reboot
-# - Resize rootfs with `resize2fs /dev/mmcblk0p1`
+```
+sudo sed -i /etc/sudoers.d/admin \
+    -e '/^%admin/ s/ALL=.*$/ALL=(ALL:ALL) NOPASSWD: ALL/'
+sudo sed -i /etc/sudoers \
+    -e '/^%sudo/ s/ALL=.*$/ALL=(ALL:ALL) NOPASSWD: ALL/'
+```
+
+Resize fs:
+- https://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD
+- Use fdisk to delete & recreate part with same start sector
+- Reboot
+- Resize rootfs with `resize2fs /dev/mmcblk0p1`
 
 From http://jpdelacroix.com/tutorials/sharing-internet-beaglebone-black.html
 On host side:
