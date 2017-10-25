@@ -1,12 +1,3 @@
-#!/bin/bash
-
-# PocketBeagle pinouts:
-# https://github.com/beagleboard/pocketbeagle/wiki/FAQ
-# https://raw.githubusercontent.com/wiki/beagleboard/pocketbeagle/images/PocketBeagle_pinout.png
-
-sudo $(which config-pin) -f - <<- EOF
-
-# PocketBeagle
 # - Peltier
 	P1.02	low	# In2/In3	Peltier -/hot
 	P1.04	low	# In1/In4	Peltier +/cool
@@ -31,5 +22,3 @@ sudo $(which config-pin) -f - <<- EOF
 #	P1.22		GND
 #	P1.30		UART0 TX
 #	P1.32		UART0 RX
-
-EOF

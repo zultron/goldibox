@@ -15,6 +15,8 @@ open-source control to add new features.
 This is currently a **work in progress**, and not all the features
 discussed here are ready.
 
+![Goldibox](fritzing/goldibox-breadboard.png)
+
 ## Components
 
 The Goldibox is based on an portable fridge.  These use a [Peltier
