@@ -18,11 +18,17 @@
         "P1.02",
         "P1.04",
         "P1.06",
+        "P1.08",
+        "P1.10",
+        "P1.12",
         "P1.20",
 	/* the hardware IP uses */
         "gpio2_87",
         "gpio2_89",
         "gpio0_5",
+        "gpio0_2",
+        "gpio0_3",
+        "gpio0_4",
         "gpio0_20";
 
     fragment@0 {
@@ -37,6 +43,12 @@
 		    0x8ec 0x2f
 		    /* 1.06 Pin 87  GPIO 5  */
 		    0x95c 0x2f
+		    /* 1.08 Pin ??  GPIO 2 */
+		    0x950 0x2f
+		    /* 1.10 Pin ??  GPIO 3 */
+		    0x954 0x2f
+		    /* 1.12 Pin ??  GPIO 4 */
+		    0x958 0x2f
 		    /* 1.20 Pin 109 GPIO 20 */
 		    0x9b4 0x2f
 		>;
@@ -58,14 +70,3 @@
     };
 };
 
-
-/*
-
-dtc -O dtb -o /lib/firmware/pb_goldibox-00A0.dtbo -b 0 -@ pb_goldibox.dts
-
-#echo bspm_P8_8_17 > /sys/devices/bone_capemgr.?/slots
-echo 67 > /sys/class/gpio/export
-
-ls /sys/class/gpio/gpio67/
-
-*/
