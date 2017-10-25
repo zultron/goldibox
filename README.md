@@ -30,8 +30,9 @@ fits in the cramped space next to the Peltier junction fan and heat
 sink.  This small computer has the analog and digital interfaces to
 control the hardware, and runs Debian and the control software.  They
 sell for about $25 through official distributors, and also need a $10
-micro SD card, a $5 [USB type A breakout module][usb-breakout] and a
-$10 USB WiFi adapter.
+micro SD card for the OS, a $3 DC step-down converter to 5VDC power
+from the 12VDC fridge power supply,  and a $5 [USB type A breakout
+module][usb-breakout] and $10 USB WiFi adapter for networking.
 
 The control functions come from the [Machinekit][machinekit] software
 and its configuration in this repository.
