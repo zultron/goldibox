@@ -150,6 +150,7 @@ sudo apt-get install git
 sudo apt-get install lsb-release
 sudo apt-get install usbutils wireless-tools connman
 sudo apt-get install avahi-daemon
+sudo apt-get install python-rrdtool
 
 sudo connmanctl agent on
 sudo connmanctl enable wifi

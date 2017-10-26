@@ -2,3 +2,5 @@
 /node/
 # Generated
 /pb_goldibox-00A0.dtbo
+/goldibox-logger.*.png
+/goldibox-logger.rrd

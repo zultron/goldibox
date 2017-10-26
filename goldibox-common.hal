@@ -91,6 +91,27 @@ net led-status                      <= led-status-xor.out
 
 
 # ################
+# Logger comp
+
+# Load userland comp
+loadusr -Wn goldibox-logger ./goldibox-logger.py
+
+# Inputs
+# - Temperatures
+net temp-int                        => goldibox-logger.temp-int
+net temp-ext                        => goldibox-logger.temp-ext
+net temp-min                        => goldibox-logger.temp-min
+net temp-max                        => goldibox-logger.temp-max
+# - Enable/error/heat/cool
+net error                           => goldibox-logger.error
+net enable                          => goldibox-logger.enable
+net peltier-pos                     => goldibox-logger.cool
+net peltier-neg                     => goldibox-logger.heat
+# - Shut down
+net shutdown                        => goldibox-logger.shutdown
+
+
+# ################
 # Enable
 
 sets enable 1
