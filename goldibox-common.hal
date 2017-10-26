@@ -108,11 +108,8 @@ waitusr goldibox
 # Shut down
 # ################################################
 
-# Disable things
-# - Peltier H-bridge
+# Disable peltier and fan
 sets enable 0
-# - Fan
-unlinkp goldibox.switch-on
 sets switch-on 0
 
 # Stop threads
