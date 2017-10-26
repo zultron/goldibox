@@ -1,0 +1,122 @@
+# ################################################
+# Setup
+# ################################################
+
+# ################
+# Goldibox comp
+
+# Load userland comp
+loadusr -Wn goldibox ./goldibox.py
+
+# Inputs
+# - Min/max/internal temp settings
+net temp-min                        => goldibox.temp-min
+net temp-max                        => goldibox.temp-max
+net temp-int                        => goldibox.temp-int
+# - Hysteresis
+net hysteresis                      => goldibox.hysteresis
+# - Enable
+net enable                          => goldibox.enable
+# - Shut down
+net shutdown                        => goldibox.shutdown
+sets shutdown 0
+
+# Outputs
+# - On/off switch
+net switch-on                       <= goldibox.switch-on
+# - Heat/cool selector switch (1/0)
+net switch-heat                     <= goldibox.switch-heat
+# - Error
+net error                           <= goldibox.error
+
+
+# ################
+# Peltier and fan out signals
+
+# LUTs for on/off switch and heat/cool selector logic
+newinst lut5 peltier-pos
+addf peltier-pos                    servo-thread
+newinst lut5 peltier-neg
+addf peltier-neg                    servo-thread
+
+# Peltier +/- LUT
+# http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
+#
+# on/1	heat/0	| +	-	| + val	| - val
+# 0	0	| 0	0	|	|
+# 0	1	| 0	0	|	|
+# 1	0	| 1	0	|   0x4	|
+# 1	1	| 0	1	|	|   0x8
+#                                 ----- | -----
+setp peltier-pos.function	    0x4
+setp peltier-neg.function		    0x8
+
+# Peltier pos. LUT
+# - Inputs
+net switch-on                       => peltier-pos.in-1
+net switch-heat                     => peltier-pos.in-0
+# - Output to GPIO
+net peltier-pos                     <= peltier-pos.out
+
+# Peltier neg. LUT
+# - Inputs
+net switch-on                       => peltier-neg.in-1
+net switch-heat                     => peltier-neg.in-0
+# - Output to GPIO
+net peltier-neg                     <= peltier-neg.out
+
+
+# ################
+# LED out signals
+#
+# These can be used for additional interesting things someday
+
+# - Heat LED (red)
+newinst xor2 led-heat-xor
+addf led-heat-xor.funct             servo-thread
+net peltier-pos                     => led-heat-xor.in0
+net led-heat                        <= led-heat-xor.out
+
+# - Cool LED (blue)
+newinst xor2 led-cool-xor
+addf led-cool-xor.funct             servo-thread
+net peltier-neg                     => led-cool-xor.in0
+net led-cool                        <= led-cool-xor.out
+
+# - Status LED (green)
+newinst xor2 led-status-xor
+addf led-status-xor.funct           servo-thread
+net enable                          => led-status-xor.in0
+net led-status                      <= led-status-xor.out
+
+
+# ################
+# Enable
+
+sets enable 1
+
+
+# ################################################
+# Run
+# ################################################
+
+start
+waitusr goldibox
+
+
+# ################################################
+# Shut down
+# ################################################
+
+# Disable things
+# - Peltier H-bridge
+sets enable 0
+# - Fan
+unlinkp goldibox.switch-on
+sets switch-on 0
+
+# Stop threads
+stop
+
+# Unload comps
+unload all

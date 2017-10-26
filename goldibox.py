@@ -6,10 +6,10 @@ import hal, time, sys, datetime
 h = hal.component("goldibox")
 
 # Inputs:
-# - Min/max/current temp settings
+# - Min/max/internal temp settings
 h.newpin("temp-min", hal.HAL_FLOAT, hal.HAL_IN)
 h.newpin("temp-max", hal.HAL_FLOAT, hal.HAL_IN)
-h.newpin("temp-cur", hal.HAL_FLOAT, hal.HAL_IN)
+h.newpin("temp-int", hal.HAL_FLOAT, hal.HAL_IN)
 # - Hysteresis
 h.newpin("hysteresis", hal.HAL_FLOAT, hal.HAL_IN)
 # - Enable
@@ -44,7 +44,7 @@ while True:
     # Take one sample for consistency
     enable = h['enable']
     shutdown = h['shutdown']
-    temp_cur = h['temp-cur']
+    temp_int = h['temp-int']
     temp_max = h['temp-max']
     temp_min = h['temp-min']
     hysteresis = h['hysteresis']
@@ -79,21 +79,21 @@ while True:
 
 
     # On/off and heat/cool switches
-    if ((temp_cur - hysteresis) > temp_max):
+    if ((temp_int - hysteresis) > temp_max):
         if not h['switch-on']:
-            infomsg("Turning on cool; cur temp %.1f (hyst %.1f)" %
-                    (temp_cur, hysteresis))
+            infomsg("Turning on cool; internal temp %.1f (hyst %.1f)" %
+                    (temp_int, hysteresis))
         h['switch-heat'] = 0
         h['switch-on'] = 1
-    elif ((temp_cur + hysteresis) < temp_min):
+    elif ((temp_int + hysteresis) < temp_min):
         if not h['switch-on']:
-            infomsg("Turning on heat; cur temp %.1f (hyst %.1f)" %
-                    (temp_cur, hysteresis))
+            infomsg("Turning on heat; internal temp %.1f (hyst %.1f)" %
+                    (temp_int, hysteresis))
         h['switch-heat'] = 1
         h['switch-on'] = 1
-    elif ((temp_cur > temp_min) and (temp_cur < temp_max)):
+    elif ((temp_int > temp_min) and (temp_int < temp_max)):
         if h['switch-on']:
-            infomsg("Turning off; cur temp %.1f" % temp_cur)
+            infomsg("Turning off; internal temp %.1f" % temp_int)
         h['switch-on'] = 0
 
 

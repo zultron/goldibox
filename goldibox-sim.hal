@@ -1,178 +1,69 @@
 #!/usr/bin/env halrun
 # #######################################
 #
-# HAL file for Goldibox project
+# Goldibox Simulator HAL configuration
 #
 # http://linuxcnc.org/docs/devel/html/man/man1/halcmd.1.html
-
+#
 # ################################################
-# Setup
+# Load and plumb comps
 # ################################################
 
 # ################
-# Load comps
-
-
-# Incubater userland comp
-loadusr -Wn goldibox ./goldibox.py
-
 # Primitive simulator comp
 loadusr -Wn sim-temp ./goldibox-sim-temp.py
-
-# HAL remote component
-loadusr -Wn remote ./rcomp.py
-
-# start haltalk server
-loadusr -W haltalk
-
-# Logic for on/off switch and heat/cool selector
-loadrt lut5 names=peltier-pos,peltier-neg
-
-# ################
-# Threads
-
-loadrt threads name1=servo-thread period1=10000000
-addf peltier-pos                    servo-thread
-addf peltier-neg                    servo-thread
-
-
-# ################
-# Goldibox comp
-
-# Inputs
-# - Min/max/current temp settings
-net temp-min                        => goldibox.temp-min
-net temp-max                        => goldibox.temp-max
-net temp-cur                        => goldibox.temp-cur
-# - Hysteresis
-net hysteresis                      => goldibox.hysteresis
+# - Temp in signal
+net temp-int                        <= sim-temp.value
 # - Enable
-net enable                          => goldibox.enable
-# - Shut down
-net shutdown                        => goldibox.shutdown
-
-# Outputs
-# - On/off switch
-net switch-on                       <= goldibox.switch-on
-# - Heat/cool selector switch (1/0)
-net switch-heat                     <= goldibox.switch-heat
-# - Error
-net error                           <= goldibox.error
-
-
-# ################
-# Temp in signal
-
-net temp-cur                        <= sim-temp.value
-
-
-# ################
-# Peltier out signals
-
-# Enable
 net enable                          => sim-temp.p-enable
-
-# Peltier +/- LUT
-# http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
-#
-# on/1	heat/0	| +	-	| + val	| - val
-# 0	0	| 0	0	|	|
-# 0	1	| 0	0	|	|
-# 1	0	| 1	0	|   0x4	|
-# 1	1	| 0	1	|	|   0x8
-#                                 ----- | -----
-setp peltier-pos.function	    0x4
-setp peltier-neg.function		    0x8
-
-# Peltier pos. LUT
-# - Inputs
-net switch-on                       => peltier-pos.in-1
-net switch-heat                     => peltier-pos.in-0
-# - Output to GPIO
-net peltier-pos                     <= peltier-pos.out
+# - Peltier
 net peltier-pos                     => sim-temp.p-pos
-
-# Peltier neg. LUT
-# - Inputs
-net switch-on                       => peltier-neg.in-1
-net switch-heat                     => peltier-neg.in-0
-# - Output to GPIO
-net peltier-neg                     <= peltier-neg.out
 net peltier-neg                     => sim-temp.p-neg
-
-
-# ################
-# Fan out signals
-
-# Enable
-net enable                          => sim-temp.f-enable
-
-# Output
-# - pos. output to GPIO
-net switch-on                       => sim-temp.f-pos
-# - neg. output always 0
-setp sim-temp.f-neg                 0
-
-
-# ################
-# Simulator signals
-
-# Goes true when error detected
+# - Error detected
 net sim-error                       <= sim-temp.error
-
-# Simulated outside temp
+# - Simulated outside temp
 net outside-temp                    => sim-temp.outside-temp
-
-# User-settable effect of outside temp and heat/cool on inside temp
+# - Effect of outside temp and heat/cool on inside temp; adjustable
 net outside-temp-incr               => sim-temp.outside-temp-incr
 net heat-cool-incr                  => sim-temp.heat-cool-incr
 
 # ################
-# Remote comp
+# Haltalk server
+loadusr -W haltalk
 
-# Inputs
+# ################
+# HAL remote component
+loadusr -Wn remote ./rcomp.py
+
+# - Inputs
 net enable                          <= remote.enable
 net shutdown                        <= remote.shutdown
 net temp-max                        <= remote.temp-max
 net temp-min                        <= remote.temp-min
 net hysteresis                      <= remote.hysteresis
-# Outputs
+# - Outputs
 net error                           => remote.error
 net peltier-neg                     => remote.p-neg
 net peltier-pos                     => remote.p-pos
 net switch-heat                     => remote.switch-heat
 net switch-on                       => remote.switch-on
-net temp-cur                        => remote.temp-cur
-# Inputs-sim
+net temp-int                        => remote.temp-int
+# - Inputs-sim
 net outside-temp                    <= remote.outside-temp
 net outside-temp-incr               <= remote.outside-temp-incr
 net heat-cool-incr                  <= remote.heat-cool-incr
-# Outputs-sim
+# - Outputs-sim
 net sim-error                       => remote.sim-error
 
+# ################
+# Threads
 
-# # ################################################
-# # Run
-# # ################################################
-
-# start
-# waitusr goldibox
+# - One slow thread
+loadrt threads name1=servo-thread period1=10000000
 
 
-# # ################################################
-# # Shut down
-# # ################################################
+# ################################################
+# Load common HAL config
+# ################################################
 
-# # Stop threads
-# stop
-
-# # Disable peltier
-# unlinkp sim-temp.p-enable
-# setp sim-temp.p-enable              0
-
-# # Disable fan
-# unlinkp sim-temp.f-enable
-# setp sim-temp.f-enable              0
-
-# # Unload comps
-# unload all
+source goldibox-common.hal
