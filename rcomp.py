@@ -14,8 +14,8 @@ rcomp.newpin('hysteresis', hal.HAL_FLOAT, hal.HAL_OUT)
 
 # Readouts
 rcomp.newpin('error', hal.HAL_BIT, hal.HAL_IN)
-rcomp.newpin('p-neg', hal.HAL_BIT, hal.HAL_IN)
-rcomp.newpin('p-pos', hal.HAL_BIT, hal.HAL_IN)
+rcomp.newpin('p-cool', hal.HAL_BIT, hal.HAL_IN)
+rcomp.newpin('p-heat', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('switch-heat', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('switch-on', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('temp-int', hal.HAL_FLOAT, hal.HAL_IN)

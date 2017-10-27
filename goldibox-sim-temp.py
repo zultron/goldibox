@@ -8,12 +8,12 @@ h = hal.component("sim-temp", timer=100)
 # Inputs:
 # - Peltier junction signals
 h.newpin("p-enable", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("p-pos", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("p-neg", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("p-heat", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("p-cool", hal.HAL_BIT, hal.HAL_IN)
 # - Fan signals
 h.newpin("f-enable", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("f-pos", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("f-neg", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("f-heat", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("f-cool", hal.HAL_BIT, hal.HAL_IN)
 # - User-set pretend outside temp
 h.newpin("outside-temp", hal.HAL_FLOAT, hal.HAL_IN)
 # - Incremental increase/decrease toward outside temp
@@ -49,11 +49,11 @@ try:
         # Take one sample for consistency
         # - Goldibox comp inputs
         p_enable = h['p-enable']
-        p_pos = h['p-pos']
-        p_neg = h['p-neg']
+        p_heat = h['p-heat']
+        p_cool = h['p-cool']
         f_enable = h['f-enable']
-        f_pos = h['f-pos']
-        f_neg = h['f-neg']
+        f_heat = h['f-heat']
+        f_cool = h['f-cool']
         # - User-defined inputs
         outside_temp = h['outside-temp']
         outside_temp_incr = h['outside-temp-incr']
@@ -61,17 +61,17 @@ try:
 
         # Do some sanity checks
         err = 0
-        if p_pos and p_neg:
-            infomsg("Error:  p-pos and p-neg")
+        if p_heat and p_cool:
+            infomsg("Error:  p-heat and p-cool")
             err = 1
-        if p_pos and not f_pos:
-            infomsg("Error:  p-pos but not f-pos")
+        if p_heat and not f_heat:
+            infomsg("Error:  p-heat but not f-heat")
             err = 1
-        if p_neg and not f_pos:
-            infomsg("Error:  p-neg but not f-pos")
+        if p_cool and not f_heat:
+            infomsg("Error:  p-cool but not f-heat")
             err = 1
-        if f_neg:
-            infomsg("Error:  f-neg")
+        if f_cool:
+            infomsg("Error:  f-cool")
             err = 1
         if h['error'] and not err:
             infomsg("Error condition cleared")
@@ -84,10 +84,10 @@ try:
         else:
             temp_base -= outside_temp_incr
         # - If heat is on, increase
-        if p_neg:
+        if p_cool:
             temp_base += heat_cool_incr
         # - If cool is on, decrease
-        if p_pos:
+        if p_heat:
             temp_base -= heat_cool_incr
         # - Add  random number btw. -1 and 1 to simulate thermistor variance
         newval = temp_base + random.triangular(-1,1,0)
@@ -96,7 +96,7 @@ try:
             infomsg("Status:  outside=%.2f; value=%.2f(base %.2f);" %
                     (outside_temp, newval, temp_base))
             infomsg("         cool=%d; heat=%d, fan=%d" %
-                    (p_pos, p_neg, f_pos))
+                    (p_heat, p_cool, f_heat))
 
         h['value'] = newval
 

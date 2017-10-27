@@ -17,8 +17,8 @@ net temp-int                        <= sim-temp.value
 # - Enable
 net enable                          => sim-temp.p-enable
 # - Peltier
-net peltier-pos                     => sim-temp.p-pos
-net peltier-neg                     => sim-temp.p-neg
+net heat-on                         => sim-temp.p-heat
+net cool-on                         => sim-temp.p-cool
 # - Error detected
 net sim-error                       <= sim-temp.error
 # - Simulated outside temp
@@ -43,8 +43,8 @@ net temp-min                        <= remote.temp-min
 net hysteresis                      <= remote.hysteresis
 # - Outputs
 net error                           => remote.error
-net peltier-neg                     => remote.p-neg
-net peltier-pos                     => remote.p-pos
+net cool-on                         => remote.p-cool
+net heat-on                         => remote.p-heat
 net switch-heat                     => remote.switch-heat
 net switch-on                       => remote.switch-on
 net temp-int                        => remote.temp-int

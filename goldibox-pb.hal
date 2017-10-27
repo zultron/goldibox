@@ -44,9 +44,9 @@ addf bb_gpio.write                  servo-thread
 # - Enable
 net enable                          => bb_gpio.p1.out-06
 
-# - Peltier
-net peltier-neg                     => bb_gpio.p1.out-02
-net peltier-pos                     => bb_gpio.p1.out-04
+# - Peltier heat/cool
+net cool-on                         => bb_gpio.p1.out-02
+net heat-on                         => bb_gpio.p1.out-04
 
 # - Fan
 net switch-on                       => bb_gpio.p1.out-20

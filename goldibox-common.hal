@@ -34,36 +34,36 @@ net error                           <= goldibox.error
 # Peltier and fan out signals
 
 # LUTs for on/off switch and heat/cool selector logic
-newinst lut5 peltier-pos
-addf peltier-pos                    servo-thread
-newinst lut5 peltier-neg
-addf peltier-neg                    servo-thread
+newinst lut5 heat-on
+addf heat-on                        servo-thread
+newinst lut5 cool-on
+addf cool-on                        servo-thread
 
-# Peltier +/- LUT
+# Peltier heat/cool LUT
 # http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
 #
-# on/1	heat/0	| +	-	| + val	| - val
+# on/1	heat/0	| heat	cool	|   val	|   val
 # 0	0	| 0	0	|	|
 # 0	1	| 0	0	|	|
 # 1	0	| 1	0	|   0x4	|
 # 1	1	| 0	1	|	|   0x8
 #                                 ----- | -----
-setp peltier-pos.function	    0x4
-setp peltier-neg.function		    0x8
+setp heat-on.function               0x4
+setp cool-on.function                       0x8
 
-# Peltier pos. LUT
+# Peltier heat LUT
 # - Inputs
-net switch-on                       => peltier-pos.in-1
-net switch-heat                     => peltier-pos.in-0
+net switch-on                       => heat-on.in-1
+net switch-heat                     => heat-on.in-0
 # - Output to GPIO
-net peltier-pos                     <= peltier-pos.out
+net heat-on                         <= heat-on.out
 
-# Peltier neg. LUT
+# Peltier cool LUT
 # - Inputs
-net switch-on                       => peltier-neg.in-1
-net switch-heat                     => peltier-neg.in-0
+net switch-on                       => cool-on.in-1
+net switch-heat                     => cool-on.in-0
 # - Output to GPIO
-net peltier-neg                     <= peltier-neg.out
+net cool-on                         <= cool-on.out
 
 
 # ################
@@ -74,13 +74,13 @@ net peltier-neg                     <= peltier-neg.out
 # - Heat LED (red)
 newinst xor2 led-heat-xor
 addf led-heat-xor.funct             servo-thread
-net peltier-pos                     => led-heat-xor.in0
+net heat-on                         => led-heat-xor.in0
 net led-heat                        <= led-heat-xor.out
 
 # - Cool LED (blue)
 newinst xor2 led-cool-xor
 addf led-cool-xor.funct             servo-thread
-net peltier-neg                     => led-cool-xor.in0
+net cool-on                         => led-cool-xor.in0
 net led-cool                        <= led-cool-xor.out
 
 # - Status LED (green)
@@ -105,8 +105,8 @@ net temp-max                        => goldibox-logger.temp-max
 # - Enable/error/heat/cool
 net error                           => goldibox-logger.error
 net enable                          => goldibox-logger.enable
-net peltier-pos                     => goldibox-logger.cool
-net peltier-neg                     => goldibox-logger.heat
+net heat-on                         => goldibox-logger.cool
+net cool-on                         => goldibox-logger.heat
 # - Shut down
 net shutdown                        => goldibox-logger.shutdown
 
