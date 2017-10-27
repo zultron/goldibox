@@ -1,11 +1,11 @@
 # Goldibox.  Not too hot, not too cold.
 
-The Goldibox maintains temperature using a thermoelectric device and a
-controller.  Originally conceived to incubate biological organisms
-that thrive best within a particular maximum/minimum temperature
-range, it can both heat and cool to avoid extremes, but still allow
-variability within a habitable "Goldilocks zone":  not too hot, not
-too cold, but just right.
+The Goldibox is an insulated box that maintains temperature using a
+thermoelectric device and a controller.  Originally conceived to
+incubate biological organisms that thrive best within a particular
+maximum/minimum temperature range, it can both heat and cool to avoid
+extremes, but still allow variability within a habitable "Goldilocks
+zone":  not too hot, not too cold, but just right.
 
 The Goldibox's smart controller exposes a remote, network-connected
 graphical interface for setting temperatures, checking current state,
