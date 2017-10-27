@@ -31,6 +31,18 @@ net error                           <= goldibox.error
 
 
 # ################
+# Settings comp
+
+# Load userland comp
+loadusr -Wn goldibox-settings ./goldibox-settings.py
+
+# Inputs
+net temp-min                        => goldibox-settings.temp-min
+net temp-max                        => goldibox-settings.temp-max
+net shutdown                        => goldibox-settings.shutdown
+
+
+# ################
 # Peltier and fan out signals
 
 # LUTs for on/off switch and heat/cool selector logic
@@ -123,6 +135,7 @@ sets enable 1
 
 start
 waitusr goldibox
+waitusr goldibox-settings
 waitusr goldibox-logger
 
 
