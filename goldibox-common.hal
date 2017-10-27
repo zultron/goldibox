@@ -123,6 +123,7 @@ sets enable 1
 
 start
 waitusr goldibox
+waitusr goldibox-logger
 
 
 # ################################################
