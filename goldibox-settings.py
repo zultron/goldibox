@@ -15,7 +15,8 @@ h = hal.component("goldibox-settings")
 # - Min/max temp settings
 h.newpin("temp-min", hal.HAL_FLOAT, hal.HAL_IN)
 h.newpin("temp-max", hal.HAL_FLOAT, hal.HAL_IN)
-# - Shutdown pin
+# - Enable and shutdown pins
+h.newpin("enable", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
 
 # Mark the component as 'ready'
@@ -27,13 +28,16 @@ if os.path.exists(persist_fname):
     with open(persist_fname, 'r') as f:
         data = yaml.load(f)
 else:
-    data = dict(min_temp=0.0, max_temp=0.0)
-for signame, key in (('temp-min', 'temp_min'), ('temp-max', 'temp_max')):
+    data = dict(min_temp=0.0, max_temp=0.0, enable=0)
+for signame, key in (('temp-min', 'temp_min'),
+                     ('temp-max', 'temp_max'),
+                     ('enable', 'enable')):
     if signame in mk_hal.signals:
         sig = mk_hal.signals[signame]
     else:
         sig = mk_hal.newsig(signame, hal.HAL_FLOAT)
-    sig.set(data[key])
+    if key in data:
+        sig.set(data[key])
 
 while True:
     time.sleep(0.1)
@@ -42,8 +46,9 @@ while True:
         with open(persist_fname, 'w') as f:
             yaml.dump(
                 dict(temp_min = h['temp-min'],
-                     temp_max = h['temp-max']),
-                f)
+                     temp_max = h['temp-max'],
+                     enable = h['enable'],
+                ), f)
         break
 
 infomsg("Shutting down")
