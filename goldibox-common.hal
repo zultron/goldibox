@@ -3,6 +3,19 @@
 # ################################################
 
 # ################
+# Settings comp
+
+# Load userland comp
+loadusr -Wn goldibox-settings ./goldibox-settings.py
+
+# Inputs
+net temp-min                        => goldibox-settings.temp-min
+net temp-max                        => goldibox-settings.temp-max
+net enable                          => goldibox-settings.enable
+net shutdown                        => goldibox-settings.shutdown
+
+
+# ################
 # Goldibox comp
 
 # Load userland comp
@@ -28,18 +41,6 @@ net switch-on                       <= goldibox.switch-on
 net switch-heat                     <= goldibox.switch-heat
 # - Error
 net error                           <= goldibox.error
-
-
-# ################
-# Settings comp
-
-# Load userland comp
-loadusr -Wn goldibox-settings ./goldibox-settings.py
-
-# Inputs
-net temp-min                        => goldibox-settings.temp-min
-net temp-max                        => goldibox-settings.temp-max
-net shutdown                        => goldibox-settings.shutdown
 
 
 # ################
@@ -135,13 +136,14 @@ sets enable 1
 
 start
 waitusr goldibox
-waitusr goldibox-settings
-waitusr goldibox-logger
 
 
 # ################################################
 # Shut down
 # ################################################
+
+# Wait a moment for user comps to exit
+loadusr -w sleep 2
 
 # Disable peltier and fan
 sets enable 0
