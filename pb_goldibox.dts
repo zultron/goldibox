@@ -58,6 +58,33 @@
     };
 
     fragment@1 {
+	target = <&ocp>;
+	__overlay__ {
+	    P1_02_pinmux {
+		status = "disabled";
+	    };
+	    P1_04_pinmux {
+		status = "disabled";
+	    };
+	    P1_06_pinmux {
+		status = "disabled";
+	    };
+	    P1_08_pinmux {
+		status = "disabled";
+	    };
+	    P1_10_pinmux {
+		status = "disabled";
+	    };
+	    P1_12_pinmux {
+		status = "disabled";
+	    };
+	    P1_20_pinmux {
+		status = "disabled";
+	    };
+	};
+    };
+
+    fragment@2 {
         target = <&ocp>;
         __overlay__ {
             pb_goldibox_pinmux {
