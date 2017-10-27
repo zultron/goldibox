@@ -2,7 +2,7 @@
  * Goldibox PocketBeagle overlay:  configure output pins
 
  * sudo dtc -O dtb -o /lib/firmware/pb_goldibox-00A0.dtbo -b 0 -@ pb_goldibox.dts
- * echo /lib/firmware/pb_goldibox-00A0.dtbo | sudo tee -a /boot/uEnv.txt
+ * echo dtb_overlay=/lib/firmware/pb_goldibox-00A0.dtbo | sudo tee -a /boot/uEnv.txt
 
  */
 
