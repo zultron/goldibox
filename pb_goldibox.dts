@@ -9,91 +9,31 @@
 /dts-v1/;
 /plugin/;
 
-/{
-    part_number = "PB_GOLDIBOX";
-
-    /* Not required? */
-    exclusive-use =
-	/* the pin header uses */
-        "P1.02",
-        "P1.04",
-        "P1.06",
-        "P1.08",
-        "P1.10",
-        "P1.12",
-        "P1.20",
-	/* the hardware IP uses */
-        "gpio2_87",
-        "gpio2_89",
-        "gpio0_5",
-        "gpio0_2",
-        "gpio0_3",
-        "gpio0_4",
-        "gpio0_20";
-
+/{  
     fragment@0 {
-        target = <&am33xx_pinmux>;
-        __overlay__ {
-            pb_goldibox_pins: pb_goldibox_pins {
-		/* Configure all as output low */
-                pinctrl-single,pins = <
-		    /* 1.02 Pin 57  GPIO 87 */
-		    0x8e4 0x2f
-		    /* 1.04 Pin 59  GPIO 89 */
-		    0x8ec 0x2f
-		    /* 1.06 Pin 87  GPIO 5  */
-		    0x95c 0x2f
-		    /* 1.08 Pin ??  GPIO 2 */
-		    0x950 0x2f
-		    /* 1.10 Pin ??  GPIO 3 */
-		    0x954 0x2f
-		    /* 1.12 Pin ??  GPIO 4 */
-		    0x958 0x2f
-		    /* 1.20 Pin 109 GPIO 20 */
-		    0x9b4 0x2f
-		>;
-		
-            };
-        };
-    };
-
-    fragment@1 {
 	target = <&ocp>;
 	__overlay__ {
 	    P1_02_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	    P1_04_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	    P1_06_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	    P1_08_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	    P1_10_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	    P1_12_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	    P1_20_pinmux {
-		status = "disabled";
+		mode = "gpio_pd";
 	    };
 	};
     };
-
-    fragment@2 {
-        target = <&ocp>;
-        __overlay__ {
-            pb_goldibox_pinmux {
-                compatible = "pb_goldibox_pins";
-                status = "okay";
-                pinctrl-names = "gpio";
-                pinctrl-0 = <&pb_goldibox_pins>;
-            };
-        };
-    };
 };
-
