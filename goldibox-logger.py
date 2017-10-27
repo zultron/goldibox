@@ -123,7 +123,7 @@ while True:
                 "AREA:goldilocks#00ff00:Goldilocks zone",
 	        # - Too cold:  blue (top)
                 "DEF:too-cold=%s:min:AVERAGE" % (rrdtool_db),
-                "AREA:too-cold#0000ff",
+                "AREA:too-cold#0000ff:Too cold",
 
 	        # Temp curves:  these rely on stacking
 	        # - External temp:  dashed black curve
