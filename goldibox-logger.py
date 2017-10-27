@@ -110,7 +110,6 @@ while True:
                 "--start=-1%s" % period,
                 "--title=%s" % sched,
                 "--vertical-label=Deg. C",
-                "--right-axis-label=% Set",
                 # "--width=1000", "--height=500",
 
 	        # Background:  stacked
