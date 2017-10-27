@@ -4,7 +4,7 @@ rrdtool_db = "goldibox-logger.rrd"
 rrdtool_graph_pat = "goldibox-logger.%s.png" # Fill with period, e.g. 'daily'
 rrdtool_period = 60 # Seconds between updates
 
-import rrdtool, hal, time, sys, os
+import rrdtool, hal, time, sys, os, datetime
 
 # Set up component
 h = hal.component("goldibox-logger")
@@ -23,7 +23,8 @@ h.newpin("cool", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
 
 def infomsg(msg):
-    sys.stderr.write("Goldibox logger:  %s\n" % msg)
+    sys.stderr.write("%s Goldibox logger:  %s\n" %
+                     (str(datetime.datetime.now()), msg))
 
 # RRD archive parameters
 archives = dict(
