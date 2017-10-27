@@ -79,8 +79,17 @@ Control the goldibox from the command line:
     # Shut down the goldibox
     ./set.sh shutdown
 
-There is also a simulator configuration:
+There is also a simulator configuration that can be run from Docker:
 
+    # Build Docker image
+    docker/qqvcp.sh build
+    # Run Docker container
+    docker/qqvcp.sh
+    # Start syslog, dbus and avahi services
+    sudo /etc/init.d/rsyslog start
+    sudo /etc/init.d/dbus start
+    sudo /etc/init.d/avahi-daemon start
+    # Run simulator
     ./goldibox-sim.hal
     # Set simulated outdoor temp
     ./set.sh setsim 35

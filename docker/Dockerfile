@@ -16,6 +16,8 @@ RUN apt-get update \
 
 RUN apt-get install -y \
 	avahi-utils \
+	python-yaml \
+	python-rrdtool \
     && apt-get clean
 
 # Add MK INI file with remote enabled
