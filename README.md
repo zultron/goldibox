@@ -19,7 +19,7 @@ discussed here are ready.
 
 ## Components
 
-The Goldibox is based on an portable fridge.  These use a [Peltier
+The Goldibox is based on a portable fridge.  These use a [Peltier
 junction][wiki-peltier], which can be switched from a cooling element
 to a heating element merely by reversing the voltage.  They are also
 small, light and inexpensive, and can be found on eBay for about $40;
@@ -37,19 +37,22 @@ module][usb-breakout] and $10 USB WiFi adapter for networking.
 The control functions come from the [Machinekit][machinekit] software
 and its configuration in this repository.
 
-The fridge is fitted with control electronics:  a thermistor and
-circuitry for sensing temperature; an H-bridge for switching the
-Peltier junction between cool, heat and off; and a MOSFET for
-switching the fan.  These are small enough to easily fit inside the
-fridge.  The H-bridge and MOSFET can be found integrated in
-pre-assembled modules, and all parts are inexpensive and readily
-available.  Search for "L298N motor driver module," "Mosfet Arduino
-module," and "100k thermistor" on eBay, all around $5-$8.  The sensor
-resistors and capacitors are inexpensive if not already in one's junk
-box.  Also, a piece of Thermagon 6100 heat-conductive pad was used to
-efficiently conduct temperature from the fridge to the thermistor.
-The electronics can mostly be assembled with pre-assembled header
-wires and a little soldering.
+The fridge is fitted with control electronics:  thermistors and
+circuitry sense temperature; an H-bridge switches the Peltier junction
+between cool, heat and off; a MOSFET switches the fan on and off; and
+a DC-DC step-down converter provides 5VDC power for the PocketBeagle.
+These are small enough to easily fit under the rear cover of the
+fridge next to the power supply and Peltier junction.  The H-bridge,
+MOSFET and DC power converter can be found integrated in pre-assembled
+modules, and all parts are inexpensive and readily available.  Search
+for "L298N motor driver module," "Mosfet Arduino module," "DC
+step-down converter" and "10k thermistor" on eBay, all around $5-$8.
+The sensor resistors and capacitors are inexpensive if not already in
+one's junk box.  Also, a piece of Thermagon 6100 heat-conductive pad
+efficiently conducts temperature from the fridge to the internal
+thermistor.  The electronics are easily assembled with pre-assembled
+header wires and a little soldering; heat-shrink tubing and
+custom-crimped connectors improve appearance.
 
 [wiki-peltier]: https://en.wikipedia.org/wiki/Thermoelectric_cooling
 [pocketbeagle]: https://beagleboard.org/pocket
