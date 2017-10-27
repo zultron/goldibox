@@ -164,7 +164,7 @@ while True:
                 "CDEF:cool-pct=cool-avg,100,*",
                 "GPRINT:cool-pct:AVERAGE:Pct time cool %2.1lf%% ",
             )
-        infomsg("Updated RRD DB %s, ret=%s" % (rrdtool_db, ret))
+        infomsg("Updated RRD DB %s" % rrdtool_db)
         # - Reset state for next sample
         last_sample = now
         sample_periods = 0
