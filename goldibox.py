@@ -31,7 +31,7 @@ h['switch-on'] = 0
 h['switch-heat'] = 0
 
 def infomsg(msg):
-    sys.stderr.write("%s Goldibox component:  %s\n" %
+    sys.stderr.write("%s Goldibox control:  %s\n" %
                      (str(datetime.datetime.now()), msg))
 
 # Mark the component as 'ready'
