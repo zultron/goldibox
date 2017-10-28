@@ -111,6 +111,7 @@ while True:
                 "--title=%s" % sched,
                 "--vertical-label=Deg. C",
                 # "--width=1000", "--height=500",
+                "--width=600", "--height=300",
 
 	        # Background:  stacked
 	        # - Too hot:  red (bottom); bogus value for label
