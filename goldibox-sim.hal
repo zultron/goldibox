@@ -28,6 +28,9 @@ net outside-temp                    => sim-temp.outside-temp
 # - Effect of outside temp and heat/cool on inside temp; adjustable
 net outside-temp-incr               => sim-temp.outside-temp-incr
 net heat-cool-incr                  => sim-temp.heat-cool-incr
+# - Set reasonable defaults
+sets outside-temp-incr              0.002
+sets heat-cool-incr                 0.02
 
 # ################
 # Haltalk server
