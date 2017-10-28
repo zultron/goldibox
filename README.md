@@ -204,6 +204,11 @@ IPv6.privacy=disabled
 EOF
 sudo chmod -x /opt/scripts/boot/autoconfigure_usb[01].sh
 sudo sed -i /etc/network/interfaces -e '/eth0/ s/^/#/'
+
+# Configure GPIOs low on boot
+sudo dtc -O dtb -o /lib/firmware/pb_goldibox-00A0.dtbo -b 0 -@
+pb_goldibox.dts
+echo dtb_overlay=/lib/firmware/pb_goldibox-00A0.dtbo | sudo tee -a /boot/uEnv.txt
 ```
 
 
