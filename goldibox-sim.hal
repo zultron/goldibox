@@ -29,31 +29,32 @@ net heat-cool-incr                  => sim-temp.heat-cool-incr
 
 # ################
 # Haltalk server
-loadusr -W haltalk
+# FIXME
+# loadusr -W haltalk
 
-# ################
-# HAL remote component
-loadusr -Wn remote ./rcomp.py
+# # ################
+# # HAL remote component
+# loadusr -Wn remote ./rcomp.py
 
-# - Inputs
-net enable                          <= remote.enable
-net shutdown                        <= remote.shutdown
-net temp-max                        <= remote.temp-max
-net temp-min                        <= remote.temp-min
-net hysteresis                      <= remote.hysteresis
-# - Outputs
-net error                           => remote.error
-net cool-on                         => remote.p-cool
-net heat-on                         => remote.p-heat
-net switch-heat                     => remote.switch-heat
-net switch-on                       => remote.switch-on
-net temp-int                        => remote.temp-int
-# - Inputs-sim
-net outside-temp                    <= remote.outside-temp
-net outside-temp-incr               <= remote.outside-temp-incr
-net heat-cool-incr                  <= remote.heat-cool-incr
-# - Outputs-sim
-net sim-error                       => remote.sim-error
+# # - Inputs
+# net enable                          <= remote.enable
+# net shutdown                        <= remote.shutdown
+# net temp-max                        <= remote.temp-max
+# net temp-min                        <= remote.temp-min
+# net hysteresis                      <= remote.hysteresis
+# # - Outputs
+# net error                           => remote.error
+# net cool-on                         => remote.p-cool
+# net heat-on                         => remote.p-heat
+# net switch-heat                     => remote.switch-heat
+# net switch-on                       => remote.switch-on
+# net temp-int                        => remote.temp-int
+# # - Inputs-sim
+# net outside-temp                    <= remote.outside-temp
+# net outside-temp-incr               <= remote.outside-temp-incr
+# net heat-cool-incr                  <= remote.heat-cool-incr
+# # - Outputs-sim
+# net sim-error                       => remote.sim-error
 
 # ################
 # Threads
