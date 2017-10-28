@@ -19,6 +19,8 @@ net enable                          => sim-temp.p-enable
 # - Peltier
 net heat-on                         => sim-temp.p-heat
 net cool-on                         => sim-temp.p-cool
+# - Fan
+net switch-on                       => sim-temp.f-on
 # - Error detected
 net sim-error                       <= sim-temp.error
 # - Simulated outside temp

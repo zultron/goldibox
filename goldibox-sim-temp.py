@@ -12,8 +12,7 @@ h.newpin("p-heat", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("p-cool", hal.HAL_BIT, hal.HAL_IN)
 # - Fan signals
 h.newpin("f-enable", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("f-heat", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("f-cool", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("f-on", hal.HAL_BIT, hal.HAL_IN)
 # - User-set pretend outside temp
 h.newpin("outside-temp", hal.HAL_FLOAT, hal.HAL_IN)
 # - Incremental increase/decrease toward outside temp
@@ -52,8 +51,7 @@ try:
         p_heat = h['p-heat']
         p_cool = h['p-cool']
         f_enable = h['f-enable']
-        f_heat = h['f-heat']
-        f_cool = h['f-cool']
+        f_on = h['f-on']
         # - User-defined inputs
         outside_temp = h['outside-temp']
         outside_temp_incr = h['outside-temp-incr']
@@ -64,14 +62,11 @@ try:
         if p_heat and p_cool:
             infomsg("Error:  p-heat and p-cool")
             err = 1
-        if p_heat and not f_heat:
-            infomsg("Error:  p-heat but not f-heat")
+        if p_heat and not f_on:
+            infomsg("Error:  p-heat but not f-on")
             err = 1
-        if p_cool and not f_heat:
-            infomsg("Error:  p-cool but not f-heat")
-            err = 1
-        if f_cool:
-            infomsg("Error:  f-cool")
+        if p_cool and not f_on:
+            infomsg("Error:  p-cool but not f-on")
             err = 1
         if h['error'] and not err:
             infomsg("Error condition cleared")
@@ -96,7 +91,7 @@ try:
             infomsg("Status:  outside=%.2f; value=%.2f(base %.2f);" %
                     (outside_temp, newval, temp_base))
             infomsg("         cool=%d; heat=%d, fan=%d" %
-                    (p_heat, p_cool, f_heat))
+                    (p_heat, p_cool, f_on))
 
         h['value'] = newval
 
