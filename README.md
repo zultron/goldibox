@@ -17,6 +17,26 @@ discussed here are ready.
 
 ![Goldibox](fritzing/goldibox-breadboard.png)
 
+## Time series graphs
+
+A sample time series graph with elements explained:
+
+![Time series graph](icon/goldibox-logger.sample-1.png)
+
+- **Areas:**  The maximum/minimum temperature is set by the user
+  - **Red (1):**  Too hot
+  - **Blue (2):**  Too cold
+  - **Green (3):**  The "Goldilocks zone," just right
+- **Curves:**  Internal and external temperatures
+  - **Green (4):**  Internal temperature; Peltier junction off
+  - **Red (5):**  Internal temperature; Pealtier junction heating
+  - **Blue (not shown):**  Internal temperature; Pealtier junction
+    cooling
+  - **Black dashed (7):**  External temperature
+- **Stats:**  Percent of time Peltier junction is...
+  - **Heating (8)**
+  - **Cooling (9)**
+
 ## Components
 
 The Goldibox is based on a portable fridge.  These use a [Peltier
