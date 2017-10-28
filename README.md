@@ -15,13 +15,13 @@ open-source control to add new features.
 This is currently a **work in progress**, and not all the features
 discussed here are ready.
 
-![Goldibox](fritzing/goldibox-breadboard.png)
+![Goldibox](images/goldibox_breadboard.png)
 
 ## Time series graphs
 
 A sample time series graph with elements explained:
 
-![Time series graph](icon/goldibox-logger.sample-1.png)
+![Time series graph](images/goldibox-logger.sample-1.png)
 
 - **Areas:**  The maximum/minimum temperature is set by the user
   - **Red (1):**  Too hot
