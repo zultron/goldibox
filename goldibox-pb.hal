@@ -12,7 +12,7 @@
 # ################
 # Pin config
 # - Ensure GPIO pins are in the right mode
-loadusr -w ./setup.sh
+loadusr -w sudo /usr/bin/config-pin -f goldibox-overlay-pb.bbio
 
 # ################
 # Thermistor
