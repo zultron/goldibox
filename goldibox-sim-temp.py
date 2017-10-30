@@ -87,7 +87,7 @@ try:
         # - Add  random number btw. -1 and 1 to simulate thermistor variance
         newval = temp_base + random.triangular(-1,1,0)
 
-        if i % 50 == 0:
+        if i % 500 == 0:
             infomsg("Status:  outside=%.2f; value=%.2f(base %.2f);" %
                     (outside_temp, newval, temp_base))
             infomsg("         cool=%d; heat=%d, fan=%d" %
