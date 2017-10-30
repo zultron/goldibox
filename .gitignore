@@ -5,3 +5,5 @@
 /goldibox-logger.*.png
 /goldibox-logger.rrd
 /goldibox.conf.yaml
+/build-goldibox-Desktop-Debug
+/qml/goldibox.pro.user
