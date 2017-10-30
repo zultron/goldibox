@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
-IMAGE=qqvcp
-NAME=${IMAGE}
+NAME=qqvcp
+IMAGE=zultron/${NAME}
 TOPDIR="$(readlink -f "$(dirname $0)"/..)"
 
 usage() {
