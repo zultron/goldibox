@@ -14,6 +14,7 @@ ApplicationWindow {
 
     ConnectionWindow {
         id: connectionWindow
+        color: "#fdb3c0"
 
         anchors.fill: parent
         defaultTitle: "Goldibox"
@@ -22,7 +23,7 @@ ApplicationWindow {
         /* mode: "local" */
         applications: [
             ApplicationDescription {
-                sourceDir: "qrc:/goldibox/"
+                sourceDir: "qrc:/goldibox-remote/"
             }
         ]
         instanceFilter: ServiceDiscoveryFilter{ name: "" }

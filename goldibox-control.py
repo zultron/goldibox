@@ -3,7 +3,7 @@
 import hal, time, sys, datetime
 
 # Set up component
-h = hal.component("goldibox")
+h = hal.component("goldibox-control")
 
 # Inputs:
 # - Min/max/internal temp settings

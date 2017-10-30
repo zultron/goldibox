@@ -1,8 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>goldibox/goldibox.qml</file>
-        <file>goldibox/description.ini</file>
+        <file>goldibox-remote/goldibox-remote.qml</file>
+        <file>goldibox-remote/description.ini</file>
     </qresource>
 </RCC>
-

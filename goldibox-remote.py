@@ -1,9 +1,9 @@
 #!/usr/bin/python
 from machinekit import hal
-from pprint import pprint
 
 # create remote component
-rcomp = hal.RemoteComponent('remote', timer=100)
+rcomp = hal.RemoteComponent('goldibox-remote', timer=100)
+
 
 # Controls
 rcomp.newpin('enable', hal.HAL_BIT, hal.HAL_OUT)
@@ -33,12 +33,3 @@ rcomp.ready()
 # start haltalk server after everything is initialized
 # else binding the remote components on the UI might fail
 hal.loadusr('haltalk')
-
-import time
-while True:
-    time.sleep(0.1)
-
-    # Really we need to watch for changes and persist
-
-
-# Really we need to persist current settings

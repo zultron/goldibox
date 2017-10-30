@@ -77,7 +77,8 @@ try:
         launcher.check_processes()
         time.sleep(1)
 
-except subprocess.CalledProcessError:
+except subprocess.CalledProcessError as e:
+    sys.stderr.write("Caught subprocess.CalledProcessError: %s\n" % e)
     launcher.end_session()
     sys.exit(1)
 

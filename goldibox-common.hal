@@ -19,28 +19,28 @@ net shutdown                        => goldibox-settings.shutdown
 # Goldibox comp
 
 # Load userland comp
-loadusr -Wn goldibox ./goldibox.py
+loadusr -Wn goldibox-control ./goldibox-control.py
 
 # Inputs
 # - Min/max/internal temp settings
-net temp-min                        => goldibox.temp-min
-net temp-max                        => goldibox.temp-max
-net temp-int                        => goldibox.temp-int
+net temp-min                        => goldibox-control.temp-min
+net temp-max                        => goldibox-control.temp-max
+net temp-int                        => goldibox-control.temp-int
 # - Hysteresis
-net hysteresis                      => goldibox.hysteresis
+net hysteresis                      => goldibox-control.hysteresis
 # - Enable
-net enable                          => goldibox.enable
+net enable                          => goldibox-control.enable
 # - Shut down
-net shutdown                        => goldibox.shutdown
+net shutdown                        => goldibox-control.shutdown
 sets shutdown 0
 
 # Outputs
 # - On/off switch
-net switch-on                       <= goldibox.switch-on
+net switch-on                       <= goldibox-control.switch-on
 # - Heat/cool selector switch (1/0)
-net switch-heat                     <= goldibox.switch-heat
+net switch-heat                     <= goldibox-control.switch-heat
 # - Error
-net error                           <= goldibox.error
+net error                           <= goldibox-control.error
 
 
 # ################
@@ -126,19 +126,20 @@ net shutdown                        => goldibox-logger.shutdown
 
 # ################
 # HAL remote component
-loadusr -Wn remote ./rcomp.py
+# loadusr -W build-goldibox-remote-Desktop-Debug/goldibox-remote
+loadusr -Wn goldibox-remote ./goldibox-remote.py
 
 # - Inputs
-net enable                          <= remote.enable
-net shutdown                        <= remote.shutdown
-net temp-max                        <= remote.temp-max
-net temp-min                        <= remote.temp-min
-net hysteresis                      <= remote.hysteresis
+net enable                          <= goldibox-remote.enable
+net shutdown                        <= goldibox-remote.shutdown
+net temp-max                        <= goldibox-remote.temp-max
+net temp-min                        <= goldibox-remote.temp-min
+net hysteresis                      <= goldibox-remote.hysteresis
 # - Outputs
-net error                           => remote.error
-net cool-on                         => remote.p-cool
-net heat-on                         => remote.p-heat
-net switch-heat                     => remote.switch-heat
-net switch-on                       => remote.switch-on
-net temp-int                        => remote.temp-int
+net error                           => goldibox-remote.error
+net cool-on                         => goldibox-remote.p-cool
+net heat-on                         => goldibox-remote.p-heat
+net switch-heat                     => goldibox-remote.switch-heat
+net switch-on                       => goldibox-remote.switch-on
+net temp-int                        => goldibox-remote.temp-int
 
