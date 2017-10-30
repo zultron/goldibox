@@ -99,36 +99,27 @@ and install a mini-SD card image with Machinekit.
 Log into the BeagleBone, clone this repository, and `cd` into the
 repository directory.
 
-Run the HAL configuration:
+On the PocketBeagle, start the Goldibox control from the command line:
 
-    ./goldibox.hal
+    ./run.py -b pb
 
-Control the goldibox from the command line:
+The Goldibox should now be ready for control.  Start the
+[MachinekitClient][qqvcp] and open the Goldibox app.
 
-    # Set goldibox min, max and hysteresis params
-    ./set.sh 15 30 2
-    # Disable/enable the goldibox without shutting down
-    ./set.sh disable
-    ./set.sh enable
-    # Shut down the goldibox
-    ./set.sh shutdown
+Alternatively, run a Goldibox simulated control and GUI in a Docker
+container from the command line.  Get the URL for the [latest
+MachinekitClient build][mkclient-dl], then:
 
-There is also a simulator configuration that can be run from Docker:
-
-    # Build Docker image
-    docker/qqvcp.sh build
-    # Run Docker container
+    # Start the container
     docker/qqvcp.sh
-    # Start syslog, dbus and avahi services
-    sudo /etc/init.d/rsyslog start
-    sudo /etc/init.d/dbus start
-    sudo /etc/init.d/avahi-daemon start
-    # Run simulator
-    ./goldibox-sim.hal
-    # Set simulated outdoor temp
-    ./set.sh setsim 35
+    # Start control in sim mode
+    ./run.py -b sim &
+    # Start GUI
+    MachinekitClient &
 
 [machinekit.io]: http://machinekit.io
+[qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
+[mkclient-dl]: https://bintray.com/machinekoder/MachinekitClient-Development/MachinekitClient_Development-Linux-master-x64/#files/
 
 # Installing the PocketBeagle
 

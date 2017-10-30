@@ -43,7 +43,8 @@ run() {
 if test "$1" = build; then
     shift
     cd "$TOPDIR/docker"
-    exec docker build -t qqvcp "$@" .
+    set -x
+    exec docker build -t $IMAGE "$@" .
 fi
 
 if test "$1" = anddemo-build; then

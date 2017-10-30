@@ -20,6 +20,21 @@ RUN apt-get install -y \
 	python-rrdtool \
     && apt-get clean
 
+# For appimage
+RUN apt-get install -y \
+	fuse \
+    && apt-get clean
+
+# Download MachinekitClient
+RUN bash -c ' \
+        list_url=https://dl.bintray.com/machinekoder/MachinekitClient-Development && \
+        package=$(wget -qO- ${list_url}/ | grep -e "-master-.*x64.AppImage" \
+            | tail -n 1 | awk -F \" "{print \$4}") && \
+        url=${list_url}/${package:1} && \
+	echo "$url" && \
+        wget -O /usr/bin/MachinekitClient $url && \
+        chmod +x /usr/bin/MachinekitClient'
+
 # Add MK INI file with remote enabled
 ADD machinekit.ini /etc/linuxcnc/machinekit.ini
 
