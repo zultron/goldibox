@@ -79,6 +79,17 @@ custom-crimped connectors improve appearance.
 [usb-breakout]: https://github.com/zultron/fritzing-parts/tree/master/pocketbeagle-usb-type-a
 [machinekit]: http://www.machinekit.io/
 
+# Remote interface
+
+A remote interface using Alexander Rössler's [QtQuickVCP][qqvcp] is
+under development.  Here is a mock-up of the desired interface.  It is
+intended to get the most important controls and readouts, the
+time-series graphs, and of course the logo all on one simple,
+intuitive screen.
+
+![GUI mock-up](images/artists_vision.png)
+
+[qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
 
 # Running
 
