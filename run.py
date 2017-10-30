@@ -26,9 +26,8 @@ parser.add_argument(
     help='Enable debug mode', action='store_true')
 parser.add_argument(
     '-b', '--board',
-    help=('Select board: sim (default), or BeagleBone varieties:  '
-          'bb (black or white), pocket'),
-    default='sim', choices=('sim','bb','pocket'))
+    help=('Select board: sim (default), or pb (PocketBeagle)'),
+    default='sim', choices=('sim','pb'))
 
 args = parser.parse_args()
 

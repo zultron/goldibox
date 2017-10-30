@@ -1,0 +1,24 @@
+# ################################################
+# Run
+# ################################################
+
+start
+waitusr goldibox
+
+
+# ################################################
+# Shut down
+# ################################################
+
+# Wait a moment for user comps to exit
+loadusr -w sleep 2
+
+# Disable peltier and fan
+sets enable 0
+sets switch-on 0
+
+# Stop threads
+stop
+
+# Unload comps
+unload all

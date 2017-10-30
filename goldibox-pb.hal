@@ -56,3 +56,10 @@ net led-cool                        => bb_gpio.p1.out-12
 # ################################################
 
 source goldibox-common.hal
+
+
+# ################################################
+# RUN common HAL config
+# ################################################
+
+#source goldibox-common-run.hal
