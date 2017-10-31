@@ -11,7 +11,7 @@
 
 # ################
 # Thermistor
-# - 10k thermistor on AIN5 with 1k pull-up resistor
+# - 10k thermistors with 1k pull-up resistor:  internal on AIN0, external on AIN1
 #     https://github.com/machinekit/machinekit/blob/master/src/hal/user_comps/hal_temp_bbb.py
 
 # - Load thermistor comp
@@ -24,7 +24,7 @@ net temp-ext                        <= therm.ch-01.value
 # Threads
 
 # - One slow thread
-loadrt threads name1=servo-thread period1=10000000
+loadrt threads name1=main-thread period1=10000000
 
 # ################
 # PocketBeagle GPIOs
@@ -33,8 +33,8 @@ loadrt threads name1=servo-thread period1=10000000
 #     http://beagleboard.org/support/bone101
 
 loadrt hal_bb_gpio board=PocketBeagle output_pins=102,104,106,108,110,112,120
-addf bb_gpio.read                   servo-thread
-addf bb_gpio.write                  servo-thread
+addf bb_gpio.read                   main-thread
+addf bb_gpio.write                  main-thread
 
 # - Enable
 net enable                          => bb_gpio.p1.out-06
@@ -56,10 +56,3 @@ net led-cool                        => bb_gpio.p1.out-12
 # ################################################
 
 source goldibox-common.hal
-
-
-# ################################################
-# RUN common HAL config
-# ################################################
-
-#source goldibox-common-run.hal
