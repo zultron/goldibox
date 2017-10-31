@@ -123,5 +123,5 @@ MachinekitClient build][mkclient-dl], then:
 
 # Installing the PocketBeagle
 
-See the jumble of notes in [README-pb.md](README-pb.md)
+See the jumble of notes in [NOTES.md](NOTES.md)
 
