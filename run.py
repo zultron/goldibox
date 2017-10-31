@@ -71,7 +71,9 @@ try:
         launcher.register_exit_handler()
 
         # ensure mklauncher is started
-        launcher.ensure_mklauncher(debug=args.debug)
+        # FIXME MK PR?
+        # launcher.ensure_mklauncher(debug=args.debug)
+        launcher.ensure_mklauncher()
 
         if not args.no_config:
             # start the configserver with Machineface
