@@ -80,10 +80,10 @@ try:
             temp_base -= temp_ext_incr
         # - If heat is on, increase
         if p_cool:
-            temp_base += heat_cool_incr
+            temp_base -= heat_cool_incr
         # - If cool is on, decrease
         if p_heat:
-            temp_base -= heat_cool_incr
+            temp_base += heat_cool_incr
         # - Add  random number btw. -0.1 and 0.1 to simulate thermistor variance
         newval = temp_base + random.triangular(-0.1,0.1,0)
 

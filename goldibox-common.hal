@@ -54,14 +54,14 @@ addf cool-on                        main-thread
 # Peltier heat/cool LUT
 # http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
 #
-# on/1	heat/0	| heat	cool	|   val	|   val
+# on/1	heat/0	| heat	cool	| h val | c val
 # 0	0	| 0	0	|	|
 # 0	1	| 0	0	|	|
-# 1	0	| 1	0	|   0x4	|
-# 1	1	| 0	1	|	|   0x8
+# 1	0	| 0	1	|	|   0x4
+# 1	1	| 1	0	|   0x8	|
 #                                 ----- | -----
-setp heat-on.function               0x4
-setp cool-on.function                       0x8
+setp heat-on.function               0x8
+setp cool-on.function                       0x4
 
 # Peltier heat LUT
 # - Inputs
