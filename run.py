@@ -43,13 +43,15 @@ if 'MACHINEKIT_INI' not in os.environ:  # export for package installs
 
 try:
     if not args.run:
-        # Start syslog, dbus and avahi services if they aren't already running
-        for svc in ('rsyslog', 'dbus', 'avahi-daemon'):
-            ret = subprocess.call(
-                ['/usr/bin/sudo', '/etc/init.d/%s' % svc, 'status'])
-            if ret != 0:
+        if args.board == 'sim':
+            # Start syslog, dbus and avahi services if they aren't
+            # already running in container
+            for svc in ('rsyslog', 'dbus', 'avahi-daemon'):
                 ret = subprocess.call(
-                    ['/usr/bin/sudo', '/etc/init.d/%s' % svc, 'start'])
+                    ['/usr/bin/sudo', '/etc/init.d/%s' % svc, 'status'])
+                if ret != 0:
+                    ret = subprocess.call(
+                        ['/usr/bin/sudo', '/etc/init.d/%s' % svc, 'start'])
 
         launcher.check_installation()
         if False:
