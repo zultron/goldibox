@@ -30,14 +30,6 @@ HalApplicationWindow {
             Layout.fillHeight: true
         }
 
-        // Incoming
-
-        // Floats:  temp-cur
-
-        // Outgoing
-        // Sliders:  temp-max; temp-min; hysteresis
-        // Sliders-sim:  outside-temp; outside-temp-incr; heat-cool-incr
-
         RowLayout {
             id: shutdown_enable_row
             width: 100
