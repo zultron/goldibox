@@ -12,7 +12,7 @@ elif test "$1" = enable; then
 elif test "$1" = siminc; then
     (
 	set -x
-	halcmd sets outside-temp-incr $2
+	halcmd sets temp-ext-incr $2
 	halcmd sets heat-cool-incr $3
     )
     exit

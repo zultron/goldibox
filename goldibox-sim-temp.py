@@ -13,10 +13,10 @@ h.newpin("p-cool", hal.HAL_BIT, hal.HAL_IN)
 # - Fan signals
 h.newpin("f-enable", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("f-on", hal.HAL_BIT, hal.HAL_IN)
-# - User-set pretend outside temp
-h.newpin("outside-temp", hal.HAL_FLOAT, hal.HAL_IN)
-# - Incremental increase/decrease toward outside temp
-h.newpin("outside-temp-incr", hal.HAL_FLOAT, hal.HAL_IN)
+# - User-set pretend external temp
+h.newpin("temp-ext", hal.HAL_FLOAT, hal.HAL_IN)
+# - Incremental increase/decrease toward external temp
+h.newpin("temp-ext-incr", hal.HAL_FLOAT, hal.HAL_IN)
 # - Incremental increase/decrease when heat/cool applied
 h.newpin("heat-cool-incr", hal.HAL_FLOAT, hal.HAL_IN)
 
@@ -53,8 +53,8 @@ try:
         f_enable = h['f-enable']
         f_on = h['f-on']
         # - User-defined inputs
-        outside_temp = h['outside-temp']
-        outside_temp_incr = h['outside-temp-incr']
+        temp_ext = h['temp-ext']
+        temp_ext_incr = h['temp-ext-incr']
         heat_cool_incr = h['heat-cool-incr']
 
         # Do some sanity checks
@@ -73,11 +73,11 @@ try:
         h['error'] = err
 
         # Set output value
-        # - If it's warmer outside, increase; otherwise decrease
-        if outside_temp > h['value']:
-            temp_base += outside_temp_incr
+        # - If it's warmer externally, increase; otherwise decrease
+        if temp_ext > h['value']:
+            temp_base += temp_ext_incr
         else:
-            temp_base -= outside_temp_incr
+            temp_base -= temp_ext_incr
         # - If heat is on, increase
         if p_cool:
             temp_base += heat_cool_incr
@@ -88,8 +88,8 @@ try:
         newval = temp_base + random.triangular(-0.1,0.1,0)
 
         if i % 500 == 0:
-            infomsg("Status:  outside=%.2f; value=%.2f(base %.2f);" %
-                    (outside_temp, newval, temp_base))
+            infomsg("Status:  ext=%.2f; value=%.2f(base %.2f);" %
+                    (temp_ext, newval, temp_base))
             infomsg("         cool=%d; heat=%d, fan=%d" %
                     (p_heat, p_cool, f_on))
 

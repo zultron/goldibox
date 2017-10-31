@@ -21,15 +21,11 @@ net heat-on                         => sim-temp.p-heat
 net cool-on                         => sim-temp.p-cool
 # - Fan
 net switch-on                       => sim-temp.f-on
-# - Simulated outside temp
-net outside-temp                    => sim-temp.outside-temp
-# - Effect of outside temp and heat/cool on inside temp; adjustable
-net outside-temp-incr               => sim-temp.outside-temp-incr
+# - Simulated external temp
+net temp-ext                        => sim-temp.temp-ext
+# - Effect of external temp and heat/cool on inside temp; adjustable
+net temp-ext-incr                   => sim-temp.temp-ext-incr
 net heat-cool-incr                  => sim-temp.heat-cool-incr
-# - Set reasonable defaults
-sets outside-temp                   20.0
-sets outside-temp-incr              0.002
-sets heat-cool-incr                 0.02
 
 # ################
 # Threads
@@ -44,3 +40,11 @@ loadrt threads name1=main-thread period1=10000000
 
 source goldibox-common.hal
 
+# ################################################
+# Set sim default values
+# ################################################
+
+sets temp-ext                       20.0
+sets temp-ext-incr                  0.002
+sets heat-cool-incr                 0.02
+sets hysteresis                     1

@@ -132,12 +132,11 @@ net enable                          <= goldibox-remote.enable
 net shutdown                        <= goldibox-remote.shutdown
 net temp-max                        <= goldibox-remote.temp-max
 net temp-min                        <= goldibox-remote.temp-min
-net hysteresis                      <= goldibox-remote.hysteresis
+
 # - Outputs
 net error                           => goldibox-remote.error
 net cool-on                         => goldibox-remote.p-cool
 net heat-on                         => goldibox-remote.p-heat
-net switch-heat                     => goldibox-remote.switch-heat
 net switch-on                       => goldibox-remote.switch-on
 net temp-int                        => goldibox-remote.temp-int
 net temp-ext                        => goldibox-remote.temp-ext

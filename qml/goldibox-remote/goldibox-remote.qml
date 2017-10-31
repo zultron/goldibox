@@ -21,22 +21,26 @@ HalApplicationWindow {
     }
 
     ColumnLayout {
-        anchors.rightMargin: 83
-        anchors.bottomMargin: 48
-        anchors.leftMargin: 83
-        anchors.topMargin: 456
-        anchors.fill: parent
+        anchors.top: locks_image.bottom
+        anchors.topMargin: 0
+        anchors.leftMargin: 100
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
         anchors.margins: 10
+
 
         RowLayout {
             id: shutdown_enable_row
             width: 100
             height: 100
+            Layout.fillWidth: false
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
 
             HalSwitch {
                 id: enable
                 name: "enable"
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 checked: true
             }
 
@@ -44,64 +48,13 @@ HalApplicationWindow {
             Label {
                 id: enable_label
                 text: qsTr("Enable")
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
             HalButton {
                 id: shutdown_button
-                Layout.alignment: Layout.Center
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 name: "shutdown"
                 text: "Shut down Goldibox"
-            }
-
-            HalLed {
-                id: error
-                Layout.alignment: Layout.Center
-                name: "error"
-            }
-
-            Label {
-                id: error_label
-                text: qsTr("Error")
-            }
-        }
-
-        RowLayout {
-            id: error_row
-            width: 100
-            height: 100
-        }
-
-        RowLayout {
-            id: peltier_row
-            width: 100
-            height: 100
-
-            HalLed {
-                id: p_heat
-                Layout.alignment: Layout.Center
-                name: "p-heat"
-            }
-
-            HalLed {
-                id: p_cool
-                Layout.alignment: Layout.Center
-                name: "p-cool"
-            }
-
-            HalLed {
-                id: switch_on
-                Layout.alignment: Layout.Center
-                name: "switch-on"
-            }
-
-            HalLed {
-                id: switch_heat
-                Layout.alignment: Layout.Center
-                name: "switch-heat"
-            }
-
-            Label {
-                id: peltier_label
-                text: qsTr("Heat/Cool/On/HCSelect")
             }
         }
 
@@ -109,7 +62,28 @@ HalApplicationWindow {
             id: temp_row
             width: 100
             height: 100
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
+
+            ColumnLayout {
+                id: temp_min_col
+                width: 100
+                height: 100
+
+                HalDial {
+                    id: temp_min
+                    name: "temp-min"
+                    suffix: "°C"
+                    decimals: 1
+                    maximumValue: 50
+                    minimumValue: 20
+                }
+
+                Label {
+                    id: temp_min_label
+                    text: qsTr("Min")
+                }
+            }
             ColumnLayout {
                 id: temp_max_col
                 width: 100
@@ -118,6 +92,7 @@ HalApplicationWindow {
                 HalDial {
                     id: temp_max
                     name: "temp-max"
+                    suffix: "°C"
                     decimals: 1
                     minimumValue: 20
                     maximumValue: 50
@@ -130,46 +105,82 @@ HalApplicationWindow {
             }
 
             ColumnLayout {
-                id: temp_min_col
+                id: status_led_col
                 width: 100
                 height: 100
 
-                HalDial {
-                    id: temp_min
-                    name: "temp-min"
-                    decimals: 1
-                    maximumValue: 50
-                    minimumValue: 20
+                RowLayout {
+                    id: heat_led_row
+                    width: 100
+                    height: 100
+
+                    HalLed {
+                        id: p_heat
+                        Layout.alignment: Layout.Center
+                        name: "p-heat"
+                        onColor: qsTr("#ff0000")
+                    }
+
+                    Label {
+                        id: heat_led_label
+                        text: qsTr("Heat")
+                    }
                 }
 
-                Label {
-                    id: temp_min_label
-                    text: qsTr("Min")
+                RowLayout {
+                    id: cool_led_row
+                    width: 100
+                    height: 100
+
+                    HalLed {
+                        id: p_cool
+                        Layout.alignment: Layout.Center
+                        name: "p-cool"
+                        onColor: "#0000ff"
+                    }
+
+                    Label {
+                        id: cool_led_label
+                        text: qsTr("Cool")
+                    }
+                }
+
+                RowLayout {
+                    id: on_led_row
+                    width: 100
+                    height: 100
+
+                    HalLed {
+                        id: switch_on
+                        Layout.alignment: Layout.Center
+                        name: "switch-on"
+                        onColor: "#00ff00"
+                    }
+
+                    Label {
+                        id: on_led_label
+                        text: qsTr("On")
+                    }
+                }
+
+                RowLayout {
+                    id: error_led_row
+                    width: 100
+                    height: 100
+
+                    HalLed {
+                        id: error
+                        Layout.alignment: Layout.Center
+                        name: "error"
+                        onColor: "#ffa500"
+                    }
+
+                    Label {
+                        id: error_led_label
+                        text: qsTr("Error")
+                    }
                 }
             }
-
-            ColumnLayout {
-                id: hysteresis_col
-                width: 100
-                height: 100
-
-                HalDial {
-                    id: hysteresis
-                    name: "hysteresis"
-                    decimals: 1
-                    maximumValue: 2
-                    tickmarksEnabled: false
-                }
-
-                Label {
-                    id: hysteresis_label
-                    text: qsTr("Hyst")
-                }
-            }
-        }
-
-        Item {
-            Layout.fillHeight: true
         }
 
         ColumnLayout {
@@ -182,6 +193,9 @@ HalApplicationWindow {
                 id: temp_int
                 name: "temp-int"
                 radius: 3
+                Layout.minimumHeight: 20
+                Layout.minimumWidth: 100
+                suffix: "°C"
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 prefix: ""
                 orientation: 1
@@ -191,6 +205,9 @@ HalApplicationWindow {
             HalGauge {
                 id: temp_ext
                 name: "temp-ext"
+                Layout.minimumHeight: 20
+                Layout.minimumWidth: 100
+                suffix: "°C"
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.fillWidth: true
             }
@@ -200,12 +217,6 @@ HalApplicationWindow {
                 text: qsTr("Temp int/ext")
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
-        }
-
-        RowLayout {
-            id: sim_row
-            width: 100
-            height: 100
         }
     }
 
