@@ -12,32 +12,11 @@ graphical interface for setting temperatures, checking current state,
 and viewing history through time series graphs.  Anyone may modify the
 open-source control to add new features.
 
-This is currently a **work in progress**, and not all the features
-discussed here are ready.
-
-![Goldibox](images/goldibox_breadboard.png)
-
-## Time series graphs
-
-A sample time series graph with elements explained:
-
-![Time series graph](images/goldibox-logger.sample-1.png)
-
-- **Areas:**  The maximum/minimum temperature is set by the user
-  - **Red (1):**  Too hot
-  - **Blue (2):**  Too cold
-  - **Green (3):**  The "Goldilocks zone," just right
-- **Curves:**  Internal and external temperatures
-  - **Green (4):**  Internal temperature; Peltier junction off
-  - **Red (5):**  Internal temperature; Pealtier junction heating
-  - **Blue (not shown):**  Internal temperature; Pealtier junction
-    cooling
-  - **Black dashed (7):**  External temperature
-- **Stats:**  Percent of time Peltier junction is...
-  - **Heating (8)**
-  - **Cooling (9)**
+This is currently a **work in progress**.
 
 ## Components
+
+![Goldibox](images/goldibox_breadboard.png)
 
 The Goldibox is based on a portable fridge.  These use a [Peltier
 junction][wiki-peltier], which can be switched from a cooling element
@@ -90,6 +69,26 @@ intuitive screen.
 ![GUI mock-up](images/artists_vision.png)
 
 [qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
+
+## Time series graphs
+
+A sample time series graph with elements explained:
+
+![Time series graph](images/goldibox-logger.sample-1.png)
+
+- **Areas:**  The maximum/minimum temperature is set by the user
+  - **Red (1):**  Too hot
+  - **Blue (2):**  Too cold
+  - **Green (3):**  The "Goldilocks zone," just right
+- **Curves:**  Internal and external temperatures
+  - **Green (4):**  Internal temperature; Peltier junction off
+  - **Red (5):**  Internal temperature; Pealtier junction heating
+  - **Blue (not shown):**  Internal temperature; Pealtier junction
+    cooling
+  - **Black dashed (7):**  External temperature
+- **Stats:**  Percent of time Peltier junction is...
+  - **Heating (8)**
+  - **Cooling (9)**
 
 # Running
 
