@@ -1,9 +1,6 @@
 # ################################################
-# Setup
-# ################################################
-
-# ################
 # Settings comp
+# ################################################
 
 # Load userland comp
 loadusr -Wn goldibox-settings ./goldibox-settings.py
@@ -15,8 +12,9 @@ net enable                          => goldibox-settings.enable
 net shutdown                        => goldibox-settings.shutdown
 
 
-# ################
+# ################################################
 # Goldibox comp
+# ################################################
 
 # Load userland comp
 loadusr -Wn goldibox-control ./goldibox-control.py
@@ -43,8 +41,9 @@ net switch-heat                     <= goldibox-control.switch-heat
 net error                           <= goldibox-control.error
 
 
-# ################
+# ################################################
 # Peltier and fan out signals
+# ################################################
 
 # LUTs for on/off switch and heat/cool selector logic
 newinst lut5 heat-on
@@ -79,9 +78,10 @@ net switch-heat                     => cool-on.in-0
 net cool-on                         <= cool-on.out
 
 
-# ################
+# ################################################
 # LED out signals
-#
+# ################################################
+
 # These can be used for additional interesting things someday
 
 # - Heat LED (red)
@@ -103,8 +103,9 @@ net enable                          => led-status-xor.in0
 net led-status                      <= led-status-xor.out
 
 
-# ################
+# ################################################
 # Logger comp
+# ################################################
 
 # Load userland comp
 loadusr -Wn goldibox-logger ./goldibox-logger.py
@@ -124,8 +125,9 @@ net cool-on                         => goldibox-logger.heat
 net shutdown                        => goldibox-logger.shutdown
 
 
-# ################
+# ################################################
 # HAL remote component
+# ################################################
 
 # - Inputs
 net enable                          <= goldibox-remote.enable
@@ -149,6 +151,6 @@ net temp-ext                        => goldibox-remote.temp-ext
 # Start threads
 start
 
-# start haltalk server after everything is initialized
-# else binding the remote components on the UI might fail
+# Start haltalk server after everything is initialized or binding the
+# remote components on the UI might fail
 loadusr -W haltalk
