@@ -36,20 +36,18 @@ loadrt hal_bb_gpio board=PocketBeagle output_pins=102,104,106,108,110,112,120
 addf bb_gpio.read                   main-thread
 addf bb_gpio.write                  main-thread
 
-# - Enable
-net enable                          => bb_gpio.p1.out-06
-
-# - Peltier heat/cool
+# - Peltier heat/cool/enable
 net cool-on                         => bb_gpio.p1.out-02
 net heat-on                         => bb_gpio.p1.out-04
+net enable                          => bb_gpio.p1.out-06
 
 # - Fan
 net switch-on                       => bb_gpio.p1.out-20
 
 # - LEDs
-net led-heat                        => bb_gpio.p1.out-08
-net led-status                      => bb_gpio.p1.out-10
-net led-cool                        => bb_gpio.p1.out-12
+net heat-on                         => bb_gpio.p1.out-08
+net enable                          => bb_gpio.p1.out-10
+net cool-on                         => bb_gpio.p1.out-12
 
 # ################################################
 # Load common HAL config

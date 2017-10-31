@@ -79,31 +79,6 @@ net cool-on                         <= cool-on.out
 
 
 # ################################################
-# LED out signals
-# ################################################
-
-# These can be used for additional interesting things someday
-
-# - Heat LED (red)
-newinst xor2 led-heat-xor
-addf led-heat-xor.funct             main-thread
-net heat-on                         => led-heat-xor.in0
-net led-heat                        <= led-heat-xor.out
-
-# - Cool LED (blue)
-newinst xor2 led-cool-xor
-addf led-cool-xor.funct             main-thread
-net cool-on                         => led-cool-xor.in0
-net led-cool                        <= led-cool-xor.out
-
-# - Status LED (green)
-newinst xor2 led-status-xor
-addf led-status-xor.funct           main-thread
-net enable                          => led-status-xor.in0
-net led-status                      <= led-status-xor.out
-
-
-# ################################################
 # Logger comp
 # ################################################
 
