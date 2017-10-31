@@ -8,6 +8,8 @@ import Machinekit.HalRemote 1.0
 HalApplicationWindow {
     id: main
     name: "goldibox-remote"
+    width: 500
+    height: 800
     color: "#000000"
     title: qsTr("Goldibox")
 
@@ -15,20 +17,16 @@ HalApplicationWindow {
         id: fridge_image
         width: 500
         height: 800
-        source: "../../images/logo-parts/fridge.svg"
+        source: "assets/fridge.svg"
     }
 
     ColumnLayout {
-        anchors.rightMargin: 93
-        anchors.bottomMargin: 66
-        anchors.leftMargin: 93
-        anchors.topMargin: 438
+        anchors.rightMargin: 83
+        anchors.bottomMargin: 48
+        anchors.leftMargin: 83
+        anchors.topMargin: 456
         anchors.fill: parent
         anchors.margins: 10
-
-        Item {
-            Layout.fillHeight: true
-        }
 
         RowLayout {
             id: shutdown_enable_row
@@ -120,6 +118,9 @@ HalApplicationWindow {
                 HalDial {
                     id: temp_max
                     name: "temp-max"
+                    decimals: 1
+                    minimumValue: 20
+                    maximumValue: 50
                 }
 
                 Label {
@@ -136,6 +137,9 @@ HalApplicationWindow {
                 HalDial {
                     id: temp_min
                     name: "temp-min"
+                    decimals: 1
+                    maximumValue: 50
+                    minimumValue: 20
                 }
 
                 Label {
@@ -152,6 +156,8 @@ HalApplicationWindow {
                 HalDial {
                     id: hysteresis
                     name: "hysteresis"
+                    decimals: 1
+                    maximumValue: 2
                     tickmarksEnabled: false
                 }
 
@@ -175,18 +181,24 @@ HalApplicationWindow {
             HalGauge {
                 id: temp_int
                 name: "temp-int"
+                radius: 3
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                prefix: ""
+                orientation: 1
                 Layout.fillWidth: true
             }
 
             HalGauge {
                 id: temp_ext
                 name: "temp-ext"
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 Layout.fillWidth: true
             }
 
             Label {
                 id: label
-                text: qsTr("Label")
+                text: qsTr("Temp int/ext")
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
         }
 
@@ -204,7 +216,7 @@ HalApplicationWindow {
         width: 380
         height: 279
         fillMode: Image.PreserveAspectFit
-        source: "../../images/logo-parts/locks.svg"
+        source: "assets/locks.svg"
     }
 }
 

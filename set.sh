@@ -18,7 +18,7 @@ elif test "$1" = siminc; then
     exit
 elif test "$1" = simset; then
     set -x
-    exec halcmd sets outside-temp $2
+    exec halcmd sets temp-ext $2
 fi
 
 min=$1

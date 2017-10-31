@@ -3,5 +3,7 @@
         <file>main.qml</file>
         <file>goldibox-remote/goldibox-remote.qml</file>
         <file>goldibox-remote/description.ini</file>
+        <file>goldibox-remote/assets/fridge.svg</file>
+        <file>goldibox-remote/assets/locks.svg</file>
     </qresource>
 </RCC>
