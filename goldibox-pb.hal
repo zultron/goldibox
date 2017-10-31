@@ -37,17 +37,17 @@ addf bb_gpio.read                   main-thread
 addf bb_gpio.write                  main-thread
 
 # - Peltier heat/cool/enable
-net cool-on                         => bb_gpio.p1.out-02
-net heat-on                         => bb_gpio.p1.out-04
+net heat-on                         => bb_gpio.p1.out-02
+net cool-on                         => bb_gpio.p1.out-04
 net enable                          => bb_gpio.p1.out-06
 
 # - Fan
 net switch-on                       => bb_gpio.p1.out-20
 
 # - LEDs
-net heat-on                         => bb_gpio.p1.out-08
+net cool-on                         => bb_gpio.p1.out-08
 net enable                          => bb_gpio.p1.out-10
-net cool-on                         => bb_gpio.p1.out-12
+net heat-on                         => bb_gpio.p1.out-12
 
 # ################################################
 # Load common HAL config
