@@ -20,7 +20,7 @@ ApplicationWindow {
         defaultTitle: "Goldibox"
         //autoSelectInstance: true
         autoSelectApplication: true
-        /* mode: "local" */
+        mode: "local"
         applications: [
             ApplicationDescription {
                 sourceDir: "qrc:/goldibox-remote/"
