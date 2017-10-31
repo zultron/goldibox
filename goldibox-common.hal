@@ -48,9 +48,9 @@ net error                           <= goldibox-control.error
 
 # LUTs for on/off switch and heat/cool selector logic
 newinst lut5 heat-on
-addf heat-on                        servo-thread
+addf heat-on                        main-thread
 newinst lut5 cool-on
-addf cool-on                        servo-thread
+addf cool-on                        main-thread
 
 # Peltier heat/cool LUT
 # http://linuxcnc.org/docs/devel/html/man/man9/lut5.9.html
@@ -86,19 +86,19 @@ net cool-on                         <= cool-on.out
 
 # - Heat LED (red)
 newinst xor2 led-heat-xor
-addf led-heat-xor.funct             servo-thread
+addf led-heat-xor.funct             main-thread
 net heat-on                         => led-heat-xor.in0
 net led-heat                        <= led-heat-xor.out
 
 # - Cool LED (blue)
 newinst xor2 led-cool-xor
-addf led-cool-xor.funct             servo-thread
+addf led-cool-xor.funct             main-thread
 net cool-on                         => led-cool-xor.in0
 net led-cool                        <= led-cool-xor.out
 
 # - Status LED (green)
 newinst xor2 led-status-xor
-addf led-status-xor.funct           servo-thread
+addf led-status-xor.funct           main-thread
 net enable                          => led-status-xor.in0
 net led-status                      <= led-status-xor.out
 
@@ -126,8 +126,6 @@ net shutdown                        => goldibox-logger.shutdown
 
 # ################
 # HAL remote component
-# loadusr -W build-goldibox-remote-Desktop-Debug/goldibox-remote
-loadusr -Wn goldibox-remote ./goldibox-remote.py
 
 # - Inputs
 net enable                          <= goldibox-remote.enable
@@ -142,6 +140,7 @@ net heat-on                         => goldibox-remote.p-heat
 net switch-heat                     => goldibox-remote.switch-heat
 net switch-on                       => goldibox-remote.switch-on
 net temp-int                        => goldibox-remote.temp-int
+net temp-ext                        => goldibox-remote.temp-ext
 
 
 # ################################################

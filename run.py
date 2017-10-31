@@ -62,6 +62,8 @@ try:
 
         # start Machinekit realtime environment
         launcher.start_realtime()
+        # load the remote comp HAL file
+        launcher.load_hal_file('goldibox-remote.py')
         # load the main HAL file
         launcher.load_hal_file('goldibox-%s.hal' % args.board)
 
@@ -72,12 +74,11 @@ try:
         launcher.ensure_mklauncher(debug=args.debug)
 
         if not args.no_config:
-            # start the configserver with Machineface an Cetus user interfaces
+            # start the configserver with Machineface
             launcher.start_process(
                 "exec configserver -n Goldibox%s %s ." % (
-                    'sim' if args.board == 'sim' else '',
+                    '-sim' if args.board == 'sim' else '',
                     '-d' if args.debug else ''))
-
     else:
 
         if args.halscope:

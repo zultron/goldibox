@@ -7,7 +7,7 @@ import Machinekit.HalRemote 1.0
 
 HalApplicationWindow {
     id: main
-    name: "goldibox"
+    name: "goldibox-remote"
     color: "#000000"
     title: qsTr("Goldibox")
 
@@ -43,9 +43,8 @@ HalApplicationWindow {
             }
 
 
-            HalLabel {
+            Label {
                 id: enable_label
-                name: "label"
                 text: qsTr("Enable")
             }
             HalButton {
@@ -61,9 +60,8 @@ HalApplicationWindow {
                 name: "error"
             }
 
-            HalLabel {
+            Label {
                 id: error_label
-                name: "label"
                 text: qsTr("Error")
             }
         }
@@ -103,9 +101,8 @@ HalApplicationWindow {
                 name: "switch-heat"
             }
 
-            HalLabel {
+            Label {
                 id: peltier_label
-                name: "label"
                 text: qsTr("Heat/Cool/On/HCSelect")
             }
         }
@@ -125,9 +122,8 @@ HalApplicationWindow {
                     name: "temp-max"
                 }
 
-                HalLabel {
+                Label {
                     id: temp_max_label
-                    name: ""
                     text: qsTr("Max")
                 }
             }
@@ -142,9 +138,8 @@ HalApplicationWindow {
                     name: "temp-min"
                 }
 
-                HalLabel {
+                Label {
                     id: temp_min_label
-                    name: "label"
                     text: qsTr("Min")
                 }
             }
@@ -160,9 +155,8 @@ HalApplicationWindow {
                     tickmarksEnabled: false
                 }
 
-                HalLabel {
+                Label {
                     id: hysteresis_label
-                    name: "label"
                     text: qsTr("Hyst")
                 }
             }
@@ -173,26 +167,25 @@ HalApplicationWindow {
         }
 
         ColumnLayout {
-            id: columnLayout
+            id: temp_col
             width: 100
             height: 100
             Layout.fillWidth: true
 
             HalGauge {
-                id: gaugeHorizontal
-                name: "gauge"
+                id: temp_int
+                name: "temp-int"
                 Layout.fillWidth: true
             }
 
             HalGauge {
-                id: gaugeHorizontal1
-                name: "gauge"
+                id: temp_ext
+                name: "temp-ext"
                 Layout.fillWidth: true
             }
 
-            HalLabel {
+            Label {
                 id: label
-                name: "label"
                 text: qsTr("Label")
             }
         }

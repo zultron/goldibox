@@ -19,6 +19,7 @@ rcomp.newpin('p-heat', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('switch-heat', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('switch-on', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('temp-int', hal.HAL_FLOAT, hal.HAL_IN)
+rcomp.newpin('temp-ext', hal.HAL_FLOAT, hal.HAL_IN)
 
 # Really we need to set everything from a pickle file
 # - Controls

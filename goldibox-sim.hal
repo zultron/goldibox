@@ -35,7 +35,7 @@ sets heat-cool-incr                 0.02
 # Threads
 
 # - One slow thread
-loadrt threads name1=servo-thread period1=10000000
+loadrt threads name1=main-thread period1=10000000
 
 
 # ################################################
@@ -44,9 +44,3 @@ loadrt threads name1=servo-thread period1=10000000
 
 source goldibox-common.hal
 
-
-# ################################################
-# RUN common HAL config
-# ################################################
-
-# source goldibox-common-run.hal
