@@ -1,9 +1,9 @@
-# qqvcp.sh script checks out things here
-/node/
-# Generated
+# Build artifacts
+/build*/
+/qml/goldibox-remote.pro.user
+*.pyc
 /pb_goldibox-00A0.dtbo
+# Run artifacts
+/goldibox.conf.yaml
 /goldibox-logger.*.png
 /goldibox-logger.rrd
-/goldibox.conf.yaml
-/build-goldibox-remote-Desktop-Debug
-/qml/goldibox-remote.pro.user
