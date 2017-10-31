@@ -84,8 +84,8 @@ try:
         # - If cool is on, decrease
         if p_heat:
             temp_base -= heat_cool_incr
-        # - Add  random number btw. -1 and 1 to simulate thermistor variance
-        newval = temp_base + random.triangular(-1,1,0)
+        # - Add  random number btw. -0.1 and 0.1 to simulate thermistor variance
+        newval = temp_base + random.triangular(-0.1,0.1,0)
 
         if i % 500 == 0:
             infomsg("Status:  outside=%.2f; value=%.2f(base %.2f);" %
