@@ -29,13 +29,26 @@ parser.add_argument(
     help='Enable debug mode', action='store_true')
 parser.add_argument(
     '-b', '--board',
-    help=('Select board: sim (default), or pb (PocketBeagle)'),
-    default='sim', choices=('sim','pb'))
+    help=('Select board: simulator, PocketBeagle or autodetect'),
+    default='detect', choices=('sim','pb','detect'))
 
 args = parser.parse_args()
 
 if args.debug:
     launcher.set_debug_level(5)
+
+if args.board == 'detect':
+    if os.getenv('GOLDIBOX_SIM',False):
+        args.board = 'sim'
+    elif os.path.exists('/proc/device-tree/model'):
+        with open('/proc/device-tree/model','r') as f:  m=f.read()
+        if 'PocketBeagle' in m:
+            args.board = 'pb'
+    if args.board == 'detect':
+        parser.print_help()
+        sys.stderr.write(
+            "Error:  Unable to detect board; please specify the '-b' option\n")
+        sys.exit(1)
 
 if 'MACHINEKIT_INI' not in os.environ:  # export for package installs
     mkconfig = config.Config()
