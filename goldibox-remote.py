@@ -29,7 +29,3 @@ rcomp.pin('temp-min').set(15.0)
 rcomp.pin('hysteresis').set(2.0)
 
 rcomp.ready()
-
-# start haltalk server after everything is initialized
-# else binding the remote components on the UI might fail
-hal.loadusr('haltalk')

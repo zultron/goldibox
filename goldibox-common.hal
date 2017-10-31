@@ -143,3 +143,14 @@ net switch-heat                     => goldibox-remote.switch-heat
 net switch-on                       => goldibox-remote.switch-on
 net temp-int                        => goldibox-remote.temp-int
 
+
+# ################################################
+# Run
+# ################################################
+
+# Start threads
+start
+
+# start haltalk server after everything is initialized
+# else binding the remote components on the UI might fail
+loadusr -W haltalk
