@@ -19,6 +19,8 @@ h.newpin("temp-ext", hal.HAL_FLOAT, hal.HAL_IN)
 h.newpin("temp-ext-incr", hal.HAL_FLOAT, hal.HAL_IN)
 # - Incremental increase/decrease when heat/cool applied
 h.newpin("heat-cool-incr", hal.HAL_FLOAT, hal.HAL_IN)
+# - Exit
+h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
 
 # Outputs:  
 # - Simulated temp
@@ -31,7 +33,7 @@ h['value'] = 20 # Room temp
 h['error'] = 0
 
 def infomsg(msg):
-    sys.stderr.write("%s Sim temp:  %s\n" %
+    sys.stderr.write("%s Goldibox sim-temp:  %s\n" %
                      (str(datetime.datetime.now()), msg))
 
 # Mark the component as 'ready'
@@ -56,6 +58,13 @@ try:
         temp_ext = h['temp-ext']
         temp_ext_incr = h['temp-ext-incr']
         heat_cool_incr = h['heat-cool-incr']
+        # - Shutdown
+        shutdown = h['shutdown']
+
+        # Exit
+        if shutdown:
+            infomsg("Got shutdown signal")
+            break
 
         # Do some sanity checks
         err = 0
@@ -99,4 +108,5 @@ except KeyboardInterrupt:
     infomsg("Exiting")
     sys.exit(0)
 
-
+infomsg("Exiting")
+sys.exit(0)

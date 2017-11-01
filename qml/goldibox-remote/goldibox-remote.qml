@@ -58,7 +58,8 @@ HalApplicationWindow {
                 id: shutdown_button
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 name: "shutdown"
-                text: "Shut down Goldibox"
+                text: "Shut down"
+                tooltip: "Shut down Goldibox control"
             }
         }
 

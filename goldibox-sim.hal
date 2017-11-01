@@ -26,6 +26,8 @@ net temp-ext                        => sim-temp.temp-ext
 # - Effect of external temp and heat/cool on inside temp; adjustable
 net temp-ext-incr                   => sim-temp.temp-ext-incr
 net heat-cool-incr                  => sim-temp.heat-cool-incr
+# - Shutdown
+net shutdown                        => sim-temp.shutdown
 
 # ################
 # Threads

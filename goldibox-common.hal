@@ -101,12 +101,28 @@ net shutdown                        => goldibox-logger.shutdown
 
 
 # ################################################
+# Shutdown plumbing
+# ################################################
+
+# Latch the momentary shutdown button to a shutdown signal
+newinst or2 shutdown
+addf shutdown                       main-thread
+
+# Shutdown latch
+net shutdown                        <= shutdown.out
+net shutdown                        => shutdown.in0
+net shutdown-button                 => shutdown.in1
+
+# Signal run.py
+net shutdown                        => goldibox-run.shutdown
+
+# ################################################
 # HAL remote component
 # ################################################
 
 # - Inputs
 net enable                          <= goldibox-remote.enable
-net shutdown                        <= goldibox-remote.shutdown
+net shutdown-button                 <= goldibox-remote.shutdown
 net temp-max                        <= goldibox-remote.temp-max
 net temp-min                        <= goldibox-remote.temp-min
 

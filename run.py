@@ -4,9 +4,10 @@ import sys
 import os
 import subprocess
 import argparse
-import time
+import time, datetime
 from machinekit import launcher
 from machinekit import config
+import hal
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -32,6 +33,10 @@ parser.add_argument(
     help=('Select board: simulator, PocketBeagle or autodetect'),
     default='detect', choices=('sim','pb','detect'))
 
+def infomsg(msg):
+    sys.stderr.write("%s Goldibox run:  %s\n" %
+                     (str(datetime.datetime.now()), msg))
+
 args = parser.parse_args()
 
 if args.debug:
@@ -54,6 +59,7 @@ if 'MACHINEKIT_INI' not in os.environ:  # export for package installs
     mkconfig = config.Config()
     os.environ['MACHINEKIT_INI'] = mkconfig.MACHINEKIT_INI
 
+exit_status = 0
 try:
     if not args.run:
         if args.board == 'sim':
@@ -77,6 +83,13 @@ try:
 
         # start Machinekit realtime environment
         launcher.start_realtime()
+
+        # Create component to receive shutdown signal
+        h = hal.component("goldibox-run", timer=100)
+        h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
+        h.ready()
+        infomsg("HAL comp initialized")
+
         # load the remote comp HAL file
         launcher.load_hal_file('goldibox-remote.py')
         # load the main HAL file
@@ -105,13 +118,19 @@ try:
             launcher.start_process('halmeter')
 
     while True:
+        if h['shutdown']:
+            infomsg("Got shutdown signal")
+            break
         launcher.check_processes()
         time.sleep(1)
 
 except subprocess.CalledProcessError as e:
     sys.stderr.write("Subprocess error:  %s\n" % e)
-    if not args.run:
-        launcher.end_session()
-    sys.exit(1)
+    exit_status = 1
 
-sys.exit(0)
+if not args.run:
+    time.sleep(1) # Let other comps do their stuff & exit
+    launcher.end_session()
+    
+infomsg("Exiting status %d" % exit_status)
+sys.exit(exit_status)
