@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import hal, time, sys, datetime
+import hal, time, sys, datetime, yaml
+persist_fname = "goldibox.conf.yaml"
 
 # Set up component
 h = hal.component("goldibox-control")
@@ -96,12 +97,16 @@ while True:
             infomsg("Turning off; internal temp %.1f" % temp_int)
         h['switch-on'] = 0
 
+# Save settings
+infomsg("Saving settings")
+with open(persist_fname, 'w') as f:
+    yaml.dump(
+        dict(temp_min = temp_min,
+             temp_max = temp_max,
+             enable = enable,
+        ), f)
 
-
+# Shut things off and exit
 infomsg("Exiting")
-
-# Shut things off
 h['switch-on'] = 0
-
-# Exit
 sys.exit(0)

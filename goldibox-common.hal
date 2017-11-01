@@ -1,18 +1,4 @@
 # ################################################
-# Settings comp
-# ################################################
-
-# Load userland comp
-loadusr -Wn goldibox-settings ./goldibox-settings.py
-
-# Inputs
-net temp-min                        => goldibox-settings.temp-min
-net temp-max                        => goldibox-settings.temp-max
-net enable                          => goldibox-settings.enable
-net shutdown                        => goldibox-settings.shutdown
-
-
-# ################################################
 # Goldibox comp
 # ################################################
 

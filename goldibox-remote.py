@@ -1,9 +1,15 @@
 #!/usr/bin/python
 from machinekit import hal
+import sys, datetime, yaml, os
+persist_fname = "goldibox.conf.yaml"
+
+def infomsg(msg):
+    sys.stderr.write("%s Goldibox remote:  %s\n" %
+                     (str(datetime.datetime.now()), msg))
+
 
 # create remote component
 rcomp = hal.RemoteComponent('goldibox-remote', timer=100)
-
 
 # Controls
 rcomp.newpin('enable', hal.HAL_BIT, hal.HAL_OUT)
@@ -19,11 +25,22 @@ rcomp.newpin('switch-on', hal.HAL_BIT, hal.HAL_IN)
 rcomp.newpin('temp-int', hal.HAL_FLOAT, hal.HAL_IN)
 rcomp.newpin('temp-ext', hal.HAL_FLOAT, hal.HAL_IN)
 
-# Really we need to set everything from a pickle file
-# - Controls
-rcomp.pin('enable').set(1)
-rcomp.pin('shutdown').set(0)
-rcomp.pin('temp-max').set(30.0)
-rcomp.pin('temp-min').set(15.0)
-
 rcomp.ready()
+infomsg("Initialized")
+
+# Restore settings
+# - Load pickle file
+if os.path.exists(persist_fname):
+    with open(persist_fname, 'r') as f:
+        data = yaml.load(f)
+else:
+    data = dict(min_temp=0.0, max_temp=0.0, enable=0)
+# - Set controls
+rcomp.pin('shutdown').set(0)
+for pin, key in (('temp-min', 'temp_min'),
+                 ('temp-max', 'temp_max'),
+                 ('enable', 'enable')):
+    if key in data:
+        infomsg("Restoring setting %s = %s" % (pin,data[key]))
+        rcomp.pin(pin).set(data[key])
+
