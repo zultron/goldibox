@@ -14,13 +14,17 @@ HalApplicationWindow {
     title: qsTr("Goldibox")
 
     BorderImage {
-        id: fridge_image
+        id: background
+        x: 0
+        y: 0
         width: 500
         height: 800
-        source: "assets/fridge.svg"
+        source: "assets/background.png"
     }
 
     ColumnLayout {
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 50
         anchors.top: locks_image.bottom
         anchors.topMargin: 0
         anchors.leftMargin: 100
@@ -75,8 +79,8 @@ HalApplicationWindow {
                     name: "temp-min"
                     suffix: "°C"
                     decimals: 1
-                    maximumValue: 50
-                    minimumValue: 20
+                    maximumValue: 40
+                    minimumValue: 0
                 }
 
                 Label {
@@ -94,7 +98,7 @@ HalApplicationWindow {
                     name: "temp-max"
                     suffix: "°C"
                     decimals: 1
-                    minimumValue: 20
+                    minimumValue: 10
                     maximumValue: 50
                 }
 
@@ -218,16 +222,6 @@ HalApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
         }
-    }
-
-    Image {
-        id: locks_image
-        x: 60
-        y: 215
-        width: 380
-        height: 279
-        fillMode: Image.PreserveAspectFit
-        source: "assets/locks.svg"
     }
 }
 
