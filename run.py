@@ -106,7 +106,7 @@ try:
         if not args.no_config:
             # start the configserver with Machineface
             launcher.start_process(
-                "exec configserver -n Goldibox%s %s ." % (
+                "configserver -n Goldibox%s %s ." % (
                     '-sim' if args.board == 'sim' else '',
                     '-d' if args.debug else ''))
     else:
@@ -130,6 +130,7 @@ except subprocess.CalledProcessError as e:
 
 if not args.run:
     time.sleep(1) # Let other comps do their stuff & exit
+    infomsg("Ending session")
     launcher.end_session()
     
 infomsg("Exiting status %d" % exit_status)

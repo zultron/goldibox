@@ -8,39 +8,37 @@ def infomsg(msg):
                      (str(datetime.datetime.now()), msg))
 
 
-# create remote component
+# Read saved settings
+if os.path.exists(persist_fname):
+    with open(persist_fname, 'r') as f:
+        saved_state = yaml.load(f)
+
+# Create remote component
 rcomp = hal.RemoteComponent('goldibox-remote', timer=100)
 
-# Controls
-rcomp.newpin('enable', hal.HAL_BIT, hal.HAL_OUT)
-rcomp.newpin('shutdown', hal.HAL_BIT, hal.HAL_OUT)
-rcomp.newpin('temp-max', hal.HAL_FLOAT, hal.HAL_OUT)
-rcomp.newpin('temp-min', hal.HAL_FLOAT, hal.HAL_OUT)
+# Pin creation data
+data = [
+    # Controls
+    ('enable', hal.HAL_BIT, hal.HAL_OUT),
+    ('shutdown-button', hal.HAL_BIT, hal.HAL_OUT),
+    ('temp-max', hal.HAL_FLOAT, hal.HAL_OUT),
+    ('temp-min', hal.HAL_FLOAT, hal.HAL_OUT),
+    # Readouts
+    ('error', hal.HAL_BIT, hal.HAL_IN),
+    ('cool-on', hal.HAL_BIT, hal.HAL_IN),
+    ('heat-on', hal.HAL_BIT, hal.HAL_IN),
+    ('switch-on', hal.HAL_BIT, hal.HAL_IN),
+    ('temp-int', hal.HAL_FLOAT, hal.HAL_IN),
+    ('temp-ext', hal.HAL_FLOAT, hal.HAL_IN),
+]
 
-# Readouts
-rcomp.newpin('error', hal.HAL_BIT, hal.HAL_IN)
-rcomp.newpin('p-cool', hal.HAL_BIT, hal.HAL_IN)
-rcomp.newpin('p-heat', hal.HAL_BIT, hal.HAL_IN)
-rcomp.newpin('switch-on', hal.HAL_BIT, hal.HAL_IN)
-rcomp.newpin('temp-int', hal.HAL_FLOAT, hal.HAL_IN)
-rcomp.newpin('temp-ext', hal.HAL_FLOAT, hal.HAL_IN)
+for name, hal_type, hal_dir in data:
+    pin = rcomp.newpin(name, hal_type, hal_dir)
+    if name in saved_state:
+        pin.set(saved_state[name])
+        infomsg("Restored setting %s = %s" % (name,pin.get()))
+    sig = hal.newsig(name, hal_type)
+    pin.link(sig)
 
 rcomp.ready()
 infomsg("Initialized")
-
-# Restore settings
-# - Load pickle file
-if os.path.exists(persist_fname):
-    with open(persist_fname, 'r') as f:
-        data = yaml.load(f)
-else:
-    data = dict(min_temp=0.0, max_temp=0.0, enable=0)
-# - Set controls
-rcomp.pin('shutdown').set(0)
-for pin, key in (('temp-min', 'temp_min'),
-                 ('temp-max', 'temp_max'),
-                 ('enable', 'enable')):
-    if key in data:
-        infomsg("Restoring setting %s = %s" % (pin,data[key]))
-        rcomp.pin(pin).set(data[key])
-

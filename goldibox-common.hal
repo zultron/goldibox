@@ -16,7 +16,6 @@ net hysteresis                      => goldibox-control.hysteresis
 net enable                          => goldibox-control.enable
 # - Shut down
 net shutdown                        => goldibox-control.shutdown
-sets shutdown 0
 
 # Outputs
 # - On/off switch
@@ -101,25 +100,6 @@ net shutdown-button                 => shutdown.in1
 
 # Signal run.py
 net shutdown                        => goldibox-run.shutdown
-
-# ################################################
-# HAL remote component
-# ################################################
-
-# - Inputs
-net enable                          <= goldibox-remote.enable
-net shutdown-button                 <= goldibox-remote.shutdown
-net temp-max                        <= goldibox-remote.temp-max
-net temp-min                        <= goldibox-remote.temp-min
-
-# - Outputs
-net error                           => goldibox-remote.error
-net cool-on                         => goldibox-remote.p-cool
-net heat-on                         => goldibox-remote.p-heat
-net switch-on                       => goldibox-remote.switch-on
-net temp-int                        => goldibox-remote.temp-int
-net temp-ext                        => goldibox-remote.temp-ext
-
 
 # ################################################
 # Run

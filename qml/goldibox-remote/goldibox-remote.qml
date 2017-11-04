@@ -57,7 +57,7 @@ HalApplicationWindow {
             HalButton {
                 id: shutdown_button
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                name: "shutdown"
+                name: "shutdown-button"
                 text: "Shut down"
                 tooltip: "Shut down Goldibox control"
             }
@@ -120,9 +120,9 @@ HalApplicationWindow {
                     height: 100
 
                     HalLed {
-                        id: p_heat
+                        id: heat_on
                         Layout.alignment: Layout.Center
-                        name: "p-heat"
+                        name: "heat-on"
                         onColor: qsTr("#ff0000")
                     }
 
@@ -138,9 +138,9 @@ HalApplicationWindow {
                     height: 100
 
                     HalLed {
-                        id: p_cool
+                        id: cool_on
                         Layout.alignment: Layout.Center
-                        name: "p-cool"
+                        name: "cool-on"
                         onColor: "#0000ff"
                     }
 

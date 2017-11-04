@@ -100,11 +100,11 @@ while True:
 # Save settings
 infomsg("Saving settings")
 with open(persist_fname, 'w') as f:
-    yaml.dump(
-        dict(temp_min = temp_min,
-             temp_max = temp_max,
-             enable = enable,
-        ), f)
+    yaml.dump({
+        'temp-min' : temp_min,
+        'temp-max' : temp_max,
+        'enable' : enable,
+    }, f)
 
 # Shut things off and exit
 infomsg("Exiting")

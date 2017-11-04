@@ -8,8 +8,8 @@ h = hal.component("sim-temp", timer=100)
 # Inputs:
 # - Peltier junction signals
 h.newpin("p-enable", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("p-heat", hal.HAL_BIT, hal.HAL_IN)
-h.newpin("p-cool", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("heat-on", hal.HAL_BIT, hal.HAL_IN)
+h.newpin("cool-on", hal.HAL_BIT, hal.HAL_IN)
 # - Fan signals
 h.newpin("f-enable", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("f-on", hal.HAL_BIT, hal.HAL_IN)
@@ -50,8 +50,8 @@ try:
         # Take one sample for consistency
         # - Goldibox comp inputs
         p_enable = h['p-enable']
-        p_heat = h['p-heat']
-        p_cool = h['p-cool']
+        heat_on = h['heat-on']
+        cool_on = h['cool-on']
         f_enable = h['f-enable']
         f_on = h['f-on']
         # - User-defined inputs
@@ -68,14 +68,14 @@ try:
 
         # Do some sanity checks
         err = 0
-        if p_heat and p_cool:
-            infomsg("Error:  p-heat and p-cool")
+        if heat_on and cool_on:
+            infomsg("Error:  heat-on and cool-on")
             err = 1
-        if p_heat and not f_on:
-            infomsg("Error:  p-heat but not f-on")
+        if heat_on and not f_on:
+            infomsg("Error:  heat-on but not f-on")
             err = 1
-        if p_cool and not f_on:
-            infomsg("Error:  p-cool but not f-on")
+        if cool_on and not f_on:
+            infomsg("Error:  cool-on but not f-on")
             err = 1
         if h['error'] and not err:
             infomsg("Error condition cleared")
@@ -88,10 +88,10 @@ try:
         else:
             temp_base -= temp_ext_incr
         # - If heat is on, increase
-        if p_cool:
+        if cool_on:
             temp_base -= heat_cool_incr
         # - If cool is on, decrease
-        if p_heat:
+        if heat_on:
             temp_base += heat_cool_incr
         # - Add  random number btw. -0.1 and 0.1 to simulate thermistor variance
         newval = temp_base + random.triangular(-0.1,0.1,0)
@@ -100,7 +100,7 @@ try:
             infomsg("Status:  ext=%.2f; value=%.2f(base %.2f);" %
                     (temp_ext, newval, temp_base))
             infomsg("         cool=%d; heat=%d, fan=%d" %
-                    (p_heat, p_cool, f_on))
+                    (heat_on, cool_on, f_on))
 
         h['value'] = newval
 

@@ -17,8 +17,8 @@ net temp-int                        <= sim-temp.value
 # - Enable
 net enable                          => sim-temp.p-enable
 # - Peltier
-net heat-on                         => sim-temp.p-heat
-net cool-on                         => sim-temp.p-cool
+net heat-on                         => sim-temp.heat-on
+net cool-on                         => sim-temp.cool-on
 # - Fan
 net switch-on                       => sim-temp.f-on
 # - Simulated external temp
