@@ -9,9 +9,11 @@ usage() {
     {
 	test -z "$ERRMSG" || echo "ERROR:  $ERRMSG"
 	echo "Usage:"
-	echo "    $0 build             Build the Docker container image"
+	echo "    $0 -b                Build the Docker container image"
 	echo "    $0                   Run interactive shell in container"
 	echo "    $0 CMD [ ARGS ... ]  Run CMD in container"
+	echo "    $0 -h                Use host networking" \
+	     "(service visible externally)"
     } >&2
     if test -z "$ERRMSG"; then
 	exit
@@ -19,6 +21,19 @@ usage() {
 	exit 1
     fi
 }
+
+while getopts bh? ARG; do
+    case $ARG in
+	b) BUILD=true ;;
+	h) NETWORK_ARGS="--hostname=$(hostname) --net=host" ;;
+	i) IMAGE=$OPTARG ;;
+	?) usage ;;
+	*) usage "Unknown arg: '-$ARG'" ;;
+    esac
+done
+shift $(($OPTIND-1))
+BUILD=${BUILD:-false}
+NETWORK_ARGS=${NETWORK_ARGS:-"--hostname=qqvcp"}
 
 run() {
     UID_GID=`id -u`:`id -g`
@@ -35,7 +50,8 @@ run() {
 	 -e DISPLAY \
 	 -e DEBUG \
 	 -e MSGD_OPTS \
-	 -h ${NAME} --name ${NAME} \
+	 ${NETWORK_ARGS} \
+	 --name ${NAME} \
 	 ${IMAGE} "$@"
 }
 
