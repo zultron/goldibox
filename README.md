@@ -125,6 +125,9 @@ boot:
     sudo systemctl enable goldibox
     sudo systemctl start goldibox
 
+If the `apache2` package is installed and the web server is running,
+the time-series graphs will be visible at  `http://$IP/goldibox/`
+
 [machinekit.io]: http://machinekit.io
 [qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
 [mkclient-dl]: https://bintray.com/machinekoder/MachinekitClient-Development/MachinekitClient_Development-Linux-master-x64/#files/

@@ -69,6 +69,17 @@ $(patsubst %,$(SHARE_DIR)/%,$(SHARE_FILES)): $(SHARE_DIR)/%: %
 	@mkdir -p $(dir $@)
 	install -m 644 $< $@
 
+/etc/apache2/conf-available/goldibox.conf: templates/apache.conf
+	@mkdir -p $(dir $@)
+	sed < $< > $@ \
+	    -e 's,@VAR_DIR@,$(VAR_DIR),'
+	ln -sf ../conf-available/goldibox.conf \
+	    /etc/apache2/conf-enabled/goldibox.conf
+
+$(VAR_DIR)/graphs/index.html: templates/index.html $(VAR_DIR)/saved_state.yaml
+	@install -d -o $(USER) $(dir $@)
+	cp $< $@
+
 $(VAR_DIR)/saved_state.yaml:
 	install -d -o $(USER) $(VAR_DIR)
 	touch $(VAR_DIR)/saved_state.yaml
@@ -109,7 +120,9 @@ ALL_FILES += \
 	$(ETC_DIR)/config.yaml \
 	$(ETC_DIR)/overlay-pb.bbio \
 	$(VAR_DIR)/saved_state.yaml \
-	/etc/systemd/system/goldibox.service
+	/etc/systemd/system/goldibox.service \
+	/etc/apache2/conf-available/goldibox.conf \
+	$(VAR_DIR)/graphs/index.html
 
 install: add_user $(ALL_FILES)
 
