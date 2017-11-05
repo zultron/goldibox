@@ -60,13 +60,12 @@ custom-crimped connectors improve appearance.
 
 # Remote interface
 
-A remote interface using Alexander Rössler's [QtQuickVCP][qqvcp] is
-under development.  Here is a mock-up of the desired interface.  It is
-intended to get the most important controls and readouts, the
-time-series graphs, and of course the logo all on one simple,
-intuitive screen.
+A basic remote graphical interface using Alexander Rössler's
+[QtQuickVCP][qqvcp] is now working.  Here is a screen capture.  The
+time-series graphs are yet to be integrated in, and there are
+currently issues with running it on different sized screens.
 
-![GUI mock-up](images/artists_vision.png)
+![GUI mock-up](images/gui-capture.png)
 
 [qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
 
