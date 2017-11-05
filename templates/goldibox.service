@@ -1,0 +1,9 @@
+[Unit]
+Description=Start the Goldibox
+After=syslog.target network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/goldibox -c /etc/goldibox/config.yaml
+User=@USER@
+[Install]
+WantedBy=multi-user.target

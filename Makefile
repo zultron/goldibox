@@ -82,6 +82,11 @@ $(ETC_DIR)/config.yaml: templates/config.yaml
 	    -e 's,@ETC_DIR@,$(ETC_DIR),' \
 	    -e 's,@SHARE_DIR@,$(SHARE_DIR),'
 
+/etc/systemd/system/goldibox.service: templates/goldibox.service
+	sed < $< > $@ \
+	    -e 's,@USER@,$(USER),'
+	ln -sf $@ /lib/systemd/goldibox.service
+
 ALL_FILES = \
 	$(patsubst %,$(HAL_DIR)/%,$(HAL_FILES)) \
 	$(patsubst %,$(PYTHON_DIR)/%,$(PYTHON_FILES)) \
@@ -89,8 +94,8 @@ ALL_FILES = \
 	$(patsubst %,$(SHARE_DIR)/%,$(SHARE_FILES)) \
 	$(ETC_DIR)/config.yaml \
 	$(ETC_DIR)/overlay-pb.bbio \
-	$(VAR_DIR)/saved_state.yaml
-
+	$(VAR_DIR)/saved_state.yaml \
+	/etc/systemd/system/goldibox.service
 
 install: add_user $(ALL_FILES)
 
@@ -99,7 +104,6 @@ uninstall:
 	    echo "Removing $$i"; \
 	    rm -f $$i; \
 	done
-
 
 
 .PHONY: build
