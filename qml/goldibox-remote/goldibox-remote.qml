@@ -75,9 +75,11 @@ HalApplicationWindow {
                 width: 100
                 height: 100
 
-                HalDial {
+                HalKnob {
                     id: temp_min
                     name: "temp-min"
+                    width: 120
+                    height: 120
                     suffix: "°C"
                     decimals: 1
                     maximumValue: 40
@@ -94,11 +96,13 @@ HalApplicationWindow {
                 width: 100
                 height: 100
 
-                HalDial {
+                HalKnob {
                     id: temp_max
                     name: "temp-max"
                     suffix: "°C"
                     decimals: 1
+                    width: 120
+                    height: 120
                     minimumValue: 10
                     maximumValue: 50
                 }
