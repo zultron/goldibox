@@ -25,6 +25,11 @@ h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
 msg = Messages('Goldibox logger')
 config = Config()
 rrd_dir = os.path.dirname(config.rrd_file)
+rrd_image_dir = config.rrd_image_dir
+if not os.path.isdir(rrd_dir):
+    os.mkdir(rrd_dir)
+if not os.path.isdir(rrd_image_dir):
+    os.mkdir(rrd_image_dir)
 msg.info("Changing to RRD directory '%s'" % rrd_dir)
 os.chdir(rrd_dir)
 rrdtool_db = os.path.basename(config.rrd_file)
@@ -110,7 +115,7 @@ while True:
             # DEF: https://oss.oetiker.ch/rrdtool/doc/rrdgraph_data.en.html
             # LINE: https://oss.oetiker.ch/rrdtool/doc/rrdgraph_graph.en.html
             rrdtool_graph = os.path.join(
-                config.rrd_image_dir, rrdtool_graph_pat % sched)
+                rrd_image_dir, rrdtool_graph_pat % sched)
             ret = rrdtool.graph(
                 rrdtool_graph,
                 "--start=-1%s" % period,

@@ -8,7 +8,7 @@ class Config(object):
     default_base_name = 'config.yaml'
     default_state_file = 'saved_state.yaml'
     default_rrd_file = 'logger.rrd'
-    default_rrd_image_dir = 'rrd_images'
+    default_rrd_image_dir = 'rrd'
     default_pb_bbio_file = 'etc/overlay-pb.bbio'
     default_share_dir = '.'
 
