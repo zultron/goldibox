@@ -100,7 +100,7 @@ repository directory.
 
 On the PocketBeagle, start the Goldibox control from the command line:
 
-    ./run.py -b pb
+    bin/goldibox
 
 The Goldibox should now be ready for control.  Start the
 [MachinekitClient][qqvcp] and open the Goldibox app.
@@ -112,7 +112,7 @@ MachinekitClient build][mkclient-dl], then:
     # Start the container
     docker/qqvcp.sh
     # Start control in sim mode
-    ./run.py -b sim &
+    bin/goldibox -b sim &
     # Start GUI
     MachinekitClient &
 
