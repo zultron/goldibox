@@ -7,8 +7,16 @@ import argparse
 import time, datetime
 from machinekit import launcher
 from machinekit import config
-from goldibox import Config, ConfigError, Messages
 import hal
+try:
+    from goldibox import Config, ConfigError, Messages
+except ImportError as e:
+    # If running from the git tree, try adding the lib path
+    path = os.path.join(os.path.dirname(__file__),'..','lib','python')
+    sys.path.append(path)
+    from goldibox import Config, ConfigError, Messages
+    # worked; export this for user comps
+    os.environ['PYTHONPATH'] = path
 
 parser = argparse.ArgumentParser(
     description='Start the Goldibox')
