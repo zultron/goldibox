@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
-rrdtool_db = "goldibox-logger.rrd"
 rrdtool_graph_pat = "goldibox-logger.%s.png" # Fill with period, e.g. 'daily'
 rrdtool_period = 60 # Seconds between updates
 
 import rrdtool, hal, time, sys, os, datetime
+from goldibox import Config, Messages
 
 # Set up component
 h = hal.component("goldibox-logger")
@@ -22,9 +22,13 @@ h.newpin("heat", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("cool", hal.HAL_BIT, hal.HAL_IN)
 h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
 
-def infomsg(msg):
-    sys.stderr.write("%s Goldibox logger:  %s\n" %
-                     (str(datetime.datetime.now()), msg))
+msg = Messages('Goldibox logger')
+config = Config()
+rrd_dir = os.path.dirname(config.rrd_file)
+msg.info("Changing to RRD directory '%s'" % rrd_dir)
+os.chdir(rrd_dir)
+rrdtool_db = os.path.basename(config.rrd_file)
+msg.info("RRD file '%s'" % rrdtool_db)
 
 # RRD archive parameters
 archives = dict(
@@ -39,6 +43,7 @@ archives = dict(
 # Init rrdtool database
 # https://oss.oetiker.ch/rrdtool/doc/rrdcreate.en.html
 if not os.path.exists(rrdtool_db):
+    msg.info("Creating RRD database in %s" % rrdtool_db)
     rrdtool.create(
         rrdtool_db,
         "--start=0",
@@ -60,7 +65,7 @@ last_sample = time.time()
 sample_periods = 0
 
 # Mark the component as 'ready'
-infomsg("Initialized")
+msg.info("Initialized")
 h.ready()
 
 while True:
@@ -82,7 +87,7 @@ while True:
 
     # Exit
     if shutdown:
-        infomsg("Got shutdown signal = %s" % shutdown)
+        msg.info("Got shutdown signal = %s" % shutdown)
         break
 
     # Log
@@ -104,7 +109,8 @@ while True:
             # graph(): https://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html
             # DEF: https://oss.oetiker.ch/rrdtool/doc/rrdgraph_data.en.html
             # LINE: https://oss.oetiker.ch/rrdtool/doc/rrdgraph_graph.en.html
-            rrdtool_graph = rrdtool_graph_pat % sched
+            rrdtool_graph = os.path.join(
+                config.rrd_image_dir, rrdtool_graph_pat % sched)
             ret = rrdtool.graph(
                 rrdtool_graph,
                 "--start=-1%s" % period,
@@ -164,7 +170,7 @@ while True:
                 "CDEF:cool-pct=cool-avg,100,*",
                 "GPRINT:cool-pct:AVERAGE:Pct time cool %2.1lf%% ",
             )
-        infomsg("Updated RRD DB %s" % rrdtool_db)
+        msg.info("Updated RRD DB %s" % rrdtool_db)
         # - Reset state for next sample
         last_sample = now
         sample_periods = 0
@@ -172,5 +178,5 @@ while True:
 
     sample_periods += 1
 
-infomsg("Exiting")
+msg.info("Exiting")
 sys.exit(0)

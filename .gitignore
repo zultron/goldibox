@@ -4,6 +4,5 @@
 *.pyc
 /pb_goldibox-00A0.dtbo
 # Run artifacts
-/goldibox.conf.yaml
-/goldibox-logger.*.png
-/goldibox-logger.rrd
+/saved_state.yaml
+/rrd/

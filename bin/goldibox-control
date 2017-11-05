@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import hal, time, sys, datetime, yaml
-persist_fname = "goldibox.conf.yaml"
+from goldibox import Config, Messages
 
 # Set up component
 h = hal.component("goldibox-control")
@@ -31,12 +31,10 @@ h['error'] = 0
 h['switch-on'] = 0
 h['switch-heat'] = 0
 
-def infomsg(msg):
-    sys.stderr.write("%s Goldibox control:  %s\n" %
-                     (str(datetime.datetime.now()), msg))
+msg = Messages('Goldibox control')
 
 # Mark the component as 'ready'
-infomsg("Initialized")
+msg.info("Initialized")
 h.ready()
 
 while True:
@@ -52,24 +50,24 @@ while True:
     
     # Exit
     if shutdown:
-        infomsg("Got shutdown signal = %s" % shutdown)
+        msg.info("Got shutdown signal = %s" % shutdown)
         break
 
     # Error condition:  temp-max <= temp-min
     if (temp_max <= temp_min) or (hysteresis < 0) or (not enable):
         if not h['error']:
             if temp_max <= temp_min:
-                infomsg("ERROR:  temp_max <= temp_min")
+                msg.info("ERROR:  temp_max <= temp_min")
             if hysteresis < 0:
-                infomsg("ERROR:  hysteresis < 0")
+                msg.info("ERROR:  hysteresis < 0")
             if not enable:
-                infomsg("ERROR:  enable signal cleared")
+                msg.info("ERROR:  enable signal cleared")
         h['switch-on'] = 0
         h['error'] = 1
         continue
     else:
         if h['error']:
-            infomsg("Recovered from error conditions")
+            msg.info("Recovered from error conditions")
         h['error'] = 0
 
     # Enable input
@@ -82,31 +80,26 @@ while True:
     # On/off and heat/cool switches
     if ((temp_int - hysteresis) > temp_max):
         if not h['switch-on']:
-            infomsg("Turning on cool; internal temp %.1f (hyst %.1f)" %
+            msg.info("Turning on cool; internal temp %.1f (hyst %.1f)" %
                     (temp_int, hysteresis))
         h['switch-heat'] = 0
         h['switch-on'] = 1
     elif ((temp_int + hysteresis) < temp_min):
         if not h['switch-on']:
-            infomsg("Turning on heat; internal temp %.1f (hyst %.1f)" %
+            msg.info("Turning on heat; internal temp %.1f (hyst %.1f)" %
                     (temp_int, hysteresis))
         h['switch-heat'] = 1
         h['switch-on'] = 1
     elif ((temp_int > temp_min) and (temp_int < temp_max)):
         if h['switch-on']:
-            infomsg("Turning off; internal temp %.1f" % temp_int)
+            msg.info("Turning off; internal temp %.1f" % temp_int)
         h['switch-on'] = 0
 
 # Save settings
-infomsg("Saving settings")
-with open(persist_fname, 'w') as f:
-    yaml.dump({
-        'temp-min' : temp_min,
-        'temp-max' : temp_max,
-        'enable' : enable,
-    }, f)
+msg.info("Saving settings")
+Config().write_state(temp_min=temp_min, temp_max=temp_max, enable=enable)
 
 # Shut things off and exit
-infomsg("Exiting")
+msg.info("Exiting")
 h['switch-on'] = 0
 sys.exit(0)

@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 import hal, time, sys, datetime, random
+from goldibox import Config, Messages
 
 # Set up component
-h = hal.component("sim-temp", timer=100)
+h = hal.component("goldibox-sim-temp", timer=100)
 
 # Inputs:
 # - Peltier junction signals
@@ -32,12 +33,10 @@ h.newpin("error", hal.HAL_BIT, hal.HAL_OUT)
 h['value'] = 20 # Room temp
 h['error'] = 0
 
-def infomsg(msg):
-    sys.stderr.write("%s Goldibox sim-temp:  %s\n" %
-                     (str(datetime.datetime.now()), msg))
+msg = Messages('Goldibox sim-temp')
 
 # Mark the component as 'ready'
-infomsg("Initialized")
+msg.info("Initialized")
 h.ready()
 
 i = 0
@@ -63,22 +62,22 @@ try:
 
         # Exit
         if shutdown:
-            infomsg("Got shutdown signal")
+            msg.info("Got shutdown signal")
             break
 
         # Do some sanity checks
         err = 0
         if heat_on and cool_on:
-            infomsg("Error:  heat-on and cool-on")
+            msg.info("Error:  heat-on and cool-on")
             err = 1
         if heat_on and not f_on:
-            infomsg("Error:  heat-on but not f-on")
+            msg.info("Error:  heat-on but not f-on")
             err = 1
         if cool_on and not f_on:
-            infomsg("Error:  cool-on but not f-on")
+            msg.info("Error:  cool-on but not f-on")
             err = 1
         if h['error'] and not err:
-            infomsg("Error condition cleared")
+            msg.info("Error condition cleared")
         h['error'] = err
 
         # Set output value
@@ -97,16 +96,16 @@ try:
         newval = temp_base + random.triangular(-0.1,0.1,0)
 
         if i % 500 == 0:
-            infomsg("Status:  ext=%.2f; value=%.2f(base %.2f);" %
+            msg.info("Status:  ext=%.2f; value=%.2f(base %.2f);" %
                     (temp_ext, newval, temp_base))
-            infomsg("         cool=%d; heat=%d, fan=%d" %
+            msg.info("         cool=%d; heat=%d, fan=%d" %
                     (heat_on, cool_on, f_on))
 
         h['value'] = newval
 
 except KeyboardInterrupt:
-    infomsg("Exiting")
+    msg.info("Exiting")
     sys.exit(0)
 
-infomsg("Exiting")
+msg.info("Exiting")
 sys.exit(0)

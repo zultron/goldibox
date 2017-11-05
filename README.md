@@ -116,6 +116,12 @@ MachinekitClient build][mkclient-dl], then:
     # Start GUI
     MachinekitClient &
 
+The Goldibox may be installed to the system so that it is run at every
+boot:
+
+    sudo make install
+    sudo systemctl start goldibox
+
 [machinekit.io]: http://machinekit.io
 [qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
 [mkclient-dl]: https://bintray.com/machinekoder/MachinekitClient-Development/MachinekitClient_Development-Linux-master-x64/#files/

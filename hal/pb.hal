@@ -53,4 +53,4 @@ net heat-on                         => bb_gpio.p1.out-12
 # Load common HAL config
 # ################################################
 
-source goldibox-common.hal
+source $(HALDIR)/common.hal

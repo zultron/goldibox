@@ -7,9 +7,8 @@ import argparse
 import time, datetime
 from machinekit import launcher
 from machinekit import config
+from goldibox import Config, ConfigError, Messages
 import hal
-
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 parser = argparse.ArgumentParser(
     description='Start the Goldibox')
@@ -32,15 +31,25 @@ parser.add_argument(
     '-b', '--board',
     help=('Select board: simulator, PocketBeagle or autodetect'),
     default='detect', choices=('sim','pb','detect'))
-
-def infomsg(msg):
-    sys.stderr.write("%s Goldibox run:  %s\n" %
-                     (str(datetime.datetime.now()), msg))
+parser.add_argument(
+    '-c', '--config', action='store',
+    help=('Configuration file (default '
+          './etc/config.yaml, /etc/goldibox/config.yaml)'))
 
 args = parser.parse_args()
 
 if args.debug:
     launcher.set_debug_level(5)
+
+msg = Messages("Goldibox run")
+
+try:
+    goldibox_config = Config(args.config)
+    os.environ['GOLDIBOX_CONFIG'] = goldibox_config.config_file
+except ConfigError as e:
+    sys.stderr.write('Error: %s\n' % e)
+    parser.print_help()
+    sys.exit(1)
 
 if args.board == 'detect':
     if os.getenv('GOLDIBOX_SIM',False):
@@ -58,6 +67,7 @@ if args.board == 'detect':
 if 'MACHINEKIT_INI' not in os.environ:  # export for package installs
     mkconfig = config.Config()
     os.environ['MACHINEKIT_INI'] = mkconfig.MACHINEKIT_INI
+
 
 exit_status = 0
 try:
@@ -79,7 +89,7 @@ try:
 
         if args.board != 'sim':
             # load a BeagleBone universal overlay file
-            launcher.load_bbio_file('goldibox-overlay-%s.bbio' % args.board)
+            launcher.load_bbio_file(goldibox_config.pb_bbio_file)
 
         # start Machinekit realtime environment
         launcher.start_realtime()
@@ -88,12 +98,11 @@ try:
         h = hal.component("goldibox-run", timer=100)
         h.newpin("shutdown", hal.HAL_BIT, hal.HAL_IN)
         h.ready()
-        infomsg("HAL comp initialized")
+        msg.info("HAL comp initialized")
 
-        # load the remote comp HAL file
-        launcher.load_hal_file('goldibox-remote.py')
         # load the main HAL file
-        launcher.load_hal_file('goldibox-%s.hal' % args.board)
+        launcher.load_hal_file(goldibox_config.halfilepath(
+            '%s.hal' % args.board))
 
         # enable on ctrl-C, needs to executed after HAL files
         launcher.register_exit_handler()
@@ -101,6 +110,9 @@ try:
         # ensure mklauncher is started
         # FIXME MK PR?
         # launcher.ensure_mklauncher(debug=args.debug)
+        # - Be in the right directory to pick up qml files
+        msg.info("Changing to directory '%s'" % goldibox_config.share_dir)
+        os.chdir(goldibox_config.share_dir)
         launcher.ensure_mklauncher()
 
         if not args.no_config:
@@ -119,7 +131,7 @@ try:
 
     while True:
         if h['shutdown']:
-            infomsg("Got shutdown signal")
+            msg.info("Got shutdown signal")
             break
         launcher.check_processes()
         time.sleep(1)
@@ -130,8 +142,8 @@ except subprocess.CalledProcessError as e:
 
 if not args.run:
     time.sleep(1) # Let other comps do their stuff & exit
-    infomsg("Ending session")
+    msg.info("Ending session")
     launcher.end_session()
     
-infomsg("Exiting status %d" % exit_status)
+msg.info("Exiting status %d" % exit_status)
 sys.exit(exit_status)

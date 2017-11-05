@@ -1,9 +1,9 @@
 # ################################################
-# Goldibox comp
+# Goldibox control comp
 # ################################################
 
 # Load userland comp
-loadusr -Wn goldibox-control ./goldibox-control.py
+loadusr -W goldibox-control
 
 # Inputs
 # - Min/max/internal temp settings
@@ -68,7 +68,7 @@ net cool-on                         <= cool-on.out
 # ################################################
 
 # Load userland comp
-loadusr -Wn goldibox-logger ./goldibox-logger.py
+loadusr -W goldibox-logger
 
 # Inputs
 # - Temperatures
@@ -98,8 +98,13 @@ net shutdown                        <= shutdown.out
 net shutdown                        => shutdown.in0
 net shutdown-button                 => shutdown.in1
 
-# Signal run.py
+# Signal goldibox runner
 net shutdown                        => goldibox-run.shutdown
+
+# ################################################
+# Goldibox remote comp
+# ################################################
+loadusr -W goldibox-remote
 
 # ################################################
 # Run

@@ -1,0 +1,6 @@
+HALDIR: @HAL_DIR@
+state_file: @VAR_DIR@/saved_state.yaml
+rrd_file: @VAR_DIR@/logger.rrd
+rrd_image_dir: @VAR_DIR@
+pb_bbio_file: @ETC_DIR@/overlay-pb.bbio
+share_dir: @SHARE_DIR@

@@ -1,17 +1,14 @@
 #!/usr/bin/python
 from machinekit import hal
+from goldibox import Config, Messages
 import sys, datetime, yaml, os
 persist_fname = "goldibox.conf.yaml"
 
-def infomsg(msg):
-    sys.stderr.write("%s Goldibox remote:  %s\n" %
-                     (str(datetime.datetime.now()), msg))
+msg = Messages('Goldibox remote')
 
 
 # Read saved settings
-if os.path.exists(persist_fname):
-    with open(persist_fname, 'r') as f:
-        saved_state = yaml.load(f)
+saved_state = Config().read_state()
 
 # Create remote component
 rcomp = hal.RemoteComponent('goldibox-remote', timer=100)
@@ -35,10 +32,9 @@ data = [
 for name, hal_type, hal_dir in data:
     pin = rcomp.newpin(name, hal_type, hal_dir)
     if name in saved_state:
-        pin.set(saved_state[name])
-        infomsg("Restored setting %s = %s" % (name,pin.get()))
-    sig = hal.newsig(name, hal_type)
-    pin.link(sig)
+        hal.signals[name].set(saved_state[name])
+        msg.info("Restored setting %s = %s" % (name,saved_state[name]))
+    pin.link(hal.signals[name])
 
 rcomp.ready()
-infomsg("Initialized")
+msg.info("Initialized")
