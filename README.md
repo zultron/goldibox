@@ -98,9 +98,10 @@ and install a mini-SD card image with Machinekit.
 Log into the BeagleBone, clone this repository, and `cd` into the
 repository directory.
 
-On the PocketBeagle, start the Goldibox control from the command line:
+On the PocketBeagle, start the Goldibox control from the command line
+(load the overlay file for non-system installs):
 
-    bin/goldibox
+    bin/goldibox -o
 
 The Goldibox should now be ready for control.  Start the
 [MachinekitClient][qqvcp] and open the Goldibox app.

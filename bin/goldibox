@@ -33,6 +33,9 @@ parser.add_argument(
     '-r', '--run',
     help='Run app (otherwise run launcher)', action='store_true')
 parser.add_argument(
+    '-o', '--overlay',
+    help='Load PocketBeagle overlay file', action='store_true')
+parser.add_argument(
     '-d', '--debug',
     help='Enable debug mode', action='store_true')
 parser.add_argument(
@@ -95,7 +98,7 @@ try:
             # kill any running Machinekit instances
             launcher.cleanup_session()
 
-        if args.board != 'sim':
+        if args.board != 'sim' and args.overlay:
             # load a BeagleBone universal overlay file
             launcher.load_bbio_file(goldibox_config.pb_bbio_file)
 
