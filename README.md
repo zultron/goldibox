@@ -122,6 +122,7 @@ boot:
 
     sudo make install
     sudo systemctl daemon-reload
+    sudo systemctl enable goldibox
     sudo systemctl start goldibox
 
 [machinekit.io]: http://machinekit.io
