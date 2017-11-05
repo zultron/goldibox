@@ -15,11 +15,13 @@ BIN_DIR = /usr/bin
 BIN_FILES = goldibox goldibox-control goldibox-logger goldibox-remote \
 	goldibox-sim-temp
 
+# Python lib
 PYTHON_DIR = /usr/lib/python$(shell \
     python -c \
 	'from sys import version_info as v; print "%s.%s" % (v.major, v.minor)')
 PYTHON_FILES = goldibox.py
 
+# QML files
 SHARE_DIR = /usr/share/goldibox
 SHARE_FILES = \
 	images/icon-fridge.svg \
@@ -31,6 +33,9 @@ SHARE_FILES = \
 	qml/main.cpp \
 	qml/main.qml \
 	qml/qml.qrc
+
+# Overlay
+HAVE_DTC = $(shell test -f /usr/bin/dtc && echo 1)
 
 default:
 	@echo "Please specify a target; choices:" 1>&2
@@ -82,12 +87,21 @@ $(ETC_DIR)/config.yaml: templates/config.yaml
 	    -e 's,@ETC_DIR@,$(ETC_DIR),' \
 	    -e 's,@SHARE_DIR@,$(SHARE_DIR),'
 
+ifneq ($(HAVE_DTC),)
+/lib/firmware/pb_goldibox-00A0.dtbo: etc/pb_goldibox.dts
+	dtc -O dtb -o $@ -b 0 -@ $<
+	if ! grep -q $@ /boot/uEnv.txt; then \
+	    echo dtb_overlay=$@ > /boot/uEnv.txt; \
+	fi
+ALL_FILES += /lib/firmware/pb_goldibox-00A0.dtbo
+endif
+
 /etc/systemd/system/goldibox.service: templates/goldibox.service
 	sed < $< > $@ \
 	    -e 's,@USER@,$(USER),'
 	ln -sf $@ /lib/systemd/goldibox.service
 
-ALL_FILES = \
+ALL_FILES += \
 	$(patsubst %,$(HAL_DIR)/%,$(HAL_FILES)) \
 	$(patsubst %,$(PYTHON_DIR)/%,$(PYTHON_FILES)) \
 	$(patsubst %,$(BIN_DIR)/%,$(BIN_FILES)) \

@@ -120,6 +120,7 @@ The Goldibox may be installed to the system so that it is run at every
 boot:
 
     sudo make install
+    sudo systemctl daemon-reload
     sudo systemctl start goldibox
 
 [machinekit.io]: http://machinekit.io
