@@ -202,6 +202,7 @@ HalApplicationWindow {
                 id: temp_int
                 name: "temp-int"
                 radius: 3
+                maximumValue: 50
                 Layout.minimumHeight: 20
                 Layout.minimumWidth: 100
                 suffix: "°C"
@@ -214,6 +215,7 @@ HalApplicationWindow {
             HalGauge {
                 id: temp_ext
                 name: "temp-ext"
+                maximumValue: 50
                 Layout.minimumHeight: 20
                 Layout.minimumWidth: 100
                 suffix: "°C"
