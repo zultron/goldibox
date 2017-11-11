@@ -11,25 +11,39 @@ HalApplicationWindow {
     width: 500
     height: 800
     color: "#000000"
+    transformOrigin: Item.Center
     title: qsTr("Goldibox")
 
-    BorderImage {
-        id: background
-        x: 0
-        y: 0
-        width: 500
-        height: 800
-        source: "assets/background.png"
-    }
 
     ColumnLayout {
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 50
-        anchors.top: locks_image.bottom
+        id: background_layout
+        anchors.fill: parent
+
+        Image {
+            id: image
+            width: 100
+            height: 100
+            visible: true
+            transformOrigin: Item.Center
+            Layout.minimumHeight: 0
+            Layout.minimumWidth: 0
+            clip: false
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            fillMode: Image.PreserveAspectFit
+            source: "assets/background.png"
+        }
+    }
+
+
+
+
+    ColumnLayout {
         anchors.topMargin: 0
-        anchors.leftMargin: 100
+        transformOrigin: Item.Center
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.left: parent.left
+        anchors.top: parent.verticalCenter
         anchors.margins: 10
 
 
@@ -63,10 +77,12 @@ HalApplicationWindow {
             }
         }
 
+
         RowLayout {
             id: temp_row
             width: 100
             height: 100
+            Layout.fillWidth: false
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
 
@@ -74,12 +90,15 @@ HalApplicationWindow {
                 id: temp_min_col
                 width: 100
                 height: 100
+                Layout.fillWidth: false
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 HalKnob {
                     id: temp_min
                     name: "temp-min"
                     width: 120
                     height: 120
+                    Layout.fillWidth: false
                     suffix: "°C"
                     decimals: 1
                     maximumValue: 40
@@ -95,6 +114,7 @@ HalApplicationWindow {
                 id: temp_max_col
                 width: 100
                 height: 100
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 HalKnob {
                     id: temp_max
@@ -117,6 +137,7 @@ HalApplicationWindow {
                 id: status_led_col
                 width: 100
                 height: 100
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
                 RowLayout {
                     id: heat_led_row
@@ -192,43 +213,43 @@ HalApplicationWindow {
             }
         }
 
-        ColumnLayout {
-            id: temp_col
-            width: 100
-            height: 100
+
+        HalGauge {
+            id: temp_int
+            name: "temp-int"
+            radius: 3
+            maximumValue: 50
+            Layout.minimumHeight: 20
+            Layout.minimumWidth: 100
+            suffix: "°C"
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            prefix: ""
+            orientation: 1
             Layout.fillWidth: true
-
-            HalGauge {
-                id: temp_int
-                name: "temp-int"
-                radius: 3
-                maximumValue: 50
-                Layout.minimumHeight: 20
-                Layout.minimumWidth: 100
-                suffix: "°C"
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                prefix: ""
-                orientation: 1
-                Layout.fillWidth: true
-            }
-
-            HalGauge {
-                id: temp_ext
-                name: "temp-ext"
-                maximumValue: 50
-                Layout.minimumHeight: 20
-                Layout.minimumWidth: 100
-                suffix: "°C"
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                Layout.fillWidth: true
-            }
-
-            Label {
-                id: label
-                text: qsTr("Temp int/ext")
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            }
         }
+
+
+        HalGauge {
+            id: temp_ext
+            name: "temp-ext"
+            maximumValue: 50
+            Layout.minimumHeight: 20
+            Layout.minimumWidth: 100
+            suffix: "°C"
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            Layout.fillWidth: true
+        }
+
+
+        Label {
+            id: label
+            text: qsTr("Temp int/ext")
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+        }
+
     }
+
+
+
 }
 
