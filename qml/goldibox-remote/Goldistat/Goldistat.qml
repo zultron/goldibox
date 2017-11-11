@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
-//import Private 1.0
-import Machinekit.Controls.Private 1.0
+import Private 1.0
 
 Item {
     /* Outside temperature */
