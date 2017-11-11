@@ -52,15 +52,22 @@ ApplicationWindow {
     property double rtempstart: goldistat.rtempstart
 
 
-    ColumnLayout {
-        id: columnLayout1
-        width: 311
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.top: parent.top
+    Item {
+        id: goldibox
+        width: 400
+        height: 500
+
+        Image {
+            id: image
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            source: "goldibox-remote/assets/background.png"
+        }
 
         Goldistat {
             id: goldistat
+            x: 32
+            y: 0
             anchors.rightMargin: -32
             anchors.leftMargin: 32
             anchors.topMargin: 0
@@ -83,7 +90,6 @@ ApplicationWindow {
         anchors.top: parent.top
         visible: true
 
-
         GroupBox {
             id: zoneg
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
@@ -101,7 +107,6 @@ ApplicationWindow {
                 text: mainWindow.blueZone.toFixed(1)
             }
         }
-
 
         GroupBox {
             id: mouseg
@@ -162,8 +167,6 @@ ApplicationWindow {
             }
         }
 
-
-
         GroupBox {
             id: regg
             width: 360
@@ -216,8 +219,5 @@ ApplicationWindow {
                 maximumValue: 90
             }
         }
-
     }
-
-
 }
