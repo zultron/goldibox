@@ -1,61 +1,65 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
 
-
 Item {
-    /* Outside temperature readout and pointer */
+    /* Outside temperature readout and pointer
+
+       This readout displays the outside temperature as formatted
+       float value with units, and has a triangular pointer pointing
+       to bottom of the GoldistatSet dial, which is rotated to show
+       temperature.
+     */
     id: base
 
-    property double value: 30.0
-    property int decimals: 1
-    property string suffix: "°C"
+    // Parameters and settings
+    // - Incoming parameters
+    property double value: 30.0    // Measured outside temperature, for readout
+    // - Settings for readout
+    property int decimals: 1       // Format `value` readout decimal places
+    property string suffix: "°C"   // Readout units, appended to value
+    property color readoutColor: "#000000"
+    // - Pointer
+    property color ptrcolor: "#000000"
+    // - Text
+    property string outTextStr: qsTr("OUT")
+    // - Layout:  ratio to base width
+    property double ptrHeight:     0.125      // ptr height
+    property double ptrWidth: ptrHeight * 6/5 // ptr width
+    property double readoutTextSize: 0.10     // readout text font height
+    property double outTextSize: 0.070        // 'OUT' text font height
 
-    // Text readout with float format and degree units
-    property string readout: value.toFixed(decimals) + suffix
-
-    // Layout
-    property double ptrHeight:     0.125
-    property double outTextHeight: 0.070
-    property double tempHeight:    0.100
-
-    // Fixed aspect ratio and non-interactive
-    height: width * (1.0 + ptrHeight + outTextHeight + tempHeight)
-    enabled: false
+    // Fixed aspect ratio
+    height: width // * (1.0 + ptrHeight + outTextSize + readoutTextSize)
 
     Canvas {
         /* Black triangular pointer representing outside temp gauge */
         id: ptr
 
         contextType: "2d"
-        smooth: true
-        // Always point up/inward to very bottom of base circle
+
+	// Center at bottom of GoldistatSet circle, raise to top layer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: base.width
+	z: 1
 
-        // SVG source shape, native 30x25 px
-        width: base.width * (ptrHeight * 30 / 25)
-        height: base.width * ptrHeight
+        // Size relatively with fixed aspect ratio
+        width: base.width * base.ptrWidth
+        height: base.width * base.ptrHeight
 
-        onPaint:
-        {
-            var context = getContext("2d");
-
-            /* if (!context) return; */
-
+	// Triangle points inword toward edge of GoldistatSet circle
+        onPaint: {
+            if (!context) return;
             context.reset();
-            // Fill with black
-            context.fillStyle = "#000000";
-            /* context.fillStyle = "black"; */
             context.beginPath();
-            // Tip of point
+            // Start at tip of pointer
             context.moveTo(width/2, 0);
-            // Trace to side and down, and then across
+            // Trace left and down, then across
             context.lineTo(0, height);
             context.lineTo(width, height);
-            context.lineTo(width/2, 0);
+            // Fill with color
+            context.fillStyle = base.ptrcolor;
             context.fill();
-
         }
     }
 
@@ -63,25 +67,32 @@ Item {
         /* Temperature readout */
         id: temp
 
-        // Black text
-        text: base.readout
-        color: "#000000"
+	// Text readout:  formatted float and units
+        text: base.value.toFixed(base.decimals) + base.suffix
 
-        // Centered just below the pointer
+        // Size font proportionally and color text
+        font.pixelSize: base.width * base.readoutTextSize
+        color: base.readoutColor
+
+        // Center text just below the pointer, raise to top layer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: base.width * (1.0 + ptrHeight)
-        font.pixelSize: base.width * tempHeight
+        anchors.topMargin: base.width * (1.0 + base.ptrHeight)
+	z: 1
     }
 
     Text {
         /* "OUT" text */
         id: outText
-        text: qsTr("OUT")
-        // Centered just below readout in smaller text
+        text: base.outTextStr
+
+	// Center text below readout with relative font size, raise to
+	// top layer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: base.width * (1.0 + ptrHeight + tempHeight)
-        font.pixelSize: parent.width * outTextHeight
+        anchors.topMargin: (
+	    base.width * (1.0 + base.ptrHeight + base.readoutTextSize))
+        font.pixelSize: parent.width * base.outTextSize
+	z: 1
     }
 }
