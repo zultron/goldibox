@@ -54,31 +54,56 @@ ApplicationWindow {
 
     Item {
         id: goldibox
-        width: 400
-        height: 500
+        anchors.right: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.bottom: parent.bottom
 
         Image {
-            id: image
+	    /* Fridge background image */
+            id: fridge
+            source: "goldibox-remote/assets/background.png"
+
+	    // Scale to fit window, keeping aspect, on bottom
             anchors.fill: parent
             fillMode: Image.PreserveAspectFit
-            source: "goldibox-remote/assets/background.png"
+	    z: 0
         }
 
         Goldistat {
+	    /* Goldibox thermostat control */
             id: goldistat
-            x: 32
-            y: 0
-            anchors.rightMargin: -32
-            anchors.leftMargin: 32
-            anchors.topMargin: 0
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
 
             tempIn: inTemp.value
             tempOut: outTemp.value
             range: mainWindow.range
+
+	    // Middle layer
+	    z: 5
+
+	    // Relative sizing hell:  Constants determined empirically
+            width: fridge.paintedWidth * 0.73
+            anchors.horizontalCenter: fridge.horizontalCenter
+            anchors.horizontalCenterOffset: fridge.paintedHeight * 0.07
+            anchors.verticalCenter: fridge.verticalCenter
+            anchors.verticalCenterOffset: fridge.paintedWidth * 0.24
+            rotation: -25
+
         }
+
+        Image {
+	    /* Goldilocks */
+            id: locks
+            source: "goldibox-remote/assets/locks.png"
+
+	    // Scaled to fridge's actual image area, keeping aspect, on top
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            z: 6
+        }
+
     }
 
     ColumnLayout {

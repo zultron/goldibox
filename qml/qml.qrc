@@ -9,5 +9,7 @@
         <file>goldibox-remote/Goldistat/Private/GoldistatIn.qml</file>
         <file>goldibox-remote/Goldistat/Private/GoldistatOut.qml</file>
         <file>goldibox-remote/Goldistat/Private/GoldistatSet.qml</file>
+        <file>goldibox-remote/assets/locks.png</file>
+        <file>goldibox-remote/assets/therm-guide.png</file>
     </qresource>
 </RCC>
