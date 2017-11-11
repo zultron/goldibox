@@ -1,8 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>main2.qml</file>
         <file>goldibox-remote/goldibox-remote.qml</file>
         <file>goldibox-remote/description.ini</file>
         <file>goldibox-remote/assets/background.png</file>
+        <file>goldibox-remote/Goldistat/Goldistat.qml</file>
+        <file>goldibox-remote/Goldistat/Private/GoldistatIn.qml</file>
+        <file>goldibox-remote/Goldistat/Private/GoldistatOut.qml</file>
+        <file>goldibox-remote/Goldistat/Private/GoldistatSet.qml</file>
     </qresource>
 </RCC>
