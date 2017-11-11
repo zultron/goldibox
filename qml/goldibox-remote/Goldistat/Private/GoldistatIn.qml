@@ -31,7 +31,7 @@ Item {
     // - Layout:  ratio to base width
     property double diameter:  0.500          // dial diameter
     property double ptrHeight: 0.125          // ptr height
-    property double ptrWidth: ptrHeight * 6/5 // ptr width
+    property double ptrWidth: 0.150           // ptr width
     property double readoutTextSize: 0.10     // readout text font height
     property double inTextSize: 0.07          // 'IN' text font height
     property double borderWidth: 0.02         // border thickness
@@ -91,6 +91,7 @@ Item {
             context.moveTo(0, 0);
             // Trace across, then down to point
             context.lineTo(width, 0);
+            context.lineTo(width/2, height);
             // Fill with color
             context.fillStyle = base.ptrcolor;
             context.fill();
