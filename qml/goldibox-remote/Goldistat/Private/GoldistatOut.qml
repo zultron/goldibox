@@ -35,8 +35,6 @@ Item {
         /* Black triangular pointer representing outside temp gauge */
         id: ptr
 
-        contextType: "2d"
-
 	// Center at bottom of GoldistatSet circle, raise to top layer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -48,6 +46,7 @@ Item {
         height: base.width * base.ptrHeight
 
 	// Triangle points inword toward edge of GoldistatSet circle
+        contextType: "2d"
         onPaint: {
             if (!context) return;
             context.reset();

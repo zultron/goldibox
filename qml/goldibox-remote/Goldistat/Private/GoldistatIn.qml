@@ -71,8 +71,6 @@ Item {
         /* Black triangular pointer representing inside temp gauge */
         id: ptr
 
-        contextType: "2d"
-
         // Center at bottom of dial, raise to top layer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: rgb.bottom
@@ -83,6 +81,7 @@ Item {
         height: base.width * base.ptrHeight
 
 	// Triangle points outward toward edge of rgb circle
+        contextType: "2d"
         onPaint: {
             if (!context) return;
             context.reset();

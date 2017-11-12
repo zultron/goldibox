@@ -2,44 +2,59 @@ import QtQuick 2.0
 import QtQuick.Controls 1.1
 
 Item {
+    /* Goldibox thermostat zone setting
+
+       This donut-shaped knob has independent settings for "too hot"
+       and "too cold" zones, displaying them as red and blue arcs that
+       may be adjusted to set an intermediate green "just right"
+       zone's width and position.  The two controls include numeric
+       readout for precise setting.
+     */
+
     id: base
 
-    // Too Hot setting
-    property alias redZone: red.value
-    // Too Cold setting; needed to avoid overlap
-    property alias blueZone: blue.value
-    // Outside temperature and range; needed to compute angle
-    property double tempOut: 30.0
-    property double range: 90.0
-    // Value display
-    property int decimals: 1
-    property string suffix: "°C"
-    property double handleTextSize: 0.08
-    property double handleTextOffset: 9
+    // Parameters and settings
+    // - Outgoing settings
+    property alias redZone: red.value    // Too Hot
+    property alias blueZone: blue.value  // Too Cold
+    // - Incoming settings
+    property double tempOut: 30.0        // Outside temperature: for angle
+    // - Thermostat parameters
+    property double range: 90.0          // +/- temp setting range
+    property double minGreenZone: 2.0    //  Min Goldilocks zone
+    // - Value display parameters
+    property int decimals: 1             // Fmt float w/one decimal
+    property string suffix: "°C"         // Units
+    property double handleTextSize: 0.08 // Format:  text height
+    property double handleTextOffset: 9  // Format:  tweak horiz. offset
+    // - Value setting parameters
+    property double stepSize: 0.2        // Increment for mouse wheel
+    // - Formatting
+    property color redColor: "#ff0000"   // Color of Too Hot zone
+    property color blueColor: "#0000ff"  // Color of Too Cold zone
+    property color greenColor: "#00c000" // Color of Just Right zone
+    property double borderWidth: 0.02    // Width of border strokes
+    property color borderColor: "darkGray" // Color of border strokes
+    property double handleDiameter: 0.08 // Diameter of border handle circle
+    property color readoutColor: "black" // Color of readout text
+    // - Size settings, relative to width
+    property double arcWidth: 0.25       // Width of arc
 
-    // Min/max value and min Goldilocks zone
-    property double minimumValue: tempOut - range/2
-    property double maximumValue: tempOut + range/2
-    property double minGreenZone: 2.0
-
-    // Debugging
-    // - Angles
-    property alias redAngle: red.angle
-    property alias blueAngle: blue.angle
-    // - Mouse
-    property double mouseX: 0.0
-    property double mouseY: 0.0
+    /* // Debugging */
+    /* // - Angles */
+    /* property alias redAngle: red.angle */
+    /* property alias blueAngle: blue.angle */
+    /* // - Mouse */
+    /* property double mouseX: 0.0 */
+    /* property double mouseY: 0.0 */
     property int inring: 0
-    property double totemp: 0.0
-    property double dragged: 0.0
-    // - Register
-    property bool rzone: false
-    property double rtemporig: 0.0
-    property double rtempstart: 0.0
-    property double newtemp: 0.0
-
-    // Increment for mouse wheel
-    property double stepSize: 0.2
+    /* property double totemp: 0.0 */
+    /* property double dragged: 0.0 */
+    /* // - Mouse press register */
+    /* property bool rzone: false */
+    /* property double rtemporig: 0.0 */
+    /* property double rtempstart: 0.0 */
+    /* property double newtemp: 0.0 */
 
     // Square
     height: width
@@ -57,199 +72,197 @@ Item {
 
         onPaint:
         {
-            if (!context) {
-                return;
-            }
-
+            if (!context) return;
             context.reset();
             context.beginPath();
-            // Green
-            context.strokeStyle = "#00c000";
-            context.lineWidth = width/4;
             // Slice is from 45 deg. NE to 45 deg. NW
-            context.arc(width/2, height/2, width*3/8, 0, Math.PI * 2);
+            context.arc(width/2, height/2,              // center
+			width*(0.5 - base.arcWidth/2),  // radius
+			0, Math.PI * 2);                // endpoints in radians
+            // Stroke arc with width and color
+            context.strokeStyle = base.greenColor;
+            context.lineWidth = width * base.arcWidth;
             context.stroke();
         }
     }
 
     Canvas {
-        /* "Too Hot" red zone setting */
+        /* "Too Hot" red zone arc */
         id: red
 
+	// The setting
         property double value: 25.0
-        property alias tempOut: base.tempOut
-
-        // Text readout with float format and degree units
-        property string readout: value.toFixed(base.decimals) + base.suffix
 
         // Compute angle:
         // - (tempOut - range/2) .. (tempOut + range/2) => -.25PI .. 1.25PI
-        property double angle: ((value - base.tempOut) /
-                                base.range * -1.5 + 0.5) * Math.PI
+        property double angle: (
+	    (value - base.tempOut) / base.range * -1.5 + 0.5) * Math.PI
 
-        contextType: "2d"
-        smooth: true
-        // Max size, above green base
+        // Max size, above green ring
         anchors.fill: parent
         z: 1
 
+	// Repaint canvas whenever angle, value, tempOut change
         onAngleChanged: requestPaint()
         onValueChanged: requestPaint()
+        property alias tempOut: base.tempOut
         onTempOutChanged: requestPaint()
 
+        contextType: "2d"
         onPaint:
         {
-            if (!context) {
-                return;
-            }
-
+            if (!context) return;
             context.reset();
             context.beginPath();
-            // Red
-            context.strokeStyle = "#ff0000";
-            context.lineWidth = width/4;
             // Slice is from up/N to angle
-            context.arc(width/2, height/2, width*3/8, Math.PI * -0.5, angle);
+            context.arc(width/2, height/2,              // center
+			width*(0.5 - base.arcWidth/2),  // radius
+			Math.PI * -0.5, angle);         // endpoints in radians
+            // Stroke arc with width and color
+            context.strokeStyle = base.redColor;
+            context.lineWidth = width * base.arcWidth;
             context.stroke();
         }
     }
 
     Item {
-        /* Readouts and gray border + circle at border of green and red */
+        /* Readouts and gray border + circle at border of green and red
+
+           This is a rectangular area centered on and wide as the dial
+           so that it may be rotated around its center as the zone
+           changes
+	*/
         id: redBorder
 
-        // This is a rectangular area centered on and wide as the dial
-        // so that it may be rotated around its center as the zone
-        // changes
-        property double angle: red.angle
+	// Fill parent, rotate with red arc, on top
         anchors.fill: parent
-        rotation: angle * 180 / Math.PI
+        rotation: red.angle * 180 / Math.PI
         z: 2
 
         Rectangle {
             // Radial gray line at zone border
-            id: redline
-            width: parent.width/4
-            height: parent.width/50
-            color: "darkGray"
-            x: parent.width * 3/4
-            y: parent.height * (1/2 - 1/100)
+            id: redLine
+            width: parent.width * base.arcWidth
+            height: parent.width * base.borderWidth
+            color: base.borderColor
+            x: parent.width * (1 - base.arcWidth)
+            y: parent.height * (1/2 - base.borderWidth/2)
         }
 
         Rectangle {
             // Round gray "handle" at zone border
-            id: redhandle
-            width: parent.width/12 // 1/3 of ring's width
+            id: redHandle
+            width: parent.width * base.handleDiameter
             height: width
             radius: width/2
-            color: "darkGray"
-            x: parent.width * (3/4 + 1/12)
-            y: parent.height * (1/2 - 1/24)
+            color: base.borderColor
+            x: parent.width * (1 - (base.arcWidth + base.handleDiameter)/2)
+            y: parent.height * (1/2 - base.handleDiameter/2)
         }
 
         Label {
             // "Too Hot" temperature setting readout
-            id: redreadout
+            id: redReadout
 
-            // Formatted float value in black text
+            // Format float value with decimals in black text
             text: red.value.toFixed(base.decimals)
-            color: "#000000"
+            color: base.readoutColor
 
             // Proportional size, centered above handle, with l/r tweak
             font.pixelSize: base.width * base.handleTextSize
-            anchors.bottom: redhandle.top
-            anchors.horizontalCenter: redhandle.horizontalCenter
+            anchors.bottom: redHandle.top
+            anchors.horizontalCenter: redHandle.horizontalCenter
             anchors.horizontalCenterOffset: -base.handleTextOffset
         }
     }
 
     Canvas {
-        /* "Too Cold" blue zone setting */
+        /* "Too Cold" blue zone arc */
         id: blue
 
+	// The setting
         property double value: 15.0
-        property double tempOut: base.tempOut
-
-        // Text readout with float format and degree units
-        property string readout: value.toFixed(base.decimals) + base.suffix
 
         // Compute angle:
         // - (tempOut - range/2) .. (tempOut + range/2) => -.25PI .. 1.25PI
-        property double angle: ((value - base.tempOut) /
-                                base.range * -1.5 + 0.5) * Math.PI
+        property double angle: (
+	    (value - base.tempOut) / base.range * -1.5 + 0.5) * Math.PI
 
-        contextType: "2d"
-        smooth: true
-        // Max size, above green base
+        // Max size, above green ring
         anchors.fill: parent
         z: 1
 
+	// Repaint canvas whenever angle, value, tempOut change
         onAngleChanged: requestPaint()
         onValueChanged: requestPaint()
+        property alias tempOut: base.tempOut
         onTempOutChanged: requestPaint()
 
+        contextType: "2d"
         onPaint:
         {
-            if (!context) {
-                return;
-            }
-
+            if (!context) return;
             context.reset();
             context.beginPath();
-            // Blue
-            context.strokeStyle = "#0000ff";
-            context.lineWidth = width/4;
             // Slice is from angle to up/N.
-            context.arc(width/2, height/2, width*3/8, angle, Math.PI * 1.5);
+            context.arc(width/2, height/2,              // center
+			width*(0.5 - base.arcWidth/2),  // radius
+			angle, Math.PI * 1.5);          // endpoints in radians
+            // Stroke arc with width and color
+            context.strokeStyle = base.blueColor;
+            context.lineWidth = width * base.arcWidth;
             context.stroke();
         }
     }
 
     Item {
+        /* Readouts and gray border + circle at border of green and blue
+
+           This is a rectangular area centered on and wide as the dial
+           so that it may be rotated around its center as the zone
+           changes
+	*/
         /* Readouts and gray border + circle at border of green and blue */
         id: blueBorder
 
-        // This is a rectangular area centered on and wide as the dial
-        // so that it may be rotated around its center as the zone
-        // changes
-        property double angle: blue.angle
+	// Fill parent, rotate with blue arc, on top
         anchors.fill: parent
-        rotation: angle * 180 / Math.PI + 180
+        rotation: blue.angle * 180 / Math.PI + 180
         z: 2
 
         Rectangle {
             // Radial gray line at zone border
-            id: blueline
-            width: parent.width/4
-            height: parent.width/50
-            color: "darkGray"
+            id: blueLine
+            width: parent.width * base.arcWidth
+            height: parent.width * base.borderWidth
+            color: base.borderColor
             x: 0
-            y: parent.height * (1/2 - 1/100)
+            y: parent.height * (1/2 - base.borderWidth/2)
         }
 
         Rectangle {
             // Round gray "handle" at zone border
-            id: bluehandle
-            width: parent.width/12 // 1/3 of ring's width
+            id: blueHandle
+            width: parent.width * base.handleDiameter
             height: width
             radius: width/2
-            color: "darkGray"
-            x: parent.width * 1/12
-            y: parent.height * (1/2 - 1/24)
+            color: base.borderColor
+            x: parent.width * (base.arcWidth - base.handleDiameter) / 2
+            y: parent.height * (1/2 - base.handleDiameter/2)
         }
 
         Label {
             // "Too Cold" temperature setting readout
-            id: bluereadout
+            id: blueReadout
 
             // Formatted float value in black text
             text: blue.value.toFixed(base.decimals)
-            color: "#000000"
+            color: base.readoutColor
 
             // Proportional size, centered above handle, with l/r tweak
             font.pixelSize: base.width * base.handleTextSize
-            anchors.bottom: bluehandle.top
-            anchors.horizontalCenter: bluehandle.horizontalCenter
+            anchors.bottom: blueHandle.top
+            anchors.horizontalCenter: blueHandle.horizontalCenter
             anchors.horizontalCenterOffset: base.handleTextOffset
         }
     }
@@ -258,31 +271,54 @@ Item {
         /* Put a clear circle on top with gray borders to look purty */
         id: purty
 
+	// Ring fills parent, on top
         anchors.fill: parent
         radius: width/2
-        color: "transparent"
-        border.color: "darkGray"
-        border.width: parent.width/50
         z: 8
+
+	// Border color and width; inner circle area invisible
+        border.color: base.borderColor
+        border.width: parent.width * base.borderWidth
+        color: "transparent"
     }
 
     MouseArea {
+	/* Invisible layer for dealing with mouse button and scroll input
+
+	   When arc is clicked, the angle is computed to determine
+	   which arc, and the clicked arc and arc starting and clicked
+	   position are saved in a register.
+
+	   Then, when arc is dragged, the angle is compared with the
+	   saved angle, and applied to the arc.
+
+	   There are some simple safeguards to make sure the setting
+	   doesn't go out of range off the 270 degree arc, and to make
+	   sure a minimum green zone is maintained.
+	  */
         id: events
+
+	// Process clicks from full area, and be on top
         anchors.fill: parent
         z: 9 // On top
 
         // Saved state of initial mouse press
-        property bool registerZone: true // true for red, false for blue
+        property int registerZone: 0 // 0 for none, 1 for red, 2 for blue
         property double registerTempOrig: 0.0 // temp before mouse press
         property double registerTempStart: 0.0 // temp where mouse pressed
 
+	// Calculate min/max value
+	property double minimumValue: base.tempOut - base.range/2
+	property double maximumValue: base.tempOut + base.range/2
+	
         function mouseInRing(m) {
-            // Calculate if click is in settings ring
+            // Calculate if mouse position is in settings ring
+	    // - Get distance with Pythagoras
             var dx = m.x - height/2;
             var dy = m.y - width/2;
             var d = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
-            base.inring = d <= width/2 && d >= width/4; // FIXME
-            return d <= width/2 && d >= width/4;
+	    // - Check click is in ring
+            return d <= width/2 && d >= (width/2 - base.arcWidth);
         }
 
         function mouseToTemp(m) {
@@ -290,58 +326,69 @@ Item {
             var angle = Math.atan2(m.x - width/2, m.y - width/2);
             // Convert value to temperature
             var val = angle/Math.PI * base.range * 2/3 + base.tempOut;
-            base.totemp = val; // FIXME
             return val;
         }
 
         // When pressed,
-        // - If not pressed in ring, do nothing, stop.  Else,
+        // - If not pressed in ring, disable dragging, return.  Else,
         // - Check which zone the press was closest to
-        // - Register the zone and starting temp
+        // - Register the zone, original temp and clicked temp
         onPressed: {
+            base.inring = mouseInRing(mouse); // DEBUGGING
+
+            registerZone = 0;  // Disable
             if (!mouseInRing(mouse))
-                return;
+		// Press not in ring; return
+		return;
+
             var temp = mouseToTemp(mouse);
-            if ((base.redZone - temp) < (temp - base.blueZone)) {
+            if ((red.value - temp) < (temp - blue.value)) {
                 // Closer to red
-                registerZone = true;
-                registerTempOrig = base.redZone;
+                registerZone = 1;
+                registerTempOrig = red.value;
             } else {
                 // Closer to blue
-                registerZone = false;
-                registerTempOrig = base.blueZone;
+                registerZone = 2;
+                registerTempOrig = blue.value;
             }
             registerTempStart = temp;
-            // FIXME
-            base.mouseX = mouse.x;
-            base.mouseY = mouse.y;
-            base.rzone = registerZone;
-            base.rtemporig = registerTempOrig;
-            base.rtempstart = registerTempStart;
+            /* // Debugging */
+            /* base.mouseX = mouse.x; */
+            /* base.mouseY = mouse.y; */
+            /* base.rzone = registerZone; */
+            /* base.rtemporig = registerTempOrig; */
+            /* base.rtempstart = registerTempStart; */
         }
         // When moved, adjust the temperature by the amount dragged
         onPositionChanged: {
+	    base.inring = mouseInRing(mouse); // DEBUGGING
+
+	    if ((registerZone == 0) || (!mouseInRing(mouse)))
+		// Initial press or current pos. not in ring
+		return;
+
             // Get temp from mouse position
             var temp = mouseToTemp(mouse);
             // New temp will be orig temp adjusted by the amount dragged
             var newTemp = registerTempOrig + (temp - registerTempStart);
-            if (registerZone) {
-                // Red
-                if (newTemp > base.maximumValue) newTemp = base.maximumValue;
+
+	    // Clip and set value
+            if (registerZone == 1) { // red
+                if (newTemp > maximumValue) newTemp = maximumValue;
                 if (newTemp < blue.value + base.minGreenZone)
                     newTemp = blue.value + base.minGreenZone;
                 red.value = newTemp;
-            } else {
-                if (newTemp < base.minimumValue) newTemp = base.minimumValue;
+            } else {                 // blue
+                if (newTemp < minimumValue) newTemp = minimumValue;
                 if (newTemp > red.value - base.minGreenZone)
                     newTemp = red.value - base.minGreenZone;
                 blue.value = newTemp;
             }
-            // FIXME
-            base.dragged = temp - registerTempStart;
-            base.mouseX = mouse.x;
-            base.mouseY = mouse.y;
-            base.newtemp = newTemp;
+            /* // DEBUGGING */
+            /* base.dragged = temp - registerTempStart; */
+            /* base.mouseX = mouse.x; */
+            /* base.mouseY = mouse.y; */
+            /* base.newtemp = newTemp; */
         }
 
         // Mouse wheel:
@@ -349,29 +396,30 @@ Item {
         // - Check which zone mouse is closest to
         // - Increment/decrement the zone, respecting max/min values
         onWheel: {
-            if (!mouseInRing(wheel))
-                return;
+            registerZone = 0;  // Disable mouse dragging
+            if (!mouseInRing(wheel)) return; // Ignore out of bounds
+
             var temp = mouseToTemp(wheel);
-            if ((base.redZone - temp) < (temp - base.blueZone)) {
+            if ((red.value - temp) < (temp - blue.value)) {
                 // Closest to red
-                var newv = base.redZone + wheel.angleDelta.y/15 * base.stepSize;
-                if (newv > base.maximumValue) newv = base.maximumValue;
-                if (newv < base.blueZone + base.minGreenZone)
-                    newv = base.blueZone + base.minGreenZone;
-                base.redZone = newv;
+                var newv = red.value + wheel.angleDelta.y/15 * base.stepSize;
+                if (newv > maximumValue) newv = maximumValue;
+                if (newv < blue.value + base.minGreenZone)
+                    newv = blue.value + base.minGreenZone;
+                red.value = newv;
             } else {
                 // Closest to blue
-                var newv = base.blueZone + wheel.angleDelta.y/15 * base.stepSize;
-                if (newv < base.minimumValue) newv = base.minimumValue;
-                if (newv > base.redZone - base.minGreenZone)
-                    newv = base.redZone - base.minGreenZone;
+                var newv = blue.value - wheel.angleDelta.y/15 * base.stepSize;
+                if (newv < minimumValue) newv = minimumValue;
+                if (newv > red.value - base.minGreenZone)
+                    newv = red.value - base.minGreenZone;
                 base.blueZone = newv;
             }
         }
     }
 
-    Behavior on redZone {
-        enabled: !events.pressed
-        SmoothedAnimation { id: animate; duration: 800 }
-    }
+    /* Behavior on redZone { */
+    /*     enabled: !events.pressed */
+    /*     SmoothedAnimation { id: animate; duration: 800 } */
+    /* } */
 }
