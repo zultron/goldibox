@@ -25,11 +25,11 @@ Item {
     // - Mouse
     property double mouseX: set.mouseX
     property double mouseY: set.mouseY
-    property int inring: set.inring
+    property alias inring: set.inring
     property double totemp: set.totemp
     property double dragged: set.dragged
     // - Register
-    property bool rzone: set.rzone
+    property int rzone: set.rzone
     property double rtemporig: set.rtemporig
     property double rtempstart: set.rtempstart
 

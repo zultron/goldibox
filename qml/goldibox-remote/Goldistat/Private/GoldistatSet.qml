@@ -40,21 +40,20 @@ Item {
     // - Size settings, relative to width
     property double arcWidth: 0.25       // Width of arc
 
-    /* // Debugging */
-    /* // - Angles */
-    /* property alias redAngle: red.angle */
-    /* property alias blueAngle: blue.angle */
-    /* // - Mouse */
-    /* property double mouseX: 0.0 */
-    /* property double mouseY: 0.0 */
+    // Debugging
+    // - Angles
+    property alias redAngle: red.angle
+    property alias blueAngle: blue.angle
+    // - Mouse
+    property double mouseX: 0.0
+    property double mouseY: 0.0
     property int inring: 0
-    /* property double totemp: 0.0 */
-    /* property double dragged: 0.0 */
-    /* // - Mouse press register */
-    /* property bool rzone: false */
-    /* property double rtemporig: 0.0 */
-    /* property double rtempstart: 0.0 */
-    /* property double newtemp: 0.0 */
+    property double totemp: 0.0
+    property double dragged: 0.0
+    // - Mouse press register
+    property alias rzone: events.registerZone
+    property alias rtemporig: events.registerTempOrig
+    property alias rtempstart: events.registerTempStart
 
     // Square
     height: width
@@ -64,14 +63,12 @@ Item {
          * Right" Goldilocks temperature zone */
         id: green
 
-        contextType: "2d"
-        smooth: true
         // Max size, on bottom
         anchors.fill: parent
         z: 0
 
-        onPaint:
-        {
+        contextType: "2d"
+        onPaint: {
             if (!context) return;
             context.reset();
             context.beginPath();
@@ -316,9 +313,16 @@ Item {
 	    // - Get distance with Pythagoras
             var dx = m.x - height/2;
             var dy = m.y - width/2;
-            var d = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
+            var d = Math.sqrt(dx*dx + dy*dy);
 	    // - Check click is in ring
-            return d <= width/2 && d >= (width/2 - base.arcWidth);
+	    var res = (d <= width/2) && (d >= (width * (0.5 - base.arcWidth)));
+	    /* // Mouse outside ring; clear zone */
+	    /* if (!res) registerZone = 0; */
+	    // Debugging
+	    base.inring = res;
+	    base.mouseX = m.x;
+	    base.mouseY = m.y;
+            return res;
         }
 
         function mouseToTemp(m) {
@@ -326,6 +330,8 @@ Item {
             var angle = Math.atan2(m.x - width/2, m.y - width/2);
             // Convert value to temperature
             var val = angle/Math.PI * base.range * 2/3 + base.tempOut;
+	    // Debugging
+	    base.totemp = val;
             return val;
         }
 
@@ -334,13 +340,12 @@ Item {
         // - Check which zone the press was closest to
         // - Register the zone, original temp and clicked temp
         onPressed: {
-            base.inring = mouseInRing(mouse); // DEBUGGING
-
-            registerZone = 0;  // Disable
+            registerZone = 0;  // Clear zone
             if (!mouseInRing(mouse))
-		// Press not in ring; return
+		// Mouse pos'n not in ring; return
 		return;
 
+            // Get temp from mouse position
             var temp = mouseToTemp(mouse);
             if ((red.value - temp) < (temp - blue.value)) {
                 // Closer to red
@@ -352,25 +357,17 @@ Item {
                 registerTempOrig = blue.value;
             }
             registerTempStart = temp;
-            /* // Debugging */
-            /* base.mouseX = mouse.x; */
-            /* base.mouseY = mouse.y; */
-            /* base.rzone = registerZone; */
-            /* base.rtemporig = registerTempOrig; */
-            /* base.rtempstart = registerTempStart; */
         }
         // When moved, adjust the temperature by the amount dragged
         onPositionChanged: {
-	    base.inring = mouseInRing(mouse); // DEBUGGING
-
 	    if ((registerZone == 0) || (!mouseInRing(mouse)))
-		// Initial press or current pos. not in ring
+		// Initial or current mouse pos'n not in ring
 		return;
 
-            // Get temp from mouse position
-            var temp = mouseToTemp(mouse);
+            // Get temp diff between current and saved mouse position
+            var tempdiff = mouseToTemp(mouse) - registerTempStart;
             // New temp will be orig temp adjusted by the amount dragged
-            var newTemp = registerTempOrig + (temp - registerTempStart);
+            var newTemp = registerTempOrig + tempdiff;
 
 	    // Clip and set value
             if (registerZone == 1) { // red
@@ -384,11 +381,8 @@ Item {
                     newTemp = red.value - base.minGreenZone;
                 blue.value = newTemp;
             }
-            /* // DEBUGGING */
-            /* base.dragged = temp - registerTempStart; */
-            /* base.mouseX = mouse.x; */
-            /* base.mouseY = mouse.y; */
-            /* base.newtemp = newTemp; */
+            // Debugging
+            base.dragged = tempdiff;
         }
 
         // Mouse wheel:
@@ -417,9 +411,4 @@ Item {
             }
         }
     }
-
-    /* Behavior on redZone { */
-    /*     enabled: !events.pressed */
-    /*     SmoothedAnimation { id: animate; duration: 800 } */
-    /* } */
 }
