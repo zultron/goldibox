@@ -24,6 +24,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.0
 import Goldistat 1.0
+//import "Goldistat"
 
 ApplicationWindow {
     id: mainWindow
@@ -32,9 +33,6 @@ ApplicationWindow {
     title: qsTr("Goldistat Demo")
     width: 700
     height: 500
-
-    property double range: 90.0
-
 
     Item {
         id: goldibox
