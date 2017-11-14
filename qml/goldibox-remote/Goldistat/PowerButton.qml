@@ -1,110 +1,73 @@
 import QtQuick 2.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
-Item {
+Button {
     /* Power button
 
        Simple, round O/1 power button
      */
-    id: base
 
-    // Parameters and settings
-    // - Power on signal
-    property alias powerOn:  events.powerOn    // Power on signal
-    // - Line and color
-    property alias baseColor: circle.baseColor // Color of base circle, gray
-    property alias lineColor: symbol.lineColor // Color of symbol lines
-    property alias lineWidth: symbol.lineWidth // ratio of line width to base width
-    property alias lineCap: symbol.lineCap     // line end style:  butt, round, square
-    // - I line
-    property alias lineTop: symbol.lineTop     // ratio of line top Y to base height
-    property alias lineBot: symbol.lineBot     // ratio of line bot Y to base height
-    // - O arc geometry
-    property alias arcStart: symbol.arcStart   // start in degrees
-    property alias arcEnd: symbol.arcEnd       // end in degrees
-    property alias arcRadiue: symbol.arcRadius // ratio of radius to base width
+    style: ButtonStyle {
+	background: Item {
+	    Rectangle {
+		/* Base circle */
 
-    Rectangle {
-        /* Base circle */
-        id: circle
+		// Center on parent, on bottom
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.verticalCenter: parent.verticalCenter
+		z: 0
 
-	// Parameters
-	property color baseColor: "#626262"
+		// Circle fills parent
+		height: parent.height
+		width: height
+		radius: width/2
 
-        // Center on base, on bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        z: 0
+		// Color
+		color: "#626262"
+	    }
 
-	// Circle fills base
-	height: base.height
-	width: height
-	radius: width/2
+	    Canvas {
+		/* I/O symbol */
 
-	// Color
-	color: baseColor
-    }
+		// Parameters
+		// - I line geometry:  ratios to base height
+		property double lineTop: 0.15     // line top Y
+		property double lineBot: 0.40     // line bot Y
+		// - O arc geometry
+		property double arcStart: 310     // start in degrees
+		property double arcEnd: 230       // end in degrees
+		property double arcRadius: 0.3    // radius ratio
+		// - Line and color
+		property double lineWidth: 0.15   // line width ratio
+		property string lineCap: "round"  // line end style
+		property color lineColor: "black" // Color of lines
 
-    Canvas {
-        /* I/O symbol */
-        id: symbol
+		// Max size, on top
+		anchors.fill: parent
+		z: 1
 
-	// Parameters
-	// - I line geometry
-	property double lineTop: 0.15     // ratio of line top Y to base height
-	property double lineBot: 0.40     // ratio of line bot Y to base height
-	// - O arc geometry
-	property double arcStart: 310     // start in degrees
-	property double arcEnd: 230       // end in degrees
-	property double arcRadius: 0.3    // ratio of radius to base width
-	// - Line and color
-	property double lineWidth: 0.15   // ratio of line width to base width
-	property string lineCap: "round"  // line end style:  butt, round, square
-	property color lineColor: "black" // Color of lines
-
-        // Max size, on top
-        anchors.fill: parent
-        z: 1
-
-	// Draw the symbol
-        contextType: "2d"
-        onPaint: {
-            if (!context) return;
-            context.reset();
-            context.beginPath();
-            // Draw O arc
-            context.arc(width/2, height/2,              // center
-			width*arcRadius,                // radius
-			arcStart * Math.PI/180,         // arc start/end
-			arcEnd * Math.PI/180);          //   in radians
-	    // Draw I line
-	    context.moveTo(width/2, height * lineTop);  // move to top
-	    context.lineTo(width/2, height * lineBot);  // trace to bottom
-            // Stroke line and arc with width, cap and color
-            context.strokeStyle = lineColor;
-            context.lineWidth = width * lineWidth;
-	    context.lineCap = lineCap;
-            context.stroke();
-        }
-    }
-
-    MouseArea {
-	/* Invisible layer for dealing with mouse button and scroll input
-
-	   When button is clicked, just set signal to true and leave
-	   it that way.
-	  */
-        id: events
-
-	// Process clicks from full area, and be on top
-        anchors.fill: parent
-        z: 9 // On top
-
-        // Power on signal
-	property bool powerOn:  true
-
-        // When released, set powerOn to false
-        onReleased: {
-	    powerOn = false;
-        }
+		// Draw the symbol
+		contextType: "2d"
+		onPaint: {
+		    if (!context) return;
+		    context.reset();
+		    context.beginPath();
+		    // Draw O arc
+		    context.arc(width/2, height/2,      // center
+				width*arcRadius,        // radius
+				arcStart * Math.PI/180, // arc start/end
+				arcEnd * Math.PI/180);  //   in radians
+		    // Draw I line:  top to bottom
+		    context.moveTo(width/2, height * lineTop);
+		    context.lineTo(width/2, height * lineBot);
+		    // Stroke line and arc with width, cap and color
+		    context.strokeStyle = lineColor;
+		    context.lineWidth = width * lineWidth;
+		    context.lineCap = lineCap;
+		    context.stroke();
+		}
+	    }
+	}
     }
 }
