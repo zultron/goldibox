@@ -23,8 +23,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.0
-import Goldistat 1.0
-//import "Goldistat"
+import "Goldistat"
 
 ApplicationWindow {
     id: mainWindow
@@ -46,9 +45,9 @@ ApplicationWindow {
         Image {
 	    /* Fridge background image */
             id: fridge
-            source: "goldibox-remote/assets/background.png"
+            source: "assets/background.png"
 
-	    // Scale to fit window, keeping aspect, on bottom
+            // Scale to fit window, keeping aspect, on bottom
             anchors.fill: parent
             fillMode: Image.PreserveAspectFit
 	    z: 0
@@ -78,9 +77,9 @@ ApplicationWindow {
         Image {
 	    /* Goldilocks */
             id: locks
-            source: "goldibox-remote/assets/locks.png"
+            source: "assets/locks.png"
 
-	    // Scaled to fridge's actual image area, keeping aspect, on top
+            // Scaled to fridge's actual image area, keeping aspect, on top
             anchors.fill: parent
             fillMode: Image.PreserveAspectFit
             z: 6

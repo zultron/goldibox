@@ -1,4 +1,0 @@
-module Goldistat.Private
-GoldistatIn 1.0 GoldistatIn.qml
-GoldistatOut 1.0 GoldistatOut.qml
-GoldistatSet 1.0 GoldistatSet.qml
