@@ -84,6 +84,16 @@ ApplicationWindow {
             fillMode: Image.PreserveAspectFit
             z: 6
         }
+
+        PowerButton {
+            id: powerButton
+
+	    // Geometry
+	    width: fridge.paintedWidth * 0.10
+	    height: fridge.paintedWidth * 0.10
+	    x: fridge.paintedWidth * 0.82
+	    y: fridge.paintedWidth * 0.18
+        }
     }
 
     ColumnLayout {
