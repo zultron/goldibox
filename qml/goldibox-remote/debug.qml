@@ -33,6 +33,8 @@ ApplicationWindow {
     width: 700
     height: 500
 
+    property double range: 90.0
+
     Item {
         id: goldibox
         anchors.right: parent.horizontalCenter
