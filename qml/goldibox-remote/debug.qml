@@ -22,8 +22,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import QtQuick.Window 2.0
-import "Goldistat"
+import "Goldistat" as Goldistat
 
 ApplicationWindow {
     id: mainWindow
@@ -55,7 +54,7 @@ ApplicationWindow {
 	    z: 0
         }
 
-        Goldistat {
+        Goldistat.Goldistat {
 	    /* Goldibox thermostat control */
             id: goldistat
 
@@ -85,16 +84,17 @@ ApplicationWindow {
             anchors.fill: parent
             fillMode: Image.PreserveAspectFit
             z: 6
+
         }
 
-        PowerButton {
+        Goldistat.PowerButton {
             id: powerButton
 
 	    // Geometry
 	    width: fridge.paintedWidth * 0.10
 	    height: fridge.paintedWidth * 0.10
-	    x: fridge.paintedWidth * 0.82
-	    y: fridge.paintedWidth * 0.18
+            x: fridge.paintedWidth * 0.82
+            y: fridge.paintedWidth * 0.18
         }
     }
 

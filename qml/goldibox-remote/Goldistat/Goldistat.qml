@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
-import "Private"
+import "Private" as Private
 
 Item {
     /* Outside temperature */
@@ -39,7 +39,7 @@ Item {
     id: root
     height: width * 1.35
 
-    GoldistatOut {
+    Private.GoldistatOut {
         id: outGauge
         z: 1
 
@@ -54,7 +54,7 @@ Item {
     }
 
 
-    GoldistatIn {
+    Private.GoldistatIn {
         id: inGauge
         angle: root.angleIn
         value: root.tempIn
@@ -88,7 +88,7 @@ Item {
         }
     }
 
-    GoldistatSet {
+    Private.GoldistatSet {
         id: set
         height: width
         anchors.right: parent.right
