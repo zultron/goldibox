@@ -66,12 +66,12 @@ ApplicationWindow {
 	    z: 5
 
 	    // Relative sizing hell:  Constants determined empirically
-            width: fridge.paintedWidth * 0.73
+            width: fridge.paintedWidth * 0.62
             anchors.horizontalCenter: fridge.horizontalCenter
-            anchors.horizontalCenterOffset: fridge.paintedHeight * 0.07
+            anchors.horizontalCenterOffset: fridge.paintedHeight * -0.04
             anchors.verticalCenter: fridge.verticalCenter
-            anchors.verticalCenterOffset: fridge.paintedWidth * 0.24
-            rotation: -25
+            anchors.verticalCenterOffset: fridge.paintedWidth * 0.42
+            rotation: 55
 
         }
 
@@ -92,10 +92,11 @@ ApplicationWindow {
 
 	    // Geometry
 	    width: fridge.paintedWidth * 0.10
-	    height: fridge.paintedWidth * 0.10
-            x: fridge.paintedWidth * 0.82
-            y: fridge.paintedWidth * 0.18
+        height: fridge.paintedWidth * 0.10
+        x: fridge.paintedWidth * 0.82
+        y: fridge.paintedWidth * 0.18
         }
+
     }
 
     ColumnLayout {
