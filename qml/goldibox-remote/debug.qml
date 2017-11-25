@@ -87,6 +87,18 @@ ApplicationWindow {
 
         }
 
+        Image {
+	    /* Fake (for now) graph */
+            id: graph
+            source: "assets/graph.png"
+
+            // Scaled to fridge's actual image area, keeping aspect, on top
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            z: 7
+
+        }
+
         Goldistat.PowerButton {
             id: powerButton
 

@@ -13,5 +13,6 @@
         <file>goldibox-remote/assets/therm-guide.png</file>
         <file>goldibox-remote/Goldistat/PowerButton.qml</file>
         <file>goldibox-remote/Goldistat/ExitButton.qml</file>
+        <file>goldibox-remote/assets/graph.png</file>
     </qresource>
 </RCC>
