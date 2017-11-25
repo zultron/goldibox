@@ -99,6 +99,19 @@ ApplicationWindow {
             anchors.verticalCenterOffset: fridge.paintedHeight * -0.28
         }
 
+        Goldistat.ExitButton {
+            id: exitButton
+	    onClicked: Qt.quit()
+
+	    // Geometry
+	    width: fridge.paintedWidth * 0.12
+            height: fridge.paintedWidth * 0.12
+            anchors.horizontalCenter: fridge.horizontalCenter
+            anchors.horizontalCenterOffset: fridge.paintedWidth * -0.41
+            anchors.verticalCenter: fridge.verticalCenter
+            anchors.verticalCenterOffset: fridge.paintedHeight * -0.44
+        }
+
     }
 
     ColumnLayout {
