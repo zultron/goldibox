@@ -91,10 +91,12 @@ ApplicationWindow {
             id: powerButton
 
 	    // Geometry
-	    width: fridge.paintedWidth * 0.10
-        height: fridge.paintedWidth * 0.10
-        x: fridge.paintedWidth * 0.82
-        y: fridge.paintedWidth * 0.18
+	    width: fridge.paintedWidth * 0.12
+            height: fridge.paintedWidth * 0.12
+            anchors.horizontalCenter: fridge.horizontalCenter
+            anchors.horizontalCenterOffset: fridge.paintedWidth * 0.28
+            anchors.verticalCenter: fridge.verticalCenter
+            anchors.verticalCenterOffset: fridge.paintedHeight * -0.28
         }
 
     }
