@@ -6,3 +6,4 @@
 # Run artifacts
 /saved_state.yaml
 /rrd/
+*.autosave
