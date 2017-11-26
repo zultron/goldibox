@@ -42,6 +42,7 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.topMargin: 0
         anchors.bottom: parent.bottom
+	property alias enabled: powerButton.checked
 
         Image {
 	    /* Fridge background image */
@@ -265,6 +266,12 @@ ApplicationWindow {
                 minimumValue: -30
                 maximumValue: 90
             }
+        }
+
+        CheckBox {
+            id: enableBox
+            text: qsTr("Enabled?")
+	    property bool checked: goldibox.enabled
         }
     }
 }

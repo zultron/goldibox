@@ -5,8 +5,11 @@ import QtQuick.Controls.Styles 1.4
 Button {
     /* Power button
 
-       Simple, round O/1 power button
+       Simple, round O/1 power button, turns yellow when on
      */
+
+    tooltip: "Enable/Disable Goldibox"
+    checkable: true
 
     style: ButtonStyle {
 	background: Item {
@@ -26,22 +29,22 @@ Button {
 		// Color
 		color: "#626262"
 	    }
-
 	    Canvas {
 		/* I/O symbol */
 
 		// Parameters
 		// - I line geometry:  ratios to base height
-		property double lineTop: 0.15     // line top Y
-		property double lineBot: 0.40     // line bot Y
+		property double lineTop: 0.15        // line top Y
+		property double lineBot: 0.40        // line bot Y
 		// - O arc geometry
-		property double arcStart: 310     // start in degrees
-		property double arcEnd: 230       // end in degrees
-		property double arcRadius: 0.3    // radius ratio
+		property double arcStart: 310        // start in degrees
+		property double arcEnd: 230          // end in degrees
+		property double arcRadius: 0.3       // radius ratio
 		// - Line and color
-		property double lineWidth: 0.15   // line width ratio
-		property string lineCap: "round"  // line end style
-		property color lineColor: "black" // Color of lines
+		property double lineWidth: 0.15      // line width ratio
+		property string lineCap: "round"     // line end style
+		property color lineColorOff: "black" // Color of lines, off
+		property color lineColorOn: "yellow" // Color of lines, on
 
 		// Max size, on top
 		anchors.fill: parent
@@ -62,11 +65,17 @@ Button {
 		    context.moveTo(width/2, height * lineTop);
 		    context.lineTo(width/2, height * lineBot);
 		    // Stroke line and arc with width, cap and color
-		    context.strokeStyle = lineColor;
+		    context.strokeStyle = (
+			control.checked ? lineColorOn : lineColorOff );
 		    context.lineWidth = width * lineWidth;
 		    context.lineCap = lineCap;
 		    context.stroke();
 		}
+
+		Component.onCompleted: {
+                    requestPaint();
+                    control.onClicked.connect(requestPaint);
+                }
 	    }
 	}
     }
