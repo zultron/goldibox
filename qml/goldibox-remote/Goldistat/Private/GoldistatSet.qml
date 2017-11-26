@@ -66,7 +66,7 @@ Item {
         id: pinMin
         name: "temp-min"
         type: HalPin.Float
-        direction: HalPin.In
+        direction: HalPin.Out
     }
 
     Binding {
@@ -79,7 +79,7 @@ Item {
         id: pinMax
         name: "temp-max"
         type: HalPin.Float
-        direction: HalPin.In
+        direction: HalPin.Out
     }
 
     Binding {

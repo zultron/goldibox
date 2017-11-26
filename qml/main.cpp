@@ -29,8 +29,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     engine.addImportPath(QStringLiteral("imports"));
     engine.addImportPath(QStringLiteral("assets:/imports"));
-    // engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
-    engine.load(QUrl(QStringLiteral("qrc:///goldibox-remote/debug.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
 
     return app.exec();
 }

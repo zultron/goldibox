@@ -17,14 +17,14 @@ rcomp = hal.RemoteComponent('goldibox-remote', timer=100)
 data = [
     # Controls
     ('enable', hal.HAL_BIT, hal.HAL_OUT),
-    ('shutdown-button', hal.HAL_BIT, hal.HAL_OUT),
+    # ('shutdown-button', hal.HAL_BIT, hal.HAL_OUT),
     ('temp-max', hal.HAL_FLOAT, hal.HAL_OUT),
     ('temp-min', hal.HAL_FLOAT, hal.HAL_OUT),
     # Readouts
-    ('error', hal.HAL_BIT, hal.HAL_IN),
-    ('cool-on', hal.HAL_BIT, hal.HAL_IN),
-    ('heat-on', hal.HAL_BIT, hal.HAL_IN),
-    ('switch-on', hal.HAL_BIT, hal.HAL_IN),
+    # ('error', hal.HAL_BIT, hal.HAL_IN),
+    # ('cool-on', hal.HAL_BIT, hal.HAL_IN),
+    # ('heat-on', hal.HAL_BIT, hal.HAL_IN),
+    # ('switch-on', hal.HAL_BIT, hal.HAL_IN),
     ('temp-int', hal.HAL_FLOAT, hal.HAL_IN),
     ('temp-ext', hal.HAL_FLOAT, hal.HAL_IN),
 ]

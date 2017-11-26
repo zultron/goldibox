@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>goldibox-remote/debug.qml</file>
         <file>goldibox-remote/goldibox-remote.qml</file>
         <file>goldibox-remote/description.ini</file>
         <file>goldibox-remote/Goldistat/Goldistat.qml</file>
