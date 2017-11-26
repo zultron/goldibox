@@ -24,7 +24,7 @@ PYTHON_FILES = goldibox.py
 # QML files
 SHARE_DIR = /usr/share/goldibox
 SHARE_FILES = \
-	images/icon-fridge.svg \
+	images/icon.png \
 	launcher.ini \
 	qml/goldibox-remote/Goldistat/ExitButton.qml \
 	qml/goldibox-remote/Goldistat/Goldistat.qml \
