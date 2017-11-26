@@ -26,9 +26,17 @@ SHARE_DIR = /usr/share/goldibox
 SHARE_FILES = \
 	images/icon-fridge.svg \
 	launcher.ini \
+	qml/goldibox-remote/Goldistat/ExitButton.qml \
+	qml/goldibox-remote/Goldistat/Goldistat.qml \
+	qml/goldibox-remote/Goldistat/PowerButton.qml \
+	qml/goldibox-remote/Goldistat/Private/GoldistatIn.qml \
+	qml/goldibox-remote/Goldistat/Private/GoldistatOut.qml \
+	qml/goldibox-remote/Goldistat/Private/GoldistatSet.qml \
+	qml/goldibox-remote/assets/background.png \
+	qml/goldibox-remote/assets/graph.png \
+	qml/goldibox-remote/assets/locks.png \
 	qml/goldibox-remote/description.ini \
 	qml/goldibox-remote/goldibox-remote.qml \
-	qml/goldibox-remote/assets/background.png \
 	qml/goldibox-remote.pro \
 	qml/main.cpp \
 	qml/main.qml \
