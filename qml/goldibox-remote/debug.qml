@@ -114,7 +114,6 @@ ApplicationWindow {
 
         Goldistat.ExitButton {
             id: exitButton
-	    onClicked: Qt.quit()
 
 	    // Geometry
 	    width: fridge.paintedWidth * 0.12

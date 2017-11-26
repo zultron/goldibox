@@ -5,8 +5,11 @@ import QtQuick.Controls.Styles 1.4
 Button {
     /* Exit button
 
-       Simple, round X button
+       Simple, round X button, quits the app when clicked
      */
+    onClicked: Qt.quit()
+    width: 50
+    height: 50
 
     style: ButtonStyle {
 	background: Item {
