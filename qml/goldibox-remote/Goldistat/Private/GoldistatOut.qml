@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
+import Machinekit.HalRemote 1.0
 
 Item {
     /* Outside temperature readout and pointer
@@ -14,6 +15,9 @@ Item {
     // Parameters and settings
     // - Incoming parameters
     property double value: 30.0    // Measured outside temperature, for readout
+    // - Outgoing parameters
+    property alias synced: pin.synced
+    property alias pinName: pin.name
     // - Settings for readout
     property int decimals: 1       // Format `value` readout decimal places
     property string suffix: "°C"   // Readout units, appended to value
@@ -30,6 +34,24 @@ Item {
 
     // Fixed aspect ratio
     height: width // * (1.0 + ptrHeight + outTextSize + readoutTextSize)
+
+    HalPin {
+        id: pin
+        name: "temp-ext"
+        type: HalPin.Float
+        direction: HalPin.In
+    }
+
+    Binding {
+	target: base;
+	property: "value";
+	value: pin.value;
+    }
+    Binding {
+	target: pin;
+	property: "value";
+	value: base.value;
+    }
 
     Canvas {
         /* Black triangular pointer representing outside temp gauge */

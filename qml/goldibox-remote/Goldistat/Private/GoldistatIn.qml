@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
+import Machinekit.HalRemote 1.0
 
 Item {
     /* Inside temperature gauge
@@ -17,6 +18,9 @@ Item {
     property double blueZone: 15.0 // "Too Cold" setting, for color
     property double redZone: 25.0  // "Too Hot" setting, for color
     property double angle: 20.0    // Angle of rotation, in degrees
+    // - Outgoing parameters
+    property alias synced: pin.synced
+    property alias pinName: pin.name
     // - Settings for readout
     property int decimals: 1       // Format `value` readout decimal places
     property string suffix: "°C"   // Readout units, appended to value
@@ -40,6 +44,24 @@ Item {
     height: width
     // Change angle with readout
     rotation: angle
+
+    HalPin {
+        id: pin
+        name: "temp-int"
+        type: HalPin.Float
+        direction: HalPin.In
+    }
+
+    Binding {
+	target: base;
+	property: "value";
+	value: pin.value;
+    }
+    Binding {
+	target: pin;
+	property: "value";
+	value: base.value;
+    }
 
     Rectangle {
         /* Base circle */

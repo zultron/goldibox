@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import Machinekit.HalRemote 1.0
 
 Button {
     /* Power button
@@ -8,8 +9,33 @@ Button {
        Simple, round O/1 power button, turns yellow when on
      */
 
+    property string name: "enable"
+    property alias synced: pin.synced
+
+    enabled: (pin.direction !== HalPin.In)
+
     tooltip: "Enable/Disable Goldibox"
     checkable: true
+
+    id: base
+
+    HalPin {
+        id: pin
+        name: base.name
+        type: HalPin.Bit
+        direction: HalPin.Out
+    }
+
+    Binding {
+	target: base;
+	property: "checked";
+	value: pin.value;
+    }
+    Binding {
+	target: pin;
+	property: "value";
+	value: base.checked;
+    }
 
     style: ButtonStyle {
 	background: Item {

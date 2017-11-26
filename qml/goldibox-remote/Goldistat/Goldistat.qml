@@ -1,22 +1,29 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
+import Machinekit.HalRemote 1.0
 import "Private" as Private
 
 Item {
     /* Outside temperature */
+    property alias tempOutName: outGauge.pinName
     property double tempOut: 30.0
     /* Inside temperature */
-    property double tempIn: 10.0
+    property alias tempInName: inGauge.pinName
+    property double tempIn: 20.0
     /* Too Cold:  Lower boundary of Goldilocks zone */
-    property double blueZone: set.blueZone
+    property alias blueZoneName: set.pinMinName
+    property double blueZone: 15.0
     /* Too Hot:  Upper boundary of Goldilocks zone */
-    property double redZone: set.redZone
+    property alias redZoneName: set.pinMaxName
+    property double redZone: 25.0
     /* Range in degrees for allowed setting; centers around tempOut */
     property double range: 90.0
 
     /* Computed angle for inside temp pointer */
     property double angleIn: (tempOut - tempIn) / (range/2) * 135
 
+    /* Synch */
+    property bool synced: set.synced && inGauge.synced && outGauge.synced
 
     // Debugging
     // - Angles
@@ -57,7 +64,6 @@ Item {
     Private.GoldistatIn {
         id: inGauge
         angle: root.angleIn
-        value: root.tempIn
 
         /* This circle centers on the settings dial */
         anchors.top: parent.top
@@ -80,11 +86,6 @@ Item {
             target: inGauge;
             property: "value";
             value: root.tempIn;
-        }
-        Binding {
-            target: inGauge;
-            property: "angle";
-            value: root.angleIn;
         }
     }
 

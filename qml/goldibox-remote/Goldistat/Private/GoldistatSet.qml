@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
+import Machinekit.HalRemote 1.0
 
 Item {
     /* Goldibox thermostat zone setting
@@ -15,8 +16,11 @@ Item {
 
     // Parameters and settings
     // - Outgoing settings
-    property alias redZone: red.value    // Too Hot
-    property alias blueZone: blue.value  // Too Cold
+    property alias redZone: pinMax.value    // Too Hot
+    property alias blueZone: pinMin.value  // Too Cold
+    property alias pinMinName: pinMin.name
+    property alias pinMaxName: pinMax.name
+    property bool synced: pinMin.synced && pinMax.synced
     // - Incoming settings
     property double tempOut: 30.0        // Outside temperature: for angle
     // - Thermostat parameters
@@ -58,6 +62,32 @@ Item {
     // Square
     height: width
 
+    HalPin {
+        id: pinMin
+        name: "temp-min"
+        type: HalPin.Float
+        direction: HalPin.In
+    }
+
+    Binding {
+	target: parent;
+	property: "blueZone";
+	value: pinMin.value;
+    }
+
+    HalPin {
+        id: pinMax
+        name: "temp-max"
+        type: HalPin.Float
+        direction: HalPin.In
+    }
+
+    Binding {
+	target: parent;
+	property: "redZone";
+	value: pinMax.value;
+    }
+
     Canvas {
         /* Green background circle; exposed area represents "Just
          * Right" Goldilocks temperature zone */
@@ -88,7 +118,7 @@ Item {
         id: red
 
 	// The setting
-        property double value: 25.0
+        property alias value: pinMax.value
 
         // Compute angle:
         // - (tempOut - range/2) .. (tempOut + range/2) => -.25PI .. 1.25PI
@@ -178,7 +208,7 @@ Item {
         id: blue
 
 	// The setting
-        property double value: 15.0
+        property alias value: pinMin.value
 
         // Compute angle:
         // - (tempOut - range/2) .. (tempOut + range/2) => -.25PI .. 1.25PI
