@@ -13,17 +13,18 @@ Item {
     id: base
 
     // Parameters and settings
+    // - Outgoing parameters
+    property double tempIn: 10.0   // Measured inside temperature, for readout
+    property bool synched: false   // Bool:  HAL pin synched?
     // - Incoming parameters
-    property double value: 10.0    // Measured inside temperature, for readout
+    property double tempOut: 20.0  // Measured outside temperature, for angle
+    property double range: 90      // Set thermostat range
     property double blueZone: 15.0 // "Too Cold" setting, for color
     property double redZone: 25.0  // "Too Hot" setting, for color
-    property double angle: 20.0    // Angle of rotation, in degrees
-    // - Outgoing parameters
-    property alias synced: pin.synced
-    property alias pinName: pin.name
+    property alias pinName: pin.name // temp-int HAL pin name
     // - Settings for readout
-    property int decimals: 1       // Format `value` readout decimal places
-    property string suffix: "°C"   // Readout units, appended to value
+    property int decimals: 1       // Format `tempIn` readout decimal places
+    property string suffix: "°C"   // Readout units, appended to tempIn
     property color blue: "#0000ff"
     property color red: "#ff0000"
     property color green: "#00c000"
@@ -43,7 +44,7 @@ Item {
     // Square frame for circular dial
     height: width
     // Change angle with readout
-    rotation: angle
+    rotation: (tempOut - tempIn) / (range/2) * 135
 
     HalPin {
         id: pin
@@ -54,13 +55,14 @@ Item {
 
     Binding {
 	target: base;
-	property: "value";
+	property: "tempIn";
 	value: pin.value;
     }
+
     Binding {
-	target: pin;
-	property: "value";
-	value: base.value;
+	target: base;
+	property: "synched";
+	value: pin.synced;
     }
 
     Rectangle {
@@ -79,8 +81,8 @@ Item {
 
 	// Change color depending on temperature zone
 	color: (
-	    (base.value <= base.blueZone) ? base.blue : // too cold
-            ((base.value >= base.redZone) ? base.red :  // too hot
+	    (base.tempIn <= base.blueZone) ? base.blue : // too cold
+            ((base.tempIn >= base.redZone) ? base.red :  // too hot
 	     base.green))                               // just right
 
         // Outline in gray
@@ -137,7 +139,7 @@ Item {
         id: temp
 
 	// Text readout:  formatted float and units
-        text: base.value.toFixed(decimals) + base.suffix
+        text: base.tempIn.toFixed(decimals) + base.suffix
 
         // Size font proportionally and color text
         font.pixelSize: base.width * base.readoutTextSize

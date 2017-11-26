@@ -71,10 +71,15 @@ Button {
 		property string lineCap: "round"     // line end style
 		property color lineColorOff: "black" // Color of lines, off
 		property color lineColorOn: "yellow" // Color of lines, on
+		// - Checked signal
+		property bool checked: control.checked
 
 		// Max size, on top
 		anchors.fill: parent
 		z: 1
+
+		// Redraw when the button is checked/unchecked
+		onCheckedChanged: requestPaint()
 
 		// Draw the symbol
 		contextType: "2d"
@@ -92,16 +97,11 @@ Button {
 		    context.lineTo(width/2, height * lineBot);
 		    // Stroke line and arc with width, cap and color
 		    context.strokeStyle = (
-			control.checked ? lineColorOn : lineColorOff );
+			checked ? lineColorOn : lineColorOff );
 		    context.lineWidth = width * lineWidth;
 		    context.lineCap = lineCap;
 		    context.stroke();
 		}
-
-		Component.onCompleted: {
-                    requestPaint();
-                    control.onClicked.connect(requestPaint);
-                }
 	    }
 	}
     }

@@ -13,11 +13,11 @@ Item {
     id: base
 
     // Parameters and settings
-    // - Incoming parameters
-    property double value: 30.0    // Measured outside temperature, for readout
     // - Outgoing parameters
-    property alias synced: pin.synced
-    property alias pinName: pin.name
+    property double value: 30.0    // Measured outside temperature, for readout
+    property bool synched: false   // Bool:  HAL pin synched?
+    // - Incoming parameters
+    property alias pinName: pin.name // temp-ext HAL pin name
     // - Settings for readout
     property int decimals: 1       // Format `value` readout decimal places
     property string suffix: "°C"   // Readout units, appended to value
@@ -47,10 +47,11 @@ Item {
 	property: "value";
 	value: pin.value;
     }
+
     Binding {
-	target: pin;
-	property: "value";
-	value: base.value;
+	target: base;
+	property: "synched";
+	value: pin.synced;
     }
 
     Canvas {

@@ -16,16 +16,18 @@ Item {
 
     // Parameters and settings
     // - Outgoing settings
-    property alias redZone: pinMax.value    // Too Hot
-    property alias blueZone: pinMin.value  // Too Cold
-    property alias pinMinName: pinMin.name
-    property alias pinMaxName: pinMax.name
-    property bool synced: pinMin.synced && pinMax.synced
+    property double redZone: 35.0          // Too Hot
+    property double blueZone: 15.0         // Too Cold
+    //property bool synced: pinMin.synced && pinMax.synced
+    property bool redSynched
+    property bool blueSynched
+    property bool synched: redSynched && blueSynched
     // - Incoming settings
-    property double tempOut: 30.0        // Outside temperature: for angle
-    // - Thermostat parameters
-    property double range: 90.0          // +/- temp setting range
-    property double minGreenZone: 2.0    //  Min Goldilocks zone
+    property double tempOut: 30.0          // Angle: outside temperature
+    property double range: 90.0            // Angle: +/- temp setting range
+    property double minGreenZone: 2.0      // Min Goldilocks zone
+    property alias pinMinName: pinMin.name // temp-min HAL pin name
+    property alias pinMaxName: pinMax.name // temp-max HAL pin name
     // - Value display parameters
     property int decimals: 1             // Fmt float w/one decimal
     property string suffix: "°C"         // Units
@@ -70,9 +72,15 @@ Item {
     }
 
     Binding {
-	target: parent;
+	target: base;
 	property: "blueZone";
 	value: pinMin.value;
+    }
+
+    Binding {
+	target: base;
+	property: "blueSynched";
+	value: pinMin.synced;
     }
 
     HalPin {
@@ -83,9 +91,15 @@ Item {
     }
 
     Binding {
-	target: parent;
+	target: base;
 	property: "redZone";
 	value: pinMax.value;
+    }
+
+    Binding {
+	target: base;
+	property: "redSynched";
+	value: pinMax.synced;
     }
 
     Canvas {

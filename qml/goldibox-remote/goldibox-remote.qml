@@ -13,9 +13,6 @@ HalApplicationWindow {
     transformOrigin: Item.Center
     title: qsTr("Goldibox")
 
-
-    property double range: 90.0
-
     Item {
         id: goldibox
         anchors.fill: parent
@@ -34,10 +31,6 @@ HalApplicationWindow {
         Goldistat.Goldistat {
 	    /* Goldibox thermostat control */
             id: goldistat
-
-            tempIn: inTemp.value
-            tempOut: outTemp.value
-            range: mainWindow.range
 
 	    // Middle layer
 	    z: 5

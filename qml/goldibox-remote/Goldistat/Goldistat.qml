@@ -6,10 +6,10 @@ import "Private" as Private
 Item {
     /* Outside temperature */
     property alias tempOutName: outGauge.pinName
-    property double tempOut: 30.0
+    property alias tempOut: outGauge.value
     /* Inside temperature */
     property alias tempInName: inGauge.pinName
-    property double tempIn: 20.0
+    property alias tempIn: inGauge.tempIn
     /* Too Cold:  Lower boundary of Goldilocks zone */
     property alias blueZoneName: set.pinMinName
     property double blueZone: 15.0
@@ -19,11 +19,8 @@ Item {
     /* Range in degrees for allowed setting; centers around tempOut */
     property double range: 90.0
 
-    /* Computed angle for inside temp pointer */
-    property double angleIn: (tempOut - tempIn) / (range/2) * 135
-
     /* Synch */
-    property bool synced: set.synced && inGauge.synced && outGauge.synced
+    property bool synched: set.synched && inGauge.synched && outGauge.synched
 
     // Debugging
     // - Angles
@@ -50,43 +47,26 @@ Item {
         id: outGauge
         z: 1
 
-        /* Fits root item */
+        // Fits root item
         anchors.fill: parent
-
-        Binding {
-            target: outGauge;
-            property: "value";
-            value: root.tempOut;
-        }
     }
 
 
     Private.GoldistatIn {
         id: inGauge
-        angle: root.angleIn
 
-        /* This circle centers on the settings dial */
+        // This circle centers on the settings dial
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.left: parent.left
         height: width
         z: 0
 
-        Binding {
-            target: inGauge;
-            property: "blueZone";
-            value: root.blueZone;
-        }
-        Binding {
-            target: inGauge;
-            property: "redZone";
-            value: root.redZone;
-        }
-        Binding {
-            target: inGauge;
-            property: "value";
-            value: root.tempIn;
-        }
+	// Connect signals needed to calculate rotation
+	range: root.range
+	redZone: root.redZone
+	blueZone: root.blueZone
+	tempOut: root.tempOut
     }
 
     Private.GoldistatSet {
@@ -96,6 +76,9 @@ Item {
         anchors.left: parent.left
         anchors.top: parent.top
         z: 2
+	
+	// Connect signals needed to calculate rotation
+	range: root.range
         tempOut: root.tempOut
     }
 }
