@@ -12,8 +12,6 @@ graphical interface for setting temperatures, checking current state,
 and viewing history through time series graphs.  Anyone may modify the
 open-source control to add new features.
 
-This is currently a **work in progress**.
-
 ## Components
 
 ![Goldibox](images/goldibox_breadboard.png)
@@ -30,7 +28,7 @@ sink.  This small computer has the analog and digital interfaces to
 control the hardware, and runs Debian and the control software.  They
 sell for about $25 through official distributors, and also need a $10
 micro SD card for the OS, a $3 DC step-down converter to 5VDC power
-from the 12VDC fridge power supply,  and a $5 [USB type A breakout
+from the 12VDC fridge power supply, and a $5 [USB type A breakout
 module][usb-breakout] and $10 USB WiFi adapter for networking.
 
 The control functions come from the [Machinekit][machinekit] software
@@ -60,10 +58,9 @@ custom-crimped connectors improve appearance.
 
 # Remote interface
 
-A basic remote graphical interface using Alexander Rössler's
-[QtQuickVCP][qqvcp] is now working.  Here is a screen capture.  The
-time-series graphs are yet to be integrated in, and there are
-currently issues with running it on different sized screens.
+Control the Goldibox with a remote graphical interface, built using
+Alexander Rössler's [QtQuickVCP][qqvcp].  The time-series graphs are
+yet to be integrated in.
 
 ![GUI mock-up](images/gui-capture.png)
 
@@ -111,8 +108,8 @@ MachinekitClient build][mkclient-dl], then:
 
     # Start the container
     docker/qqvcp.sh
-    # Start control in sim mode
-    bin/goldibox -b sim &
+    # Start control
+    bin/goldibox &
     # Start GUI
     MachinekitClient &
 
