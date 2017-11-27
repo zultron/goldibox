@@ -45,11 +45,13 @@ SHARE_FILES = \
 # Overlay
 HAVE_DTC = $(shell test -f /usr/bin/dtc && echo 1)
 
+.PHONY: default
 default:
 	@echo "Please specify a target; choices:" 1>&2
 	@echo "    install"
 	@echo "    build"
 
+.PHONY: add_user
 add_user:
 	@ if ! id $(USER) 2>/dev/null >/dev/null; then \
 	    echo "Creating user $(USER)"; \
@@ -132,8 +134,10 @@ ALL_FILES += \
 	/etc/apache2/conf-available/goldibox.conf \
 	$(VAR_DIR)/graphs/index.html
 
+.PHONY: install
 install: add_user $(ALL_FILES)
 
+.PHONY: uninstall
 uninstall:
 	@ for i in $(ALL_FILES); do \
 	    echo "Removing $$i"; \
