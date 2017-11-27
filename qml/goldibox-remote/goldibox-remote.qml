@@ -46,13 +46,18 @@ HalApplicationWindow {
         }
 
         Image {
-	    /* Goldilocks */
+	    // Goldilocks wig
             id: locks
+	    // - From image
             source: "assets/locks.png"
-
-            // Scaled to fridge's actual image area, keeping aspect, on top
+            // - Scale relative to fridge area; share top and left edges
             anchors.fill: parent
+	    // - Let bottom and right hang off edge of fridge painted area
+            anchors.bottomMargin: -36.663/800 * fridge.paintedHeight
+            anchors.rightMargin: -25.349/500 * fridge.paintedWidth
+	    // - Keep aspect, even though fridge drawn in unkown aspect ratio
             fillMode: Image.PreserveAspectFit
+	    // - On top
             z: 6
 
         }
