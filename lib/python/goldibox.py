@@ -130,3 +130,12 @@ class Messages(object):
             (str(datetime.datetime.now()),
              cls.config.get('name','Unknown'),
              msg))
+
+    @classmethod
+    def error(cls, msg):
+        sys.stderr.write(
+            "%s %s:  %s\n" %
+            (str(datetime.datetime.now()),
+             cls.config.get('name','Unknown'),
+             msg))
+        sys.exit(1)

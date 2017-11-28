@@ -73,8 +73,16 @@ sample_periods = 0
 msg.info("Initialized")
 h.ready()
 
-while True:
+def loop():
     time.sleep(1)
+
+    # Use globals to maintain state
+    global error
+    global enable
+    global heat
+    global cool
+    global last_sample
+    global sample_periods
 
     # Take one sample for consistency
     # - Temps
@@ -83,7 +91,7 @@ while True:
     temp_min = h['temp-min']
     temp_max = h['temp-max']
     # - Cumulative
-    error += h['error']
+    error+= h['error']
     enable += h['enable']
     heat += h['heat']
     cool += h['cool']
@@ -93,7 +101,7 @@ while True:
     # Exit
     if shutdown:
         msg.info("Got shutdown signal = %s" % shutdown)
-        break
+        return False
 
     # Log
     now = time.time()
@@ -183,5 +191,16 @@ while True:
 
     sample_periods += 1
 
-msg.info("Exiting")
-sys.exit(0)
+    return True
+
+try:
+    while loop():
+        continue
+    msg.info("Loop ended")
+except KeyboardInterrupt:
+    msg.info("received KeyboardInterrupt")
+except Exception as e:
+    msg.error("Unknown exception:  %s" % e)
+finally:
+    msg.info("Exiting")
+    sys.exit(0)

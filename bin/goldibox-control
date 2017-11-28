@@ -37,7 +37,7 @@ msg = Messages('Goldibox control')
 msg.info("Initialized")
 h.ready()
 
-while True:
+def loop():
     time.sleep(0.1)
 
     # Take one sample for consistency
@@ -51,7 +51,7 @@ while True:
     # Exit
     if shutdown:
         msg.info("Got shutdown signal = %s" % shutdown)
-        break
+        return False
 
     # Error condition:  temp-max <= temp-min
     if (temp_max <= temp_min) or (hysteresis < 0) or (not enable):
@@ -64,7 +64,7 @@ while True:
                 msg.info("ERROR:  enable signal cleared")
         h['switch-on'] = 0
         h['error'] = 1
-        continue
+        return True
     else:
         if h['error']:
             msg.info("Recovered from error conditions")
@@ -74,7 +74,7 @@ while True:
     if not enable:
         # Disable
         h['switch-on'] = 0
-        continue
+        return True
 
 
     # On/off and heat/cool switches
@@ -95,11 +95,21 @@ while True:
             msg.info("Turning off; internal temp %.1f" % temp_int)
         h['switch-on'] = 0
 
-# Save settings
-msg.info("Saving settings")
-Config().write_state(temp_min=temp_min, temp_max=temp_max, enable=enable)
+    return True
 
-# Shut things off and exit
-msg.info("Exiting")
-h['switch-on'] = 0
-sys.exit(0)
+try:
+    # Run forever
+    while loop():
+        pass
+except:
+    pass
+finally:
+    # Save settings
+    msg.info("Saving settings")
+    Config().write_state(
+        temp_min=h['temp-min'], temp_max=h['temp-max'], enable=h['enable'])
+
+    # Shut things off and exit
+    msg.info("Exiting")
+    h['switch-on'] = 0
+    sys.exit(0)
