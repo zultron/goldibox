@@ -127,4 +127,6 @@ class Messages(object):
     def info(cls, msg):
         sys.stderr.write(
             "%s %s:  %s\n" %
-            (str(datetime.datetime.now()), cls.config['name'], msg))
+            (str(datetime.datetime.now()),
+             cls.config.get('name','Unknown'),
+             msg))
