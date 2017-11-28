@@ -16,7 +16,7 @@ class Config(object):
         for path in (
                 config_file,
                 os.environ.get('GOLDIBOX_CONFIG',None),
-                os.path.join(os.getcwd(), 'etc'),
+                os.path.join(os.path.dirname(__file__),'..','..','etc'),
                 '/etc/goldibox'):
             if path is None:
                 continue

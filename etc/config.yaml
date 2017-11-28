@@ -1,7 +1,0 @@
-PATH: bin
-HALDIR: hal
-state_file: saved_state.yaml
-rrd_file: rrd/logger.rrd
-rrd_image_dir: rrd
-pb_bbio_file: etc/overlay-pb.bbio
-share_dir: .

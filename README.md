@@ -96,17 +96,21 @@ repository directory.
 On the PocketBeagle, start the Goldibox control from the command line
 (load the overlay file for non-system installs):
 
+    # Install minimal apache and other config
+    sudo make install MININSTALL=1
+    # Start control
     bin/goldibox -o
 
 The Goldibox should now be ready for control.  Start the
 [MachinekitClient][qqvcp] and open the Goldibox app.
 
 Alternatively, run a Goldibox simulated control and GUI in a Docker
-container from the command line.  Get the URL for the [latest
-MachinekitClient build][mkclient-dl], then:
+container from the command line:
 
     # Start the container
     docker/qqvcp.sh
+    # Install minimal apache and other config
+    sudo make install MININSTALL=1
     # Start control
     bin/goldibox &
     # Start GUI

@@ -10,7 +10,7 @@ try:
     from goldibox import Config
 except ImportError as e:
     # If running from the git tree, try adding the lib path
-    path = os.path.join(os.path.dirname(__file__),'..','lib','python')
+    path = os.path.join(os.path.dirname(__file__),'..','..','lib','python')
     sys.path.append(path)
     from goldibox import Config
 

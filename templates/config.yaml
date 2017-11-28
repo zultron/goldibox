@@ -1,3 +1,4 @@
+PATH: @BIN_DIR@
 HALDIR: @HAL_DIR@
 state_file: @VAR_DIR@/saved_state.yaml
 rrd_file: @VAR_DIR@/logger.rrd

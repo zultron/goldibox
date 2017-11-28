@@ -14,10 +14,12 @@ RUN apt-get update \
 	rsyslog \
     && apt-get clean
 
+# Zeroconf, httpd, RRD, python YAML
 RUN apt-get install -y \
 	avahi-utils \
 	python-yaml \
 	python-rrdtool \
+	apache2 \
     && apt-get clean
 
 # For appimage

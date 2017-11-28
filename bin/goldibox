@@ -86,7 +86,7 @@ try:
         if args.board == 'sim':
             # Start syslog, dbus and avahi services if they aren't
             # already running in container
-            for svc in ('rsyslog', 'dbus', 'avahi-daemon'):
+            for svc in ('rsyslog', 'dbus', 'avahi-daemon', 'apache2'):
                 ret = subprocess.call(
                     ['/usr/bin/sudo', '/etc/init.d/%s' % svc, 'status'])
                 if ret != 0:
