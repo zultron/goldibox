@@ -32,8 +32,8 @@ SHARE_FILES = \
 	qml/goldibox-remote/Goldistat/Private/GoldistatIn.qml \
 	qml/goldibox-remote/Goldistat/Private/GoldistatOut.qml \
 	qml/goldibox-remote/Goldistat/Private/GoldistatSet.qml \
+	qml/goldibox-remote/Goldistat/TimeSeries.qml \
 	qml/goldibox-remote/assets/background.png \
-	qml/goldibox-remote/assets/graph.png \
 	qml/goldibox-remote/assets/locks.png \
 	qml/goldibox-remote/description.ini \
 	qml/goldibox-remote/goldibox-remote.qml \
@@ -79,7 +79,12 @@ $(patsubst %,$(SHARE_DIR)/%,$(SHARE_FILES)): $(SHARE_DIR)/%: %
 	@mkdir -p $(dir $@)
 	install -m 644 $< $@
 
-/etc/apache2/conf-available/goldibox.conf: templates/apache.conf
+/etc/apache2/mods-enabled/cgi.load:
+	ln -sf ../mods-available/cgi.load $@
+
+/etc/apache2/conf-available/goldibox.conf: \
+	    templates/apache.conf \
+	    /etc/apache2/mods-enabled/cgi.load
 	@mkdir -p $(dir $@)
 	sed < $< > $@ \
 	    -e 's,@VAR_DIR@,$(VAR_DIR),'
@@ -87,8 +92,12 @@ $(patsubst %,$(SHARE_DIR)/%,$(SHARE_FILES)): $(SHARE_DIR)/%: %
 	    /etc/apache2/conf-enabled/goldibox.conf
 
 $(VAR_DIR)/graphs/index.html: templates/index.html $(VAR_DIR)/saved_state.yaml
-	@install -d -o $(USER) $(dir $@)
+	@install -d -o $(USER) -g www-data -m 775 $(dir $@)
 	cp $< $@
+
+$(VAR_DIR)/graphs/uichart.png.cgi: templates/uichart.png.cgi
+	@install -d -o $(USER) -g www-data -m 775 $(dir $@)
+	install -m 755 $< $@
 
 $(VAR_DIR)/saved_state.yaml:
 	install -d -o $(USER) $(VAR_DIR)
@@ -132,7 +141,8 @@ ALL_FILES += \
 	$(VAR_DIR)/saved_state.yaml \
 	/etc/systemd/system/goldibox.service \
 	/etc/apache2/conf-available/goldibox.conf \
-	$(VAR_DIR)/graphs/index.html
+	$(VAR_DIR)/graphs/index.html \
+	$(VAR_DIR)/graphs/uichart.png.cgi
 
 .PHONY: install
 install: add_user $(ALL_FILES)

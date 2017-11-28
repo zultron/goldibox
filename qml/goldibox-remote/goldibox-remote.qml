@@ -60,14 +60,19 @@ HalApplicationWindow {
 
         }
 
-        Image {
-	    /* Fake (for now) graph */
-            id: graph
-            source: "assets/graph.png"
+        Goldistat.TimeSeries {
+	    // Time series chart
+            id: timeSeries
 
-            // Scaled to fridge's actual image area, keeping aspect, on top
-            anchors.fill: parent
-            fillMode: Image.PreserveAspectFit
+            // - Center on fridge
+            anchors.horizontalCenter: fridge.horizontalCenter
+            anchors.horizontalCenterOffset: fridge.paintedWidth * -0.09
+            anchors.verticalCenter: fridge.verticalCenter
+            anchors.verticalCenterOffset: fridge.paintedHeight * -0.285
+	    // - Size relative to fridge
+	    width: fridge.paintedWidth * 0.43
+	    height: fridge.paintedHeight * 0.125
+	    // - On top
             z: 7
 
         }
