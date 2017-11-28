@@ -16,78 +16,41 @@ open-source control to add new features.
 
 ![Goldibox](images/goldibox_breadboard.png)
 
-The Goldibox is based on a portable fridge.  These use a [Peltier
-junction][wiki-peltier], which can be switched from a cooling element
-to a heating element merely by reversing the voltage.  They are also
-small, light and inexpensive, and can be found on eBay for about $40;
-search for "portable fridge cooler warmer 110V".
+The Goldibox is built from a portable fridge with a [Peltier
+junction][wiki-peltier] that can be switched either to cool or to heat
+by reversing the input voltage.
 
-The Goldibox controller, a tiny [PocketBeagle][pocketbeagle] computer,
-fits in the cramped space next to the Peltier junction fan and heat
-sink.  This small computer has the analog and digital interfaces to
-control the hardware, and runs Debian and the control software.  They
-sell for about $25 through official distributors, and also need a $10
-micro SD card for the OS, a $3 DC step-down converter to 5VDC power
-from the 12VDC fridge power supply, and a $5 [USB type A breakout
-module][usb-breakout] and $10 USB WiFi adapter for networking.
+The Goldibox controller, a tiny [PocketBeagle][pocketbeagle] computer
+that runs Debian, fits in the cramped space next to the Peltier
+junction fan and heat sink.  It senses internal and external
+temperatures through a pair of thermistors attachd to its analog
+inputs, and it switches the Peltier junction and fan through an
+H-bridge and a MOSFET, respectively, connected through GPIO digital
+output pins.  See `BOM.md` for a list of hardware components, and
+`fritzing/goldibox.fzz` for connecting them.
 
-The control functions come from the [Machinekit][machinekit] software
-and its configuration in this repository.
+The [Machinekit][machinekit] software runs the configuration in this
+repository:  some python user-space components in the `bin/`
+directory, and HAL configuration in the `hal/` directory.  The
+`goldibox-control` component decides whether to switch the Peltier
+junction to cool, heat, or off, depending on the measured temperature
+compared to the user's Goldilocks temperature settings.  The
+`goldibox-logger` component logs to a RRD database, from which time
+series charts are generated.
 
-The fridge is fitted with control electronics:  thermistors and
-circuitry sense temperature; an H-bridge switches the Peltier junction
-between cool, heat and off; a MOSFET switches the fan on and off; and
-a DC-DC step-down converter provides 5VDC power for the PocketBeagle.
-These are small enough to easily fit under the rear cover of the
-fridge next to the power supply and Peltier junction.  The H-bridge,
-MOSFET and DC power converter can be found integrated in pre-assembled
-modules, and all parts are inexpensive and readily available.  Search
-for "L298N motor driver module," "Mosfet Arduino module," "DC
-step-down converter" and "10k thermistor" on eBay, all around $5-$8.
-The sensor resistors and capacitors are inexpensive if not already in
-one's junk box.  Also, a piece of Thermagon 6100 heat-conductive pad
-efficiently conducts temperature from the fridge to the internal
-thermistor.  The electronics are easily assembled with pre-assembled
-header wires and a little soldering; heat-shrink tubing and
-custom-crimped connectors improve appearance.
-
-[wiki-peltier]: https://en.wikipedia.org/wiki/Thermoelectric_cooling
-[pocketbeagle]: https://beagleboard.org/pocket
-[usb-breakout]: https://github.com/zultron/fritzing-parts/tree/master/pocketbeagle-usb-type-a
-[machinekit]: http://www.machinekit.io/
-
-# Remote interface
-
-Control the Goldibox with a remote graphical interface, built using
-Alexander Rössler's [QtQuickVCP][qqvcp].
-
-![GUI mock-up](images/gui-capture.png)
-
-[qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
-
-## Time series graphs
-
-A sample time series graph with elements explained:
-
-![Time series graph](images/goldibox-logger.sample-1.png)
-
-- **Areas:**  The maximum/minimum temperature is set by the user
-  - **Red (1):**  Too hot
-  - **Blue (2):**  Too cold
-  - **Green (3):**  The "Goldilocks zone," just right
-- **Curves:**  Internal and external temperatures
-  - **Green (4):**  Internal temperature; Peltier junction off
-  - **Red (5):**  Internal temperature; Pealtier junction heating
-  - **Blue (not shown):**  Internal temperature; Pealtier junction
-    cooling
-  - **Black dashed (7):**  External temperature
-- **Stats:**  Percent of time Peltier junction is...
-  - **Heating (8)**
-  - **Cooling (9)**
+The `goldibox-control` component exposes a remote UI, used by the
+`MachinekitClient` software, which can be downloaded for Android from
+the Google Play store, and for Linux, Mac OS X and Windows directly
+from the [QtQuickVCP][qqvcp] project.  The configuration in the `qml`
+directory defines the simple user interface with thermostat controls
+for the "too hot" and "too cold" zones, readouts for internal and
+external temperature, a power control to enable and disable the
+Goldibox, and a time series chart showing temperatures over the last
+day.
 
 # Running
 
-Follow the instructions at [machinekit.io][machinekit.io] to download
+Follow the instructions at [machinekit.io][machinekit] to download
 and install a mini-SD card image with Machinekit.
 
 Log into the BeagleBone, clone this repository, and `cd` into the
@@ -124,14 +87,15 @@ boot:
     sudo systemctl enable goldibox
     sudo systemctl start goldibox
 
-If the `apache2` package is installed and the web server is running,
-the time-series graphs will be visible at  `http://$IP/goldibox/`
-
-[machinekit.io]: http://machinekit.io
-[qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
-[mkclient-dl]: https://bintray.com/machinekoder/MachinekitClient-Development/MachinekitClient_Development-Linux-master-x64/#files/
+The `apache2` package must be installed and the web server running for
+the time-series chart to work.
 
 # Installing the PocketBeagle
 
 See the jumble of notes in [NOTES.md](NOTES.md)
 
+
+[wiki-peltier]: https://en.wikipedia.org/wiki/Thermoelectric_cooling
+[pocketbeagle]: https://beagleboard.org/pocket
+[machinekit]: http://www.machinekit.io/
+[qqvcp]: https://github.com/qtquickvcp/QtQuickVcp
