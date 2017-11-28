@@ -12,10 +12,10 @@ Item {
     property alias tempIn: inGauge.tempIn
     /* Too Cold:  Lower boundary of Goldilocks zone */
     property alias blueZoneName: set.pinMinName
-    property double blueZone: 15.0
+    property alias blueZone: set.blueZone
     /* Too Hot:  Upper boundary of Goldilocks zone */
     property alias redZoneName: set.pinMaxName
-    property double redZone: 25.0
+    property alias redZone: set.redZone
     /* Range in degrees for allowed setting; centers around tempOut */
     property double range: 90.0
 
