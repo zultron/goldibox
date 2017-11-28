@@ -561,6 +561,14 @@
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="ccsc"
          transform="matrix(1.1148091,0,0,1.1148091,5.7957948,-23.464521)" />
+      <rect
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4478"
+         width="211.8203"
+         height="98.262695"
+         x="98.19944"
+         y="121.88461"
+         ry="0" />
     </g>
     <g
        inkscape:groupmode="layer"
@@ -580,6 +588,12 @@
          id="path5629"
          d="m 365.92359,154.01825 47.35573,40.0406 c 22.12962,5.3737 -27.66499,33.1098 -51.20579,12.7052 -24.36234,-21.1167 -2.50032,-80.1051 3.85006,-52.7458 z"
          style="display:inline;fill:#fdc1ce;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6047);enable-background:new" />
+      <circle
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path4482"
+         cx="388.90875"
+         cy="173.29668"
+         r="28.490988" />
     </g>
     <g
        inkscape:groupmode="layer"
