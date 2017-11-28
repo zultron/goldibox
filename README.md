@@ -59,8 +59,7 @@ custom-crimped connectors improve appearance.
 # Remote interface
 
 Control the Goldibox with a remote graphical interface, built using
-Alexander Rössler's [QtQuickVCP][qqvcp].  The time-series graphs are
-yet to be integrated in.
+Alexander Rössler's [QtQuickVCP][qqvcp].
 
 ![GUI mock-up](images/gui-capture.png)
 
